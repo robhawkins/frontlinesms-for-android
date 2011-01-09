@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.frontlinesms.android.PropertySubstituter;
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.data.model.KeywordAction;
 
 
 /**

@@ -1,6 +1,7 @@
-package net.frontlinesms.android;
+package net.frontlinesms.android.activity;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.PropertySubstituter;
+import net.frontlinesms.android.data.model.KeywordAction;
 import net.frontlinesms.android.data.repository.DbKeywordActionDao;
 import net.frontlinesms.android.data.repository.KeywordActionDao;
 import net.frontlinesms.android.R;
@@ -15,7 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class KeywordListActivity extends ListActivity {
+public class KeywordList extends ListActivity {
     private static final int MENU_NEW_KEYWORD = 0;
 	private static final int MENU_HELP = 1;
 	

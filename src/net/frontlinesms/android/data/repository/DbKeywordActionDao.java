@@ -6,7 +6,7 @@ package net.frontlinesms.android.data.repository;
 import java.util.List;
 import java.util.TreeSet;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.data.model.KeywordAction;
 
 import com.alxndrsn.android.utils.db.BaseDbAccessObject;
 

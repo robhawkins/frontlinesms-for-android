@@ -1,6 +1,6 @@
 package net.frontlinesms.android;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.data.model.KeywordAction;
 import net.frontlinesms.android.data.repository.DbKeywordActionDao;
 import net.frontlinesms.android.data.repository.KeywordActionDao;
 

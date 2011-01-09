@@ -3,7 +3,7 @@
  */
 package net.frontlinesms.android.data.repository;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.data.model.KeywordAction;
 
 /**
  * @author aga

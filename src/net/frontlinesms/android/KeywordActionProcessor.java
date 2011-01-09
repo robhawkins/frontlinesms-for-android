@@ -5,7 +5,7 @@ package net.frontlinesms.android;
 
 import java.util.Set;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.data.model.KeywordAction;
 import net.frontlinesms.android.data.repository.DbNumberListDao;
 import net.frontlinesms.android.data.repository.NumberListDao;
 

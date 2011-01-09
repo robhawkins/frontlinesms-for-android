@@ -1,7 +1,7 @@
 package net.frontlinesms.android.data.repository;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
-import net.frontlinesms.android.data.domain.NumberListMember;
+import net.frontlinesms.android.data.model.KeywordAction;
+import net.frontlinesms.android.data.model.NumberListMember;
 
 import com.alxndrsn.android.utils.db.DbSqliteHelper;
 import com.alxndrsn.android.utils.db.DbEntity;

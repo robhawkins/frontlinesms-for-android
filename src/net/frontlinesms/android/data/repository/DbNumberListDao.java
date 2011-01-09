@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.frontlinesms.android.data.domain.NumberListMember;
+import net.frontlinesms.android.data.model.NumberListMember;
 
 import android.content.ContentResolver;
 

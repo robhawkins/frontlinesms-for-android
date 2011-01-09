@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:vf="http://schemas.android.com/apk/res/net.frontlinesms.android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="#CCCCCC"
+        >
+
+    <!--vf:button1="@drawable/redbar_android_r2_message_on"-->
+    <!--vf:button2="@drawable/actionbar_ic_addcontact"-->
+    <net.frontlinesms.android.ui.utils.ActionBar
+            vf:button1="@drawable/actionbar_ic_search_purple"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+    <View android:background="@drawable/android_r2_menubar_divider_xml"
+          android:layout_width="fill_parent"
+          android:layout_height="2dp"/>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="5dp"
+            >
+
+        <Button
+                android:id="@+id/dashboard_timeline"
+                style="@style/Home.Button"
+                android:drawableTop="@drawable/happy_48"
+                android:text="@string/menu_contacts"
+                android:onClick="onClickHandler"/>
+
+        <View android:background="@drawable/actionbar_divider"
+              android:layout_marginLeft="15dp"
+              android:layout_marginRight="15dp"
+              android:layout_height="fill_parent"
+              android:paddingTop="20dp"
+              android:paddingBottom="20dp"
+              android:layout_width="2dp"/>
+
+        <Button
+                android:id="@+id/dashboard_timeline"
+                style="@style/Home.Button"
+                android:text="@string/menu_keywords"
+                android:drawableTop="@drawable/settings_48"
+                android:onClick="onClickHandler"/>
+
+        <View android:background="@drawable/actionbar_divider"
+              android:layout_marginLeft="15dp"
+              android:layout_marginRight="15dp"
+              android:layout_height="fill_parent"
+              android:paddingTop="20dp"
+              android:paddingBottom="20dp"
+              android:layout_width="2dp"/>
+
+        <Button
+                android:id="@+id/dashboard_timeline"
+                style="@style/Home.Button"
+                android:text="@string/menu_messages"
+                android:drawableTop="@drawable/dialog_48"
+                android:onClick="onClickHandler"/>
+
+    </LinearLayout>
+
+    <ListView
+            android:id="@+id/lst_events"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:background="#EFEFEF"
+            />
+
+</LinearLayout>

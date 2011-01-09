@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Global Theme -->
+    <style name="FrontlineSMSTheme" parent="android:Theme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <!-- ActionBar style -->
+    <style name="ActionBar"/>
+
+    <style name="ActionBar.Logo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10.0dp</item>
+        <item name="android:src">@drawable/big_home</item>
+    </style>
+
+    <style name="ActionBar.Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginRight">7.0dp</item>
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="ActionBar.ActionButton">
+        <item name="android:background">@drawable/actionbar_bg_button</item>
+        <item name="android:layout_width">@dimen/actionbar_height</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignWithParentIfMissing">true</item>
+    </style>
+
+    <style name="ActionBar.Seperator">
+        <item name="android:background">#90666666</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_width">1.0dp</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+    <!--<item name="android:background">@color/floating_toolbar_divider</item>-->
+    <!--<item name="android:background">@drawable/actionbar_divider</item>-->
+
+    <style name="ActionBar.ProgressBar" parent="@android:attr/progressBarStyleSmallInverse">
+        <item name="android:layout_margin">10.0dp</item>
+        <item name="android:layout_width">22.0dp</item>
+        <item name="android:layout_height">22.0dp</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+
+    <style name="Home"/>
+
+    <style name="Home.Button">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+    </style>
+
+</resources>

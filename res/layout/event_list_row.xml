@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="horizontal"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:gravity="left|center_vertical"
+      android:paddingTop="5dp"
+      android:paddingBottom="5dp"      
+        >
+
+    <!--<FrameLayout
+        amandaharrington:layout_height="wrap_content"
+        amandaharrington:layout_width="wrap_content"
+        amandaharrington:background="@drawable/icon_frame"
+        >-->
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@null"
+        android:src="@drawable/ic_message_dark"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        />
+
+    <!--</FrameLayout>-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:lineSpacingExtra="2dp"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtTimestamp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:lineSpacingExtra="2dp"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</LinearLayout>

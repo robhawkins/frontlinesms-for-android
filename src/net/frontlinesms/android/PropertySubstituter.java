@@ -3,7 +3,7 @@
  */
 package net.frontlinesms.android;
 
-import net.frontlinesms.android.data.domain.KeywordAction;
+import net.frontlinesms.android.data.model.KeywordAction;
 import android.content.ContentResolver;
 
 import com.alxndrsn.android.utils.pim.PhoneBook;

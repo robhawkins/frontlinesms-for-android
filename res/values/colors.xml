@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- //start	ActionBar -->
+    <color name="clear">#00000000</color>
+    <!-- //END ActionBar -->
+
+	<!-- //start	UI refresh -->
+
+    <color name="action_bar_background">#FFFFFF</color>
+    <color name="list_header_background">#8E0052</color>
+
+    <!--#999999-->
+    <!--#BD81AC-->
+
+    <color name="dark_gray">#626162</color>
+
+
+    <!-- Floating toolbar -->
+	<!--<color name="floating_toolbar_header">@color/Now_6_a80</color>-->
+	<!--<color name="floating_toolbar_body">@color/Now_6_a80</color>-->
+	<!--<color name="floating_toolbar_divider">@color/Now_6_60_a60</color>-->
+	<!--<color name="hyperlink">@color/vodafone_red</color>-->
+
+	<!--<color name="list_selected">#CCCCCCCC</color>-->
+    <!--<color name="list_pressed">#CCCCCCCC</color>-->
+    <!--<color name="list_normal">@color/Now_6_a80</color>-->
+    <!--<color name="list_normal">#CCCCCCCC</color>-->
+
+
+
+</resources>
