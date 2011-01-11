@@ -17,12 +17,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with FrontlineSMS. If not, see <http://www.gnu.org/licenses/>.
  */
-package net.frontlinesms.android;
+package net.frontlinesms.android.activity;
 
-import android.app.Application;
-
-public class FrontlineSMS extends Application {
-
-
+/**
+ * @author Mathias Lin <mathias.lin@metahealthcare.com>
+ */
+public class Contacts extends BaseActivity {
 
 }

@@ -11,7 +11,7 @@ import net.frontlinesms.android.data.model.NumberListMember;
 
 import android.content.ContentResolver;
 
-import com.alxndrsn.android.utils.db.BaseDbAccessObject;
+import net.frontlinesms.android.db.BaseDbAccessObject;
 
 /**
  * @author aga
@@ -21,7 +21,7 @@ public class DbNumberListDao extends BaseDbAccessObject implements NumberListDao
 		super(contentResolver);
 	}
 	
-	/** @see com.alxndrsn.android.utils.db.BaseDbAccessObject#getBaseUri() */
+	/** @see net.frontlinesms.android.db.BaseDbAccessObject#getBaseUri() */
 	@Override
 	protected String getBaseUri() {
 		return FrontlineSmsSqliteHelper.CONTENT_URI;

@@ -5,8 +5,8 @@ package net.frontlinesms.android.data.repository;
 
 import android.content.Context;
 
-import com.alxndrsn.android.utils.db.DbContentProvider;
-import com.alxndrsn.android.utils.db.DbSqliteHelper;
+import net.frontlinesms.android.db.DbContentProvider;
+import net.frontlinesms.android.db.DbSqliteHelper;
 
 /**
  * @author aga

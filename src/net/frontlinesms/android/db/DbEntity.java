@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.alxndrsn.android.utils.db;
+package net.frontlinesms.android.db;
 
 /**
  * Interface that must be implemented by persisted objects.

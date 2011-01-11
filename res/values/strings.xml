@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
+    <!-- Common -->
     <string name="app_name">FrontlineSMS</string>
     <string name="action_help">Help</string>
 	<string name="action_new">New</string>
 
+    <!-- Home Main Menu -->
     <string name="menu_contacts">Contacts</string>
     <string name="menu_keywords">Keywords</string>
     <string name="menu_messages">Messages</string>
+
+    <!-- Home Options Menu -->
+    <string name="menu_option_clear">Clear</string>
+    <string name="menu_option_settings">Settings</string>
 </resources>

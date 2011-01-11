@@ -1,21 +1,21 @@
 /**
  * 
  */
-package com.alxndrsn.android.utils.db;
-
-import com.alxndrsn.android.utils.Logger;
+package net.frontlinesms.android.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * @author aga
  */
 public abstract class DbSqliteHelper extends SQLiteOpenHelper {
-	protected Logger log = Logger.getLogger(this);
-	
+
+    private static final String TAG = DbSqliteHelper.class.getSimpleName();
+
 	protected DbSqliteHelper(Context context, String databaseName, int databaseVersion) {
 		super(context, databaseName, null, databaseVersion);
 	}
@@ -23,16 +23,16 @@ public abstract class DbSqliteHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		for(Class<? extends DbEntity> entityClass : getEntityClasses()) {
-			log.info("Creating database table for " + entityClass);
+			Log.i(TAG, "Creating database table for " + entityClass);
 			String createStatement = DbUtils.getCreateStatement(entityClass);
 			try {
 				db.execSQL(createStatement);
 			} catch(SQLiteException ex) {
 				String tableName = DbUtils.getTableName(entityClass);
 				if(ex.getMessage().startsWith("table " + tableName + " already exists: ")) {
-					log.info("Table already exists: " + tableName);
+					Log.i(TAG, "Table already exists: " + tableName);
 				} else {
-					log.error("Error executing SQL: " + createStatement, ex);
+					Log.e(TAG, "Error executing SQL: " + createStatement, ex);
 					throw ex;
 				}
 			}
@@ -43,7 +43,7 @@ public abstract class DbSqliteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		log.info("Database version changed from " + oldVersion + " to " + newVersion);
+		Log.i(TAG, "Database version changed from " + oldVersion + " to " + newVersion);
 		
 		// drop old tables
 		for (Class<? extends DbEntity> entityClass : getEntityClasses()) {

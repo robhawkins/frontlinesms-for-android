@@ -1,4 +1,4 @@
-package com.alxndrsn.android.utils.db;
+package net.frontlinesms.android.db;
 
 import java.util.List;
 

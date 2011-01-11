@@ -2,17 +2,16 @@
 
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:vf="http://schemas.android.com/apk/res/net.frontlinesms.android"
+        xmlns:fsms="http://schemas.android.com/apk/res/net.frontlinesms.android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="#CCCCCC"
         >
 
-    <!--vf:button1="@drawable/redbar_android_r2_message_on"-->
-    <!--vf:button2="@drawable/actionbar_ic_addcontact"-->
-    <net.frontlinesms.android.ui.utils.ActionBar
-            vf:button1="@drawable/actionbar_ic_search_purple"
+    <net.frontlinesms.android.ui.view.ActionBar
+            android:id="@+id/actionbar"
+            fsms:button1="@drawable/actionbar_ic_search_purple"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
@@ -29,7 +28,7 @@
             >
 
         <Button
-                android:id="@+id/dashboard_timeline"
+                android:id="@+id/btn_contacts"
                 style="@style/Home.Button"
                 android:drawableTop="@drawable/happy_48"
                 android:text="@string/menu_contacts"
@@ -44,7 +43,7 @@
               android:layout_width="2dp"/>
 
         <Button
-                android:id="@+id/dashboard_timeline"
+                android:id="@+id/btn_keywords"
                 style="@style/Home.Button"
                 android:text="@string/menu_keywords"
                 android:drawableTop="@drawable/settings_48"
@@ -59,7 +58,7 @@
               android:layout_width="2dp"/>
 
         <Button
-                android:id="@+id/dashboard_timeline"
+                android:id="@+id/btn_messages"
                 style="@style/Home.Button"
                 android:text="@string/menu_messages"
                 android:drawableTop="@drawable/dialog_48"

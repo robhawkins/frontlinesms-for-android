@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.alxndrsn.android.utils.db;
+package net.frontlinesms.android.db;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

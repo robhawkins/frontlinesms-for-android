@@ -1,8 +1,8 @@
-package net.frontlinesms.android.ui.utils;
+package net.frontlinesms.android.ui.view;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.activity.Home;
 
 /**
  * The Action bar gives your users onscreen access to the most frequently used
@@ -177,39 +178,13 @@ public class ActionBar extends RelativeLayout implements View.OnClickListener {
             switch (msg.what) {
                 case R.id.actionbar_logo:
                     s = "Logo";
+                    mCtx.startActivity(new Intent(mCtx, Home.class));
                     break;
                 case R.id.actionbar_button_1:
-                    // show progress bar
-
-                    // mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF00FF, PorterDuff.Mode.SRC_OVER);                    
-
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    findViewById(R.id.actionbar_button_1).setVisibility(View.GONE);
-                    s = "Refresh";
-                    break;
-                case R.id.actionbar_button_2:
-                    s = "Tweet";
-                    break;
-                case R.id.actionbar_button_3:
-                    s = "Search";
+                    ((Activity)mCtx).onSearchRequested();
                     break;
             }
-
-            // show alert dialog
-            final AlertDialog d = new AlertDialog.Builder(getContext())
-                .setPositiveButton(android.R.string.ok, null)
-                .setMessage( s + " selected!!!" )
-                .create();
-            
-            d.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                public void onDismiss(DialogInterface dialogInterface) {
-                    mProgressBar.setVisibility(View.GONE);
-                    findViewById(R.id.actionbar_button_1).setVisibility(View.VISIBLE);
-                }
-            });
-            d.show();
         }
-
     }
 
 }

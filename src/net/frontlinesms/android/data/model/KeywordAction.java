@@ -3,7 +3,7 @@
  */
 package net.frontlinesms.android.data.model;
 
-import com.alxndrsn.android.utils.db.DbEntity;
+import net.frontlinesms.android.db.DbEntity;
 
 /**
  * @author aga

@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 import net.frontlinesms.android.data.model.KeywordAction;
 
-import com.alxndrsn.android.utils.db.BaseDbAccessObject;
+import net.frontlinesms.android.db.BaseDbAccessObject;
 
 import android.content.ContentResolver;
 

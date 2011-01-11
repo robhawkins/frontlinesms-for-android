@@ -1,9 +1,24 @@
 /**
- * 
+ * FrontlineSMS <http://www.frontlinesms.com>
+ * Copyright 2010, Meta Healthcare Systems Ltd.
+ *
+ * This file is part of FrontlineSMS for Android.
+ *
+ * FrontlineSMS is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
+ *
+ * FrontlineSMS is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with FrontlineSMS. If not, see <http://www.gnu.org/licenses/>.
  */
 package net.frontlinesms.android.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,8 +30,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * @author aga, Mathias Lin <mathias.lin@metahealthcare.com>
+ * Splash screen to be displayed at application launch.
+ * User can skip the splash screen by tapping the screen.
+ * Otherwise the app continues after 5 seconds.
  *
+ * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
 public class Splash extends BaseActivity {
 	protected static final long SPLASH_TIME = 5000;
@@ -37,13 +55,26 @@ public class Splash extends BaseActivity {
         }, SPLASH_TIME);
 
 	}
-	
+
+    /**
+     * Handles user's touch and proceeds to the
+     * main menu / home screen.
+     * @param event Touch event
+     * @return true
+     */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		skip(null);
 		return true;
 	}
-	
+
+    /**
+     * Handle key events. Finish the app when user pressed back,
+     * otherwise proceed to main menu screen.
+     * @param keyCode Key code
+     * @param event Key event
+     * @return true if event has been handled
+     */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_BACK) {

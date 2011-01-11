@@ -17,12 +17,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with FrontlineSMS. If not, see <http://www.gnu.org/licenses/>.
  */
-package net.frontlinesms.android;
+package net.frontlinesms.android.activity;
 
-import android.app.Application;
+import android.app.Activity;
+import android.os.Bundle;
+import net.frontlinesms.android.R;
 
-public class FrontlineSMS extends Application {
+/**
+ * @author Mathias Lin <mathias.lin@metahealthcare.com>
+ */
+public class Messages extends BaseActivity {
 
-
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.messages);
+    }
 }

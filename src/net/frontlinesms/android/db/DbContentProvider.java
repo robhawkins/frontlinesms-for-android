@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.alxndrsn.android.utils.db;
+package net.frontlinesms.android.db;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
