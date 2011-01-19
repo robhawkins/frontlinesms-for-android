@@ -82,6 +82,7 @@ public class Home extends BaseActivity implements
     private void initEventList() {
         ArrayList<Event> events = new ArrayList<Event>(1);
 
+        // List header
         TextView txtHeader = new TextView(this);
         txtHeader.setLayoutParams(
                 new ListView.LayoutParams(
@@ -127,7 +128,7 @@ public class Home extends BaseActivity implements
         Intent intent;
         switch (v.getId()) {
             case R.id.btn_contacts:
-                intent = new Intent(this, Contacts.class);
+                intent = new Intent(this, ContactList.class);
                 break;
             case R.id.btn_keywords:
                 intent = new Intent(this, Keywords.class);

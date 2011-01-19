@@ -6,20 +6,16 @@
       android:layout_height="wrap_content"
       android:gravity="left|center_vertical"
       android:paddingTop="5dp"
-      android:paddingBottom="5dp">
+      android:paddingBottom="5dp"
+      android:paddingLeft="10dp">
 
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
+    <CheckBox
+        android:id="@+id/chkBox"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
         android:background="@null"
-        android:src="@drawable/ic_message_dark"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:gravity="center"
         />
 
     <LinearLayout
@@ -28,7 +24,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtDescription"
+            android:id="@+id/txtDisplayName"
             android:textColor="#333333"
             android:textSize="18sp"
             android:lineSpacingExtra="2dp"
@@ -37,7 +33,8 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/txtTimestamp"
+            android:id="@+id/txtMobile"
+            android:text="(mobile number here)"
             android:textColor="#666666"
             android:textSize="12sp"
             android:lineSpacingExtra="2dp"
