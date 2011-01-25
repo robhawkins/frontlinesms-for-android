@@ -93,7 +93,7 @@ public class Splash extends BaseActivity {
      */
     public void skip(View v) {
         mTimer.cancel();
-        startActivity(new Intent(this, Home.class));
+        startActivity(new Intent(this, Dashboard.class));
         finish();
     }
 

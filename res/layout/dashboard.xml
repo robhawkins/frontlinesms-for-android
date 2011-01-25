@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fsms="http://schemas.android.com/apk/res/net.frontlinesms.android"
+        android:orientation="vertical"
+        android:id="@+id/root_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="top"
+        android:background="@android:color/white">
+    <!--<include layout="\@layout/title_layout" />-->
+
+    <net.frontlinesms.android.ui.view.ActionBar
+        android:id="@+id/actionbar"
+        fsms:button1="@drawable/actionbar_ic_search_purple"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <TableLayout
+            android:paddingTop="@dimen/dashboard_top_padding"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:stretchColumns="*">
+
+        <LinearLayout
+                android:paddingTop="@dimen/dashboard_top_row_spacing"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <!-- TODO attributes to be put into styles xml -->
+                <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/btn_dashboard_groups"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_groups"
+                    android:drawableTop="@drawable/dashboard_profile_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+            <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/dashboard_direct_message"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_messages"
+                    android:drawableTop="@drawable/dashboard_directmsg_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:paddingTop="@dimen/dashboard_row_spacing"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/dashboard_retweets"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_keywords"
+                    android:drawableTop="@drawable/dashboard_retweets_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+            <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/search"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_search"
+                    android:drawableTop="@drawable/dashboard_search_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:paddingTop="@dimen/dashboard_row_spacing"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/dashboard_lists"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_log"
+                    android:drawableTop="@drawable/dashboard_lists_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+            <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/dashboard_mentions"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_settings"
+                    android:drawableTop="@drawable/dashboard_mentions_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+        </LinearLayout>
+
+       <!-- <LinearLayout
+                android:paddingTop="@dimen/dashboard_row_spacing"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/trends"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trends_trending_topics"
+                    android:drawableTop="@drawable/dashboard_trends_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+                <Button
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dashboard_link_color"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/dashboard_timeline"
+                    android:background="@null"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_timeline"
+                    android:drawableTop="@drawable/dashboard_tweets_button"
+                    android:layout_weight="0.5"
+                    android:onClick="onClickHandler" />
+
+        </LinearLayout>-->
+
+    </TableLayout>
+
+</LinearLayout>

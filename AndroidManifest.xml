@@ -33,6 +33,7 @@
 
         <!-- HOME / MAIN MENU -->
         <activity android:name=".activity.Home"/>
+        <activity android:name=".activity.Dashboard"/>
 
         <!-- CONTACTS -->
         <activity android:name=".activity.ContactList"/>

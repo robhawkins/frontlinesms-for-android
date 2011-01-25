@@ -31,5 +31,13 @@
     <string name="targetAccountLabel">Target Account</string>
     <string name="undefinedTypeLabel">(Undefined)</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_groups">Groups</string>
+    <string name="dashboard_keywords">Rules</string>
+    <string name="dashboard_messages">Messages</string>
+    <string name="dashboard_settings">Settings</string>
+    <string name="dashboard_search">Search</string>
+    <string name="dashboard_log">Log</string>
+
 
 </resources>
