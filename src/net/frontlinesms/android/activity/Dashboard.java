@@ -43,7 +43,10 @@ public class Dashboard extends Activity {
     public void onClickHandler(final View v) {
         switch (v.getId()) {
             case R.id.img_groups:
-                startActivity(new Intent(this,GroupList.class));
+                startActivity(new Intent(this, GroupList.class));
+                break;
+            case R.id.img_messages:
+                startActivity(new Intent(this, MessageList.class));
                 break;
             // ...
             default:

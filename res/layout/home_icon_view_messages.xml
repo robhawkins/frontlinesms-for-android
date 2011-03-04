@@ -15,9 +15,12 @@
             android:layout_weight="1.0">
 
         <ImageView
+                android:id="@+id/img_messages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_home_messages"
+                android:clickable="true"
+                android:onClick="onClickHandler"
                 android:scaleType="center" />
 
     </LinearLayout>

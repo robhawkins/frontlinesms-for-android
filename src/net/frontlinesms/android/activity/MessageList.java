@@ -23,7 +23,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.provider.BaseColumns;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -32,10 +32,44 @@ import net.frontlinesms.android.R;
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public final class GroupList extends BaseActivity {
+public final class MessageList extends BaseActivity {
 
     public static final String TAG = GroupList.class.getSimpleName();
-    private ListView mGroupList;
+    private ListView mMessageList;
+
+    /**
+     * The column of the phone data retriever that contains the body of the
+     * message.
+     */
+    static final String BODY_COLUMN = "body";
+
+    /**
+     * The column of the phone data retriever that contains the date the message
+     * that was received.
+     */
+    static final String DATE_COLUMN = "date";
+
+    /**
+     * The column of the phone data retriever that contains the id of the
+     * conversation the message belongs to.
+     */
+    static final String THREAD_ID_COLUMN = "thread_id";
+
+    static final String TYPE_COLUMN = "type";
+
+    /**
+     * The column in the phone data retriever that contains the number the
+     * message was received from.
+     */
+    static final String NUMBER_COLUMN = "address";
+
+    /** URI for all inbound and outbound sms */
+    private static final Uri SMS_URI = Uri.parse("content://sms/");
+    private static final String[] PROJECTION = new String[] { DATE_COLUMN, BODY_COLUMN,
+            NUMBER_COLUMN, THREAD_ID_COLUMN, BaseColumns._ID, TYPE_COLUMN};
+
+    // see all fields: http://stackoverflow.com/questions/4022088/how-many-database-columns-associated-with-a-sms-in-android
+
 
     /**
      * Called when the activity is first created. Responsible for initializing the UI.
@@ -44,17 +78,17 @@ public final class GroupList extends BaseActivity {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_list);
+        setContentView(R.layout.message_list);
 
         // Obtain handles to UI objects
-        mGroupList = (ListView) findViewById(R.id.lst_groups);
+        mMessageList = (ListView) findViewById(R.id.lst_messages);
 
         // Populate the contact list
         initGroupList();
     }
 
     /**
-     * Populate the group list based on account currently selected in the account spinner.
+     * Populates the message list.
      */
     private void initGroupList() {
 
@@ -64,40 +98,34 @@ public final class GroupList extends BaseActivity {
                 new ListView.LayoutParams(
                         ListView.LayoutParams.FILL_PARENT,
                         ListView.LayoutParams.WRAP_CONTENT));
-        txtHeader.setText("Groups");
+        txtHeader.setText("Messages");
         txtHeader.setPadding(10, 10, 10, 10);
         txtHeader.setBackgroundColor(Color.parseColor("#8E0052"));
         txtHeader.setTextColor(Color.WHITE);
-        mGroupList.addHeaderView(txtHeader);
+        mMessageList.addHeaderView(txtHeader);
 
         // Build adapter with contact entries
-        Cursor cursor = getGroups();
+        Cursor cursor = getMessages();
         String[] fields = new String[] {
-                ContactsContract.Groups.TITLE,
-                ContactsContract.Groups.ACCOUNT_NAME,
+                BODY_COLUMN,
+                NUMBER_COLUMN,
+                // TYPE_COLUMN,   // 1 = inbound, 2 = outbound
         };
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.group_list_item, cursor,
-                fields, new int[] {R.id.txt_title, R.id.txt_account});
-        mGroupList.setAdapter(adapter);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.message_list_item, cursor,
+                fields, new int[] {R.id.txt_title, R.id.txt_mobile});
+        mMessageList.setAdapter(adapter);
     }
 
     /**
-     * Obtains the group list for the currently selected account.
+     * Obtains the message list for the currently selected account.
      *
-     * @return A cursor for for accessing the contact list.
+     * @return A cursor for for accessing the sms list.
      */
-    private Cursor getGroups()
+    private Cursor getMessages()
     {
-        // Run query
-        Uri uri = ContactsContract.Groups.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Groups._ID,
-                ContactsContract.Groups.TITLE,
-                ContactsContract.Groups.ACCOUNT_NAME
-        };
-        String selection = ContactsContract.Groups.TITLE + " not like 'System Group:%'";
-        String sortOrder = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
-        return managedQuery(uri, projection, selection, null, sortOrder);
+        Cursor cursor = getContentResolver().query(SMS_URI, PROJECTION, null, null,
+                null);
+        return cursor;
     }
 
 
