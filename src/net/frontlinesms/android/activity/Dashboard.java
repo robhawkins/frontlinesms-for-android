@@ -32,7 +32,7 @@ public class Dashboard extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard);
+        setContentView(R.layout.home_view);
     }
 
     /**
@@ -41,9 +41,9 @@ public class Dashboard extends Activity {
      */
     public void onClickHandler(final View v) {
         switch (v.getId()) {
-            case R.id.btn_dashboard_groups:
+            /*case R.id.btn_dashboard_groups:
                 Toast.makeText(this, "Groups!", Toast.LENGTH_SHORT).show();;
-                break;
+                break;*/
             // ...
             default:
                 Toast.makeText(this, "Pressed!", Toast.LENGTH_SHORT).show();

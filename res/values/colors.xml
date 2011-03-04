@@ -9,6 +9,10 @@
     <color name="dashboard_link_color">#ff8E0052</color>
     <color name="dashboard_link_disabled">#ff808080</color>
 
+    <!-- // FB Dashboard -->
+    <color name="home_background">#fff7f9ff</color>
+    <color name="home_text_color">#ff333333</color>
+
 
     <color name="list_header_background">#8E0052</color>
 

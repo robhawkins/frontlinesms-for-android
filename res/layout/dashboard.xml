@@ -12,7 +12,7 @@
 
     <net.frontlinesms.android.ui.view.ActionBar
         android:id="@+id/actionbar"
-        fsms:button1="@drawable/actionbar_ic_search_purple"
+        fsms:button1="@drawable/global_search_icon"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
@@ -23,12 +23,12 @@
             android:layout_gravity="top|center_horizontal"
             android:stretchColumns="*">
 
-        <LinearLayout
+        <!--<LinearLayout
                 android:paddingTop="@dimen/dashboard_top_row_spacing"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <!-- TODO attributes to be put into styles xml -->
+                &lt;!&ndash; TODO attributes to be put into styles xml &ndash;&gt;
                 <Button
                     android:textSize="16.0sp"
                     android:textStyle="bold"
@@ -128,7 +128,7 @@
                     android:layout_weight="0.5"
                     android:onClick="onClickHandler" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
        <!-- <LinearLayout
                 android:paddingTop="@dimen/dashboard_row_spacing"

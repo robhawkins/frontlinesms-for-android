@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <dimen name="actionbar_height">45.0dp</dimen>
+    <dimen name="actionbar_height">48.0dp</dimen>
     
     <dimen name="dashboard_top_padding">30.0dip</dimen>
     <dimen name="dashboard_top_row_spacing">15.0dip</dimen>

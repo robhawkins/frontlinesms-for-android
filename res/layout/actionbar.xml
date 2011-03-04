@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/action_bar_background"
+        android:background="@drawable/global_top_background"
         android:padding="0.0dp"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/actionbar_height">
@@ -10,8 +10,8 @@
             android:id="@+id/actionbar_logo"
             android:tag="Logo/Home"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             style="@style/ActionBar.Logo"/>
-
 
     <LinearLayout
             android:orientation="horizontal"
@@ -47,7 +47,7 @@
         <ImageButton
                 android:id="@+id/actionbar_button_1"
                 android:visibility="gone"
-                android:src="@drawable/actionbar_ic_myprofile"
+                android:src="@drawable/actionbar_ic_refresh"
                 android:tag="Refresh"
                 style="@style/ActionBar.ActionButton"/>
 
@@ -58,7 +58,7 @@
 
         <ImageButton
                 android:id="@+id/actionbar_button_2"
-                android:src="@drawable/actionbar_ic_addcontact"
+                android:src="@drawable/global_search_icon"
                 android:tag="Tweet"
                 android:visibility="gone"
                 style="@style/ActionBar.ActionButton" />
@@ -70,7 +70,7 @@
 
         <ImageButton
                 android:id="@+id/actionbar_button_3"
-                android:src="@drawable/actionbar_ic_search"
+                android:src="@drawable/global_search_icon"
                 android:tag="Search"
                 android:visibility="gone"
                 style="@style/ActionBar.ActionButton" />
