@@ -32,12 +32,15 @@
         </activity>
 
         <!-- HOME / MAIN MENU -->
-        <activity android:name=".activity.Home"/>
+        <!--<activity android:name=".activity.Home"/>-->
         <activity android:name=".activity.Dashboard"/>
 
         <!-- CONTACTS -->
         <activity android:name=".activity.ContactList"/>
-         <activity android:name=".activity.ContactAdder" android:label="@string/addContactTitle"/>
+        <activity android:name=".activity.ContactAdder" android:label="@string/addContactTitle"/>
+
+        <!-- GROUPS -->
+        <activity android:name=".activity.GroupList"/>
 
         <!-- KEYWORD LIST -->
         <activity android:name=".activity.Keywords"

@@ -20,6 +20,7 @@
 package net.frontlinesms.android.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -41,12 +42,12 @@ public class Dashboard extends Activity {
      */
     public void onClickHandler(final View v) {
         switch (v.getId()) {
-            /*case R.id.btn_dashboard_groups:
-                Toast.makeText(this, "Groups!", Toast.LENGTH_SHORT).show();;
-                break;*/
+            case R.id.img_groups:
+                startActivity(new Intent(this,GroupList.class));
+                break;
             // ...
             default:
-                Toast.makeText(this, "Pressed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
