@@ -20,56 +20,67 @@
 package net.frontlinesms.android.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.provider.ContactsContract;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.data.model.Event;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class ContactListAdapter extends CursorAdapter {
+public class MessageListAdapter extends CursorAdapter {
 
+    private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     LayoutInflater mInflater;
 
 
-    public ContactListAdapter(Context context, Cursor cursor) {
+    public MessageListAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return mInflater.inflate(R.layout.contact_list_item, viewGroup, false);
+        return mInflater.inflate(R.layout.message_list_item, viewGroup, false);
     }
 
     @Override
-    public void bindView(final View view, final Context context, Cursor cursor) {
+    public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder;
         holder = new ViewHolder();
-        holder.txtDisplayName = (TextView) view.findViewById(R.id.txt_display_name);
-        holder.txtMobile = (TextView) view.findViewById(R.id.txt_mobile);
+        holder.txtTitle = (TextView) view.findViewById(R.id.txt_title);
+        holder.txtMetaInfo = (TextView) view.findViewById(R.id.txt_message_info);
         view.setTag(holder);
 
-        // display contact name
-        int columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-        holder.txtDisplayName.setText(cursor.getString(columnIndex));
+        // display message content
+        int columnIndex = cursor.getColumnIndex(MessageList.BODY_COLUMN);
+//        holder.txtTitle.setText( Html.fromHtml("<b>" + cursor.getString(columnIndex) + "<b>"));
+        holder.txtTitle.setText(cursor.getString(columnIndex));
 
-        // display mobile no
-//        columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.ACCOUNT_NAME);
-//        holder.txtMobile.setText(cursor.getString(columnIndex));
-
+        // display meta information like date, from/to and number
+        columnIndex = cursor.getColumnIndex(MessageList.DATE_COLUMN);
+        String s = df.format(cursor.getLong(columnIndex));
+        columnIndex = cursor.getColumnIndex(MessageList.TYPE_COLUMN);
+        s += cursor.getInt(columnIndex)==1?" from ":" to ";
+        columnIndex = cursor.getColumnIndex(MessageList.NUMBER_COLUMN);
+        s += cursor.getString(columnIndex);
+        holder.txtMetaInfo.setText( Html.fromHtml(s));
     }
 
 
     static class ViewHolder {
-        TextView txtDisplayName;
-        TextView txtMobile;
+        TextView txtTitle;
+        TextView txtMetaInfo;
     }
 
 }

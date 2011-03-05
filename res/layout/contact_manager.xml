@@ -24,10 +24,10 @@
               android:layout_weight="1"/>
     <CheckBox android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:id="@+id/showInvisible"
+              android:id="@+id/chk_show_invisible"
               android:text="@string/showInvisible"/>
     <Button android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addContactButton"
+            android:id="@+id/btn_add_contact"
             android:text="@string/addContactButtonLabel"/>
 </LinearLayout>

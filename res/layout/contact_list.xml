@@ -17,7 +17,7 @@
 
     <View android:background="@drawable/menubar_divider_xml"
           android:layout_width="fill_parent"
-          android:layout_height="2dp"/>
+          android:layout_height="0dp"/>
 
     <ListView
             android:id="@+id/lst_contacts"
@@ -29,13 +29,13 @@
 
     <CheckBox android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:id="@+id/showInvisible"
+              android:id="@+id/chk_show_invisible"
               android:visibility="gone"
               android:text="@string/showInvisible"/>
 
     <Button android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addContactButton"
+            android:id="@+id/btn_add_contact"
             android:visibility="gone"
             android:text="@string/addContactButtonLabel"/>
 

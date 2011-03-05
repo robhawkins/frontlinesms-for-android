@@ -41,27 +41,27 @@ public final class MessageList extends BaseActivity {
      * The column of the phone data retriever that contains the body of the
      * message.
      */
-    static final String BODY_COLUMN = "body";
+    public static final String BODY_COLUMN = "body";
 
     /**
      * The column of the phone data retriever that contains the date the message
      * that was received.
      */
-    static final String DATE_COLUMN = "date";
+    public static final String DATE_COLUMN = "date";
 
     /**
      * The column of the phone data retriever that contains the id of the
      * conversation the message belongs to.
      */
-    static final String THREAD_ID_COLUMN = "thread_id";
+    public static final String THREAD_ID_COLUMN = "thread_id";
 
-    static final String TYPE_COLUMN = "type";
+    public static final String TYPE_COLUMN = "type";
 
     /**
      * The column in the phone data retriever that contains the number the
      * message was received from.
      */
-    static final String NUMBER_COLUMN = "address";
+    public static final String NUMBER_COLUMN = "address";
 
     /** URI for all inbound and outbound sms */
     private static final Uri SMS_URI = Uri.parse("content://sms/");
@@ -111,8 +111,9 @@ public final class MessageList extends BaseActivity {
                 NUMBER_COLUMN,
                 // TYPE_COLUMN,   // 1 = inbound, 2 = outbound
         };
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.message_list_item, cursor,
-                fields, new int[] {R.id.txt_title, R.id.txt_mobile});
+//        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.message_list_item, cursor,
+//                fields, new int[] {R.id.txt_title, R.id.txt_mobile});
+        MessageListAdapter adapter = new MessageListAdapter(this, cursor);
         mMessageList.setAdapter(adapter);
     }
 

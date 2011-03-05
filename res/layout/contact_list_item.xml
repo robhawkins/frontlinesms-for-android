@@ -24,7 +24,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtDisplayName"
+            android:id="@+id/txt_display_name"
             android:textColor="#333333"
             android:textSize="18sp"
             android:lineSpacingExtra="2dp"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/txtMobile"
+            android:id="@+id/txt_mobile"
             android:text="(mobile number here)"
             android:textColor="#666666"
             android:textSize="12sp"

@@ -20,9 +20,11 @@
 package net.frontlinesms.android.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,46 +32,62 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import net.frontlinesms.android.R;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class ContactListAdapter extends CursorAdapter {
+public class GroupListAdapter extends CursorAdapter {
 
     LayoutInflater mInflater;
 
 
-    public ContactListAdapter(Context context, Cursor cursor) {
+    public GroupListAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return mInflater.inflate(R.layout.contact_list_item, viewGroup, false);
+        return mInflater.inflate(R.layout.group_list_item, viewGroup, false);
     }
 
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
         ViewHolder holder;
         holder = new ViewHolder();
-        holder.txtDisplayName = (TextView) view.findViewById(R.id.txt_display_name);
-        holder.txtMobile = (TextView) view.findViewById(R.id.txt_mobile);
+        holder.txtTitle = (TextView) view.findViewById(R.id.txt_title);
+        holder.txtAccount = (TextView) view.findViewById(R.id.txt_account);
         view.setTag(holder);
 
-        // display contact name
-        int columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-        holder.txtDisplayName.setText(cursor.getString(columnIndex));
+        // display group title
+        int columnIndex = cursor.getColumnIndex(ContactsContract.Groups.TITLE);
+        final String groupTitle = cursor.getString(columnIndex);
+        holder.txtTitle.setText(groupTitle);
 
-        // display mobile no
-//        columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.ACCOUNT_NAME);
-//        holder.txtMobile.setText(cursor.getString(columnIndex));
+        // display account
+        columnIndex = cursor.getColumnIndex(ContactsContract.Groups.ACCOUNT_NAME);
+        holder.txtAccount.setText(cursor.getString(columnIndex));
 
+        // get group id
+        columnIndex = cursor.getColumnIndex(ContactsContract.Groups._ID);
+        final int groupId = cursor.getInt(columnIndex);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(context, ContactList.class);
+                intent.putExtra("EXTRA_GROUP_ID", groupId);
+                intent.putExtra("EXTRA_GROUP_NAME", groupTitle);
+                context.startActivity(intent);
+            }
+        });
     }
 
 
     static class ViewHolder {
-        TextView txtDisplayName;
-        TextView txtMobile;
+        TextView txtTitle;
+        TextView txtAccount;
     }
 
 }

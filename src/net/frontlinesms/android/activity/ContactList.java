@@ -26,9 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.View;
 import android.widget.*;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import net.frontlinesms.android.R;
 
 /**
@@ -38,10 +36,12 @@ public final class ContactList extends BaseActivity {
 
     public static final String TAG = "ContactManager";
 
-    private Button mAddAccountButton;
+    // private Button mAddAccountButton;
     private ListView mContactList;
-    private boolean mShowInvisible;
-    private CheckBox mShowInvisibleControl;
+    private Integer mGroupId;
+    private String mGroupName;
+//    private boolean mShowInvisible;
+//    private CheckBox mShowInvisibleControl;
 
     /**
      * Called when the activity is first created. Responsible for initializing the UI.
@@ -53,38 +53,41 @@ public final class ContactList extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_list);
 
+        mGroupId = getIntent().getIntExtra("EXTRA_GROUP_ID", -1);
+        mGroupName = getIntent().getStringExtra("EXTRA_GROUP_NAME");
+
         // Obtain handles to UI objects
         mContactList = (ListView) findViewById(R.id.lst_contacts);
-        mAddAccountButton = (Button) findViewById(R.id.addContactButton);
-        mShowInvisibleControl = (CheckBox) findViewById(R.id.showInvisible);
+//        mAddAccountButton = (Button) findViewById(R.id.btn_add_contact);
+//        mShowInvisibleControl = (CheckBox) findViewById(R.id.chk_show_invisible);
 
         // Initialize class properties
-        mShowInvisible = false;
-        mShowInvisibleControl.setChecked(mShowInvisible);
+//        mShowInvisible = false;
+//        mShowInvisibleControl.setChecked(mShowInvisible);
 
         // Register handler for UI elements
-        mAddAccountButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d(TAG, "mAddAccountButton clicked");
-                launchContactAdder();
-            }
-        });
-        mShowInvisibleControl.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG, "mShowInvisibleControl changed: " + isChecked);
-                mShowInvisible = isChecked;
-                populateContactList();
-            }
-        });
+//        mAddAccountButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Log.d(TAG, "mAddAccountButton clicked");
+//                launchContactAdder();
+//            }
+//        });
+//        mShowInvisibleControl.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                Log.d(TAG, "mShowInvisibleControl changed: " + isChecked);
+//                mShowInvisible = isChecked;
+//                populateContactList();
+//            }
+//        });
 
         // Populate the contact list
-        populateContactList();
+        initContactList();
     }
 
     /**
      * Populate the contact list based on account currently selected in the account spinner.
      */
-    private void populateContactList() {
+    private void initContactList() {
 
         // List header
         TextView txtHeader = new TextView(this);
@@ -92,7 +95,7 @@ public final class ContactList extends BaseActivity {
                 new ListView.LayoutParams(
                         ListView.LayoutParams.FILL_PARENT,
                         ListView.LayoutParams.WRAP_CONTENT));
-        txtHeader.setText("Contacts");
+        txtHeader.setText("Contacts of " + mGroupName);
         txtHeader.setPadding(10, 10, 10, 10);
         txtHeader.setBackgroundColor(Color.parseColor("#8E0052"));
         txtHeader.setTextColor(Color.WHITE);
@@ -103,8 +106,9 @@ public final class ContactList extends BaseActivity {
         String[] fields = new String[] {
                 ContactsContract.Data.DISPLAY_NAME
         };
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.contact_list_item, cursor,
-                fields, new int[] {R.id.txtDisplayName});
+//        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.contact_list_item, cursor,
+//                fields, new int[] {R.id.txt_display_name});
+        ContactListAdapter adapter = new ContactListAdapter(this, cursor);
         mContactList.setAdapter(adapter);
     }
 
@@ -121,12 +125,19 @@ public final class ContactList extends BaseActivity {
                 ContactsContract.Contacts._ID,
                 ContactsContract.Contacts.DISPLAY_NAME
         };
-        String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '" +
-                (mShowInvisible ? "0" : "1") + "'";
+//        String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '" +
+//                (mShowInvisible ? "0" : "1") + "'";
         String[] selectionArgs = null;
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
 
-        return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
+        Cursor c = managedQuery(ContactsContract.Data.CONTENT_URI, new String[] {
+                    ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts._ID },
+                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " = ?",
+                    new String[] { mGroupId.toString() }, sortOrder);
+        return c;
+
+
+        // return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
     }
 
     /**
