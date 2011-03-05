@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.Toast;
 import net.frontlinesms.android.R;
 
-public class Dashboard extends Activity {
+public class Dashboard extends BaseActivity {
     /**
      * Called when the activity is first created.
      */
@@ -47,6 +47,9 @@ public class Dashboard extends Activity {
                 break;
             case R.id.img_messages:
                 startActivity(new Intent(this, MessageList.class));
+                break;
+            case R.id.img_search:
+                onSearchRequested();
                 break;
             // ...
             default:

@@ -23,6 +23,8 @@ import android.app.Application;
 
 public class FrontlineSMS extends Application {
 
-
+    public static final String EXTRA_SEARCH_QUERY = "EXTRA_SEARCH_QUERY";
+    public static final String EXTRA_GROUP_NAME = "EXTRA_GROUP_NAME";
+    public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
 }

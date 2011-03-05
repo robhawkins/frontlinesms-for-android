@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 
 import java.text.SimpleDateFormat;
@@ -77,8 +78,8 @@ public class GroupListAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(context, ContactList.class);
-                intent.putExtra("EXTRA_GROUP_ID", groupId);
-                intent.putExtra("EXTRA_GROUP_NAME", groupTitle);
+                intent.putExtra(FrontlineSMS.EXTRA_GROUP_ID, groupId);
+                intent.putExtra(FrontlineSMS.EXTRA_GROUP_NAME, groupTitle);
                 context.startActivity(intent);
             }
         });

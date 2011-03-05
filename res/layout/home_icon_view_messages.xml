@@ -29,7 +29,7 @@
             android:textSize="14.0sp"
             android:textColor="@color/home_text_color"
             android:gravity="center_horizontal"
-            android:text="Messages"
+            android:text="@string/dashboard_messages"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 

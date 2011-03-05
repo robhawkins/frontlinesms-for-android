@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.activity.Home;
+import net.frontlinesms.android.activity.Dashboard;
 
 /**
  * The Action bar gives your users onscreen access to the most frequently used
@@ -178,7 +178,7 @@ public class ActionBar extends RelativeLayout implements View.OnClickListener {
             switch (msg.what) {
                 case R.id.actionbar_logo:
                     s = "Logo";
-                    mCtx.startActivity(new Intent(mCtx, Home.class));
+                    mCtx.startActivity(new Intent(mCtx, Dashboard.class));
                     break;
                 case R.id.actionbar_button_1:
                     ((Activity)mCtx).onSearchRequested();

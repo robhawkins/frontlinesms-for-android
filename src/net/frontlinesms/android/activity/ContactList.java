@@ -140,11 +140,5 @@ public final class ContactList extends BaseActivity {
         // return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    /**
-     * Launches the ContactAdder activity to add a new contact to the selected accont.
-     */
-    protected void launchContactAdder() {
-        Intent i = new Intent(this, ContactAdder.class);
-        startActivity(i);
-    }
+
 }

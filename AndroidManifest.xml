@@ -31,18 +31,40 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
         </activity>
 
         <!-- HOME / MAIN MENU -->
         <!--<activity android:name=".activity.Home"/>-->
-        <activity android:name=".activity.Dashboard"/>
+        <activity android:name=".activity.Dashboard">
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+        </activity>
 
         <!-- CONTACTS -->
-        <activity android:name=".activity.ContactList"/>
-        <activity android:name=".activity.ContactAdder" android:label="@string/addContactTitle"/>
+        <activity android:name=".activity.ContactList">
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+        </activity>
 
         <!-- GROUPS -->
-        <activity android:name=".activity.GroupList"/>
+        <activity android:name=".activity.GroupList">
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+        </activity>
 
         <!-- KEYWORD LIST -->
         <activity android:name=".activity.Keywords"
@@ -51,13 +73,30 @@
                 <action android:name="net.frontlinesms.android.KeywordListActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
         </activity>
 
         <!-- MESSAGES -->
-        <activity android:name=".activity.MessageList"/>
+        <activity android:name=".activity.MessageList">
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+        </activity>
 
         <!-- SETTINGS -->
-        <activity android:name=".activity.Settings"/>
+        <activity android:name=".activity.Settings">
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+        </activity>
 
         <!-- SMS RECEIVER -->
         <!--<receiver android:name=".SmsReceiver" android:enabled="true">
@@ -69,6 +108,12 @@
         <provider
                 android:name=".data.repository.FrontlineSmsContentProvider"
                 android:authorities="net.frontlinesms.android.data.repository.frontlinesmscontentprovider"/>
+
+        <provider android:name=".search.SuggestionProvider"
+            android:authorities="net.frontlinesms.android.search.SuggestionProvider" />
+
+        <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+
     </application>
 
 </manifest> 

@@ -20,15 +20,52 @@
 package net.frontlinesms.android.activity;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
+import android.util.Log;
+import android.widget.Toast;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.search.SuggestionProvider;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
 public abstract class BaseActivity extends Activity {
 
+    private static Bundle appDataBundle;
+
+    private String TAG = getClass().getSimpleName();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (getIntent()!=null) Log.d(TAG, "getIntent.getAction(): " + getIntent().getAction());
+
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+            String query = getIntent().getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+                    this, SuggestionProvider.AUTHORITY,
+                    SuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
+            Toast.makeText(this, "saving query: " + query, Toast.LENGTH_LONG).show();
+//            query = intent.getDataString();
+
+            if (query!=null) {
+                final Intent i = new Intent(this, MessageList.class);
+                i.putExtra(FrontlineSMS.EXTRA_SEARCH_QUERY, query);
+                startActivity(i);
+            }
+        }
+
+    }
+
+
 }
