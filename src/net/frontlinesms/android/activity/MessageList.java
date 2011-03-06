@@ -64,9 +64,10 @@ public final class MessageList extends BaseActivity {
     public static final String NUMBER_COLUMN = "address";
 
     /** URI for all inbound and outbound sms */
-    private static final Uri SMS_URI = Uri.parse("content://sms/");
-    private static final String[] PROJECTION = new String[] { DATE_COLUMN, BODY_COLUMN,
+    public static final Uri SMS_URI = Uri.parse("content://sms/");
+    public static final String[] PROJECTION = new String[] { DATE_COLUMN, BODY_COLUMN,
             NUMBER_COLUMN, THREAD_ID_COLUMN, BaseColumns._ID, TYPE_COLUMN};
+
 
     // see all fields: http://stackoverflow.com/questions/4022088/how-many-database-columns-associated-with-a-sms-in-android
 

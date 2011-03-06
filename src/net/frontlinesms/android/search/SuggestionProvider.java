@@ -27,6 +27,7 @@ import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
+import net.frontlinesms.android.activity.MessageList;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,18 +79,34 @@ public final class SuggestionProvider extends SearchRecentSuggestionsProvider {
         Log.d(TAG, "query        : " + query);
 
         // if no query entered, show history
-        // edit: also, according to the "meta logic", when the query ends with a space,
-        // there can never be a suggestion returned
-        if (query.length() == 0 || query.endsWith(" ")) {
-            /*Cursor c = super.query(uri, projection, selection, selectionArgs, sortOrder);;
-            for (int i=0;i<c.getColumnCount();i++) {
-                Log.d("CURSOR", c.getColumnName(i));
-            }*/
+        if (query.length() == 0) {
             return super.query(uri, projection, selection, selectionArgs, sortOrder);
         } else {
+
+            Log.d(TAG, "put matrix cursor together....");
+
             final MatrixCursor matrixCursor = new MatrixCursor(new String[]{
                     SearchManager.SUGGEST_COLUMN_FORMAT, SearchManager.SUGGEST_COLUMN_TEXT_1,
                     SearchManager.SUGGEST_COLUMN_INTENT_DATA, BaseColumns._ID});
+
+            // TODO: this should be cached and updated on SMS retrieval/sending
+            Cursor cursor = this.getContext().getContentResolver().
+                    query(MessageList.SMS_URI, MessageList.PROJECTION, null, null,
+                null);
+            cursor.moveToFirst();
+            do {
+                int columnIndex = cursor.getColumnIndex(MessageList.BODY_COLUMN);
+                String msg = cursor.getString(columnIndex);
+
+                Log.d(TAG, "add to matrix cursor together...." + msg);
+                if (msg.toLowerCase().indexOf(query)>=0) {
+                    columnIndex = cursor.getColumnIndex(MessageList.THREAD_ID_COLUMN);
+                    int id = cursor.getInt(columnIndex);
+                    matrixCursor.addRow(new Object[]{msg, msg, msg, id});
+                }
+            } while (cursor.moveToNext());
+
+            return matrixCursor;
 
 //            if (ShopPrototype.isOnlineSearchSuggestionsEnabled()) {
 //                final List<String> results = VodafoneApi.search(query);
@@ -117,12 +134,12 @@ public final class SuggestionProvider extends SearchRecentSuggestionsProvider {
 //            }
 
             // merging history and suggestions cursor to show both in the search bar
-            return new MergeCursor(
-                    new Cursor[]{
-                            super.query(uri, projection, selection, selectionArgs, sortOrder),
-                            matrixCursor
-                    }
-            );
+//            return new MergeCursor(
+//                    new Cursor[]{
+//                            super.query(uri, projection, selection, selectionArgs, sortOrder),
+//                            matrixCursor
+//                    }
+//            );
         }
     }
 }
