@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
@@ -37,7 +38,7 @@ public abstract class BaseActivity extends Activity {
 
     private static Bundle appDataBundle;
 
-    private String TAG = getClass().getSimpleName();
+    protected String TAG = getClass().getSimpleName();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,5 +68,12 @@ public abstract class BaseActivity extends Activity {
 
     }
 
+    /**
+     * Returns to dashboard, after user clicked the action bar anywhere.
+     * @param v Clicked view
+     */
+    public void goHome(View v) {
+        startActivity(new Intent(this, Dashboard.class));
+    }
 
 }

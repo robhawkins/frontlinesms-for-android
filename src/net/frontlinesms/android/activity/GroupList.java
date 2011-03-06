@@ -19,15 +19,21 @@
  */
 package net.frontlinesms.android.activity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
+
+import java.util.HashMap;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
@@ -35,7 +41,19 @@ import net.frontlinesms.android.R;
 public final class GroupList extends BaseActivity {
 
     public static final String TAG = GroupList.class.getSimpleName();
+
+    /** Cached group id to group name mappings, for faster group name lookup, i.e. in message composer. */
+    public static HashMap<Integer, String> groupNameCache = new HashMap<Integer, String>();
+
+    /** List view that displays the groups. */
     private ListView mGroupList;
+
+    /** List adapter. */
+    private GroupListAdapter mAdapter;
+
+    /** Menu item to send message to selected groups. */
+    private static final int MENU_OPTION_SEND_MESSAGE = Menu.FIRST;
+
 
     /**
      * Called when the activity is first created. Responsible for initializing the UI.
@@ -64,7 +82,7 @@ public final class GroupList extends BaseActivity {
                 new ListView.LayoutParams(
                         ListView.LayoutParams.FILL_PARENT,
                         ListView.LayoutParams.WRAP_CONTENT));
-        txtHeader.setText("Groups");
+        txtHeader.setText(getResources().getString(R.string.dashboard_groups));
         txtHeader.setPadding(10, 10, 10, 10);
         txtHeader.setBackgroundColor(Color.parseColor("#8E0052"));
         txtHeader.setTextColor(Color.WHITE);
@@ -78,8 +96,8 @@ public final class GroupList extends BaseActivity {
         };
 //        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.group_list_item, cursor,
 //                fields, new int[] {R.id.txt_title, R.id.txt_account});
-        GroupListAdapter adapter = new GroupListAdapter(this, cursor);
-        mGroupList.setAdapter(adapter);
+        mAdapter = new GroupListAdapter(this, cursor);
+        mGroupList.setAdapter(mAdapter);
     }
 
     /**
@@ -98,8 +116,39 @@ public final class GroupList extends BaseActivity {
         };
         String selection = ContactsContract.Groups.TITLE + " not like 'System Group:%'";
         String sortOrder = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
-        return managedQuery(uri, projection, selection, null, sortOrder);
+
+        Cursor cursor = managedQuery(uri, projection, selection, null, sortOrder);
+        if (groupNameCache.isEmpty() && cursor.moveToFirst()) {
+            do {
+                groupNameCache.put(cursor.getInt(0), cursor.getString(1));
+            } while (cursor.moveToNext());
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        int groupId = 0;
+        MenuItem menuItem = menu.add(groupId, Menu.FIRST, Menu.NONE, R.string.menu_option_send_message);
+        menuItem.setIcon(android.R.drawable.ic_menu_send);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == MENU_OPTION_SEND_MESSAGE) {
+            if (mAdapter.getSelectedItems().size()>0) {
+                Intent intent = new Intent(this, MessageComposer.class);
+                intent.putExtra(FrontlineSMS.EXTRA_RECIPIENT_TYPE, MessageComposer.RECIPIENT_TYPE_GROUPS);
+                intent.putExtra(FrontlineSMS.EXTRA_SELECTED_ITEMS, mAdapter.getSelectedItems());
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "No groups selected.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

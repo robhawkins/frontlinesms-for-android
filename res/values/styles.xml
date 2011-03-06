@@ -70,4 +70,27 @@
         <item name="android:paddingBottom">3dp</item>
     </style>
 
+    <!-- Content -->
+    <style name="Content">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Content.Label" parent="Content">
+    </style>
+
+    <style name="Content.Text">
+        <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
 </resources>

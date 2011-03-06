@@ -22,31 +22,22 @@ package net.frontlinesms.android.activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.data.model.Event;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class MessageListAdapter extends CursorAdapter {
+public class MessageListAdapter extends BaseListAdapter {
 
     private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-    LayoutInflater mInflater;
-
 
     public MessageListAdapter(Context context, Cursor cursor) {
         super(context, cursor);
-        this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -56,10 +47,16 @@ public class MessageListAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder holder;
-        holder = new ViewHolder();
+        final ViewHolder holder = new ViewHolder();
         holder.txtTitle = (TextView) view.findViewById(R.id.txt_title);
         holder.txtMetaInfo = (TextView) view.findViewById(R.id.txt_message_info);
+        holder.chkBox = (CheckBox) view.findViewById(R.id.chk_box);
+        holder.chkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleCheck(holder.chkBox, holder.id);
+            }
+        });
         view.setTag(holder);
 
         // display message content
@@ -75,12 +72,16 @@ public class MessageListAdapter extends CursorAdapter {
         columnIndex = cursor.getColumnIndex(MessageList.NUMBER_COLUMN);
         s += cursor.getString(columnIndex);
         holder.txtMetaInfo.setText( Html.fromHtml(s));
+
+        holder.chkBox.setChecked(mSelectedItems.contains(holder.id));
     }
 
 
     static class ViewHolder {
         TextView txtTitle;
         TextView txtMetaInfo;
+        CheckBox chkBox;
+        Integer id;
     }
 
 }

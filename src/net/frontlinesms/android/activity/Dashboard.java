@@ -19,7 +19,6 @@
  */
 package net.frontlinesms.android.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +32,7 @@ public class Dashboard extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_view);
+        setContentView(R.layout.dashboard);
     }
 
     /**
@@ -51,7 +50,9 @@ public class Dashboard extends BaseActivity {
             case R.id.img_search:
                 onSearchRequested();
                 break;
-            // ...
+            case R.id.img_settings:
+                startActivity(new Intent(this, Settings.class));
+                break;
             default:
                 Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
                 break;

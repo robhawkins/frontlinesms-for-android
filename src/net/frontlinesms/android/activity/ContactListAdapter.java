@@ -26,6 +26,7 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import net.frontlinesms.android.R;
@@ -33,14 +34,10 @@ import net.frontlinesms.android.R;
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class ContactListAdapter extends CursorAdapter {
-
-    LayoutInflater mInflater;
-
+public class ContactListAdapter extends BaseListAdapter {
 
     public ContactListAdapter(Context context, Cursor cursor) {
         super(context, cursor);
-        this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -50,15 +47,26 @@ public class ContactListAdapter extends CursorAdapter {
 
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
-        ViewHolder holder;
-        holder = new ViewHolder();
+        final ViewHolder holder = new ViewHolder();
         holder.txtDisplayName = (TextView) view.findViewById(R.id.txt_display_name);
         holder.txtMobile = (TextView) view.findViewById(R.id.txt_mobile);
+        holder.chkBox = (CheckBox) view.findViewById(R.id.chk_box);
+        holder.chkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleCheck(holder.chkBox, holder.id);
+            }
+        });
         view.setTag(holder);
 
         // display contact name
         int columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
         holder.txtDisplayName.setText(cursor.getString(columnIndex));
+
+        columnIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+        holder.id = cursor.getInt(columnIndex);
+
+        holder.chkBox.setChecked(mSelectedItems.contains(holder.id));
 
         // display mobile no
 //        columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.ACCOUNT_NAME);
@@ -70,6 +78,8 @@ public class ContactListAdapter extends CursorAdapter {
     static class ViewHolder {
         TextView txtDisplayName;
         TextView txtMobile;
+        CheckBox chkBox;
+        Integer id;
     }
 
 }

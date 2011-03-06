@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.data.model.Event;
+import net.frontlinesms.android.model.model.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

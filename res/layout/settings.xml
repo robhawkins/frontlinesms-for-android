@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fsms="http://schemas.android.com/apk/res/net.frontlinesms.android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="#CCCCCC"
+        >
+
+    <net.frontlinesms.android.ui.view.ActionBar
+            android:id="@+id/actionbar"
+            fsms:button1="@drawable/global_search_icon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+    <View android:background="@drawable/menubar_divider_xml"
+          android:layout_width="fill_parent"
+          android:layout_height="0dp"/>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:background="#8E0052"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+            />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/Content.Label"
+        android:text="@string/settings_language"/>
+
+    <Spinner
+        android:id="@+id/spn_language"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:prompt="@string/choose_language"
+        android:entries="@array/language_array"/>
 
 </LinearLayout>

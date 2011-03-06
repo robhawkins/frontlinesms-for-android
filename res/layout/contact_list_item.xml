@@ -11,7 +11,7 @@
 
 
     <CheckBox
-        android:id="@+id/chkBox"
+        android:id="@+id/chk_box"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="@null"

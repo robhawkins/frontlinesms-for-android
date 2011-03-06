@@ -4,6 +4,8 @@
         android:background="@drawable/global_top_background"
         android:padding="0.0dp"
         android:layout_width="fill_parent"
+        android:clickable="true"
+        android:onClick="goHome"
         android:layout_height="@dimen/actionbar_height">
 
     <ImageView

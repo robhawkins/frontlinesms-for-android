@@ -28,24 +28,22 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Vector;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class GroupListAdapter extends CursorAdapter {
-
-    LayoutInflater mInflater;
-
+public class GroupListAdapter extends BaseListAdapter {
 
     public GroupListAdapter(Context context, Cursor cursor) {
         super(context, cursor);
-        this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -55,10 +53,16 @@ public class GroupListAdapter extends CursorAdapter {
 
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
-        ViewHolder holder;
-        holder = new ViewHolder();
+        final ViewHolder holder = new ViewHolder();
         holder.txtTitle = (TextView) view.findViewById(R.id.txt_title);
         holder.txtAccount = (TextView) view.findViewById(R.id.txt_account);
+        holder.chkBox = (CheckBox) view.findViewById(R.id.chk_box);
+        holder.chkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleCheck(holder.chkBox, holder.id);
+            }
+        });
         view.setTag(holder);
 
         // display group title
@@ -73,6 +77,7 @@ public class GroupListAdapter extends CursorAdapter {
         // get group id
         columnIndex = cursor.getColumnIndex(ContactsContract.Groups._ID);
         final int groupId = cursor.getInt(columnIndex);
+        holder.id = groupId;
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +88,17 @@ public class GroupListAdapter extends CursorAdapter {
                 context.startActivity(intent);
             }
         });
+
+        holder.chkBox.setChecked(mSelectedItems.contains(holder.id));
     }
 
 
     static class ViewHolder {
         TextView txtTitle;
         TextView txtAccount;
+        CheckBox chkBox;
+        Integer id;
     }
+
 
 }
