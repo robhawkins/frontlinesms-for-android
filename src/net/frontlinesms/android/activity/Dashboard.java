@@ -53,6 +53,9 @@ public class Dashboard extends BaseActivity {
             case R.id.img_settings:
                 startActivity(new Intent(this, Settings.class));
                 break;
+            case R.id.img_rules:
+                startActivity(new Intent(this, RuleList.class));
+                break;
             default:
                 Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
                 break;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fsms="http://schemas.android.com/apk/res/net.frontlinesms.android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="#CCCCCC"
+        >
+
+    <net.frontlinesms.android.ui.view.ActionBar
+            android:id="@+id/actionbar"
+            fsms:button1="@drawable/global_search_icon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+    <View android:background="@drawable/menubar_divider_xml"
+          android:layout_width="fill_parent"
+          android:layout_height="0dp"/>
+
+    <ListView
+            android:id="@+id/lst_rules"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:background="#EFEFEF"
+            />
+
+</LinearLayout>

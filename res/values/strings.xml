@@ -30,6 +30,10 @@
     <string name="choose_language">Choose a language</string>
     <string name="settings_language">Language:</string>
 
+    <!-- Rule List -->
+    <string name="menu_option_new">New</string>
+    <string name="menu_option_edit">Edit</string>
+    <string name="menu_option_delete">Delete</string>
 
 
 </resources>
