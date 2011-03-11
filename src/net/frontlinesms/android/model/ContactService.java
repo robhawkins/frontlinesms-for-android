@@ -19,12 +19,17 @@
  */
 package net.frontlinesms.android.model;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.util.Log;
+import net.frontlinesms.android.model.model.Contact;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class ContactService {
 
@@ -71,6 +76,39 @@ public class ContactService {
                 null, sortOrder);
         Log.d(TAG, "getContactsById - c.results: " + c.getCount());
         return c;
+    }
+
+    /**
+     * Sends out a SMS to a provided list of recipients (contacts).
+     * @param context Context
+     * @param contacts Recipient list
+     * @param message Message to be sent
+     */
+    public static void sendMessage(final Context context, Vector<Contact> contacts, String message) {
+
+        Log.d(TAG, "Send message to contacts: " + contacts.size());
+
+        for (Contact contact:contacts) {
+
+            Log.d(TAG, "Send message to contact id: " + contact.getId().toString());
+
+            Cursor pCur = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                    new String[]{contact.getId().toString()}, null);
+
+            while (pCur.moveToNext()) {
+                String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Log.d(TAG, "Phone Number: " + phone);
+//                    phone = "+8618688200424";
+//                    phone = "+8613802849305";
+                PendingIntent sentPI = PendingIntent.getBroadcast(context, 0, new Intent("SMS_SENT"), 0);
+                PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0, new Intent("SMS_DELIVERED"), 0);
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(phone, null, message, sentPI, deliveredPI);
+            }
+
+        }
+
     }
 
 }

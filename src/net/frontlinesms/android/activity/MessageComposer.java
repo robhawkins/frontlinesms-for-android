@@ -24,6 +24,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
@@ -92,37 +93,28 @@ public class MessageComposer extends BaseActivity {
         findViewById(R.id.btn_send_message).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage(mContacts, ((EditText)findViewById(R.id.edt_message)).getText().toString());
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object... objects) {
+                        ContactService.sendMessage(getApplicationContext(),
+                        mContacts, ((EditText)findViewById(R.id.edt_message)).getText().toString());
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        super.onPostExecute(o);
+                    }
+                }.execute();
+
             }
         });
     }
 
 
-
-    private void sendMessage(Vector<Contact> contacts, String message) {
-
-        Log.d(TAG, "Send message to contacts: " + contacts.size());
-
-        for (Contact contact:contacts) {
-
-            Log.d(TAG, "Send message to contact id: " + contact.getId().toString());
-
-            Cursor pCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                    new String[]{contact.getId().toString()}, null);
-
-            while (pCur.moveToNext()) {
-                String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                Log.d(TAG, "Phone Number: " + phone);
-//                    phone = "+8618688200424";
-//                    phone = "+8613802849305";
-                PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
-                PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(phone, null, message, sentPI, deliveredPI);
-            }
-
-        }
-
-    }
 }
