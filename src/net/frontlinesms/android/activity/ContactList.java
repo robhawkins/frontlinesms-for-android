@@ -19,18 +19,16 @@
  */
 package net.frontlinesms.android.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.*;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.ContactService;
@@ -92,34 +90,6 @@ public final class ContactList extends BaseActivity {
         mAdapter = new ContactListAdapter(this, cursor);
         mContactList.setAdapter(mAdapter);
     }
-
-    /**
-     * Obtains the contact list for the currently selected account.
-     *
-     * @return A cursor for for accessing the contact list.
-     */
-    private Cursor getContacts(final Integer groupId)
-    {
-        // Run query
-        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME
-        };
-//        String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '" +
-//                (mShowInvisible ? "0" : "1") + "'";
-//        String[] selectionArgs = null;
-        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-
-        Cursor c = managedQuery(ContactsContract.Data.CONTENT_URI, new String[]{
-                ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts._ID},
-                ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " = ?",
-                new String[]{groupId.toString()}, sortOrder);
-        return c;
-
-        // return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
-    }
-
 
 
     @Override

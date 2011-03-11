@@ -90,12 +90,6 @@ public final class GroupList extends BaseActivity {
 
         // Build adapter with contact entries
         Cursor cursor = getGroups();
-        String[] fields = new String[] {
-                ContactsContract.Groups.TITLE,
-                ContactsContract.Groups.ACCOUNT_NAME,
-        };
-//        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.group_list_item, cursor,
-//                fields, new int[] {R.id.txt_title, R.id.txt_account});
         mAdapter = new GroupListAdapter(this, cursor);
         mGroupList.setAdapter(mAdapter);
     }

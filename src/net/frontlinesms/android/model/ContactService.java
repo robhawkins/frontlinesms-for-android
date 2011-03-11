@@ -21,9 +21,10 @@ package net.frontlinesms.android.model;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 public class ContactService {
 
@@ -36,63 +37,40 @@ public class ContactService {
      */
     public static Cursor getContactsByGroup(final Context context, final Integer[] ids)
     {
-        // Run query
-        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME
-        };
-//        String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '" +
-//                (mShowInvisible ? "0" : "1") + "'";
-//        String[] selectionArgs = null;
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-
         String idString = "";
         for (Integer id:ids) {
             idString += (!"".equals(idString)?",":"") + id;
         }
-
-        Cursor c = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
-                ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME}, //ContactsContract.Data.HAS_PHONE_NUMBER
+        Cursor cTmp = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
+                ContactsContract.Data._ID, ContactsContract.Data.CONTACT_ID, ContactsContract.Data.DISPLAY_NAME},
                 ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN (" + idString + ")",
-//                " AND " + ContactsContract.Data.HAS_PHONE_NUMBER + " > 0",
                 null, sortOrder);
-        return c;
 
-        // return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
+        // filter only those contacts who have a phone number
+        ArrayList<Integer> idList = new ArrayList<Integer>();
+        while (cTmp.moveToNext()) {
+            idList.add(cTmp.getInt(cTmp.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
+        }
+        Integer[] contactIds = idList.toArray(new Integer[idList.size()]);
+        return getContactsById(context, contactIds);
     }
 
     public static Cursor getContactsById(final Context context, final Integer[] ids)
     {
-        // Run query
-        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME
-        };
-//        String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '" +
-//                (mShowInvisible ? "0" : "1") + "'";
-//        String[] selectionArgs = null;
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-
         String idString = "";
         for (Integer id:ids) {
             idString += (!"".equals(idString)?",":"") + id;
         }
-
         Log.d(TAG, "getContactsById: " + idString);
-
-        Cursor c = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[] {
-                ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME}, //ContactsContract.Data.HAS_PHONE_NUMBER
-                ContactsContract.Contacts._ID + " IN (" + idString + ")",
-                // " AND " + ContactsContract.Data.HAS_PHONE_NUMBER + " > 0",
+        Cursor c = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, new String[] {
+                ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME,ContactsContract.Contacts.HAS_PHONE_NUMBER},
+                ContactsContract.Contacts._ID + " IN (" + idString + ")" +
+                " AND " + ContactsContract.Contacts.HAS_PHONE_NUMBER + " > 0",
                 null, sortOrder);
-
         Log.d(TAG, "getContactsById - c.results: " + c.getCount());
-
         return c;
-
-        // return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
     }
 
 }

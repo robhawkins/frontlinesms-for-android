@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.ContactService;
@@ -58,12 +59,23 @@ public class MessageComposer extends BaseActivity {
         ArrayList<Integer> recipientIds = (ArrayList<Integer>) getIntent().
                 getSerializableExtra(FrontlineSMS.EXTRA_SELECTED_ITEMS);
 
+        // if null, it's after sms message sending is done
+        Log.d(TAG, "recipientIds: " + recipientIds);
+        if (recipientIds==null) {
+            Toast.makeText(this, "Message has been sent.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
         String recipients = "";
         if (getIntent().getIntExtra(FrontlineSMS.EXTRA_RECIPIENT_TYPE, RECIPIENT_TYPE_GROUPS)
                 == RECIPIENT_TYPE_GROUPS) {
-            for (int id:recipientIds) {
-                recipients += (!"".equals(recipients)?", ":"") + GroupList.groupNameCache.get(id);
+
+            if (recipientIds!=null) {
+                for (Integer id:recipientIds) {
+                    recipients += (!"".equals(recipients)?", ":"") + GroupList.groupNameCache.get(id);
+                }
             }
+
         } else {
             Cursor c = ContactService.getContactsById(this, recipientIds.toArray(new Integer[recipientIds.size()]));
             if (c.moveToFirst()) {
@@ -99,23 +111,18 @@ public class MessageComposer extends BaseActivity {
                     null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                     new String[]{contact.getId().toString()}, null);
 
-            if (pCur.moveToFirst()) {
-                do {
-                    String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    Log.d(TAG, "Phone Number: " + phone);
-                } while (pCur.moveToNext());
+            while (pCur.moveToNext()) {
+                String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Log.d(TAG, "Phone Number: " + phone);
+//                    phone = "+8618688200424";
+//                    phone = "+8613802849305";
+                PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
+                PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(phone, null, message, sentPI, deliveredPI);
             }
 
-
         }
-//        ContentValues values = new ContentValues();
-//        values.put("address", phone);
-//        values.put("body", message);
-//        getContentResolver().insert(Uri.parse("content://sms/sent"), values);
 
-//        PendingIntent pi = PendingIntent.getActivity(this, 0,
-//            new Intent(this, this.getClass()), 0);
-//        SmsManager sms = SmsManager.getDefault();
-//        sms.sendTextMessage(phone, null, message, pi, null);
     }
 }

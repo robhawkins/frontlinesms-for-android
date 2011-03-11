@@ -19,50 +19,63 @@
           android:layout_width="fill_parent"
           android:layout_height="0dp"/>
 
-
-    <TextView
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Message"
-        android:background="#8E0052"
-        android:padding="10dp"
-        android:textColor="@android:color/white"
-            />
+        android:fadingEdge="none">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/Content.Label"
-        android:text="Recipients:"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txt_recipients"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/Content.Text"
-        android:text=""/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="New Message"
+                android:background="#8E0052"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                    />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/Content.Label"
-        android:text="Message:"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="Recipients:"/>
 
-    <EditText
-        android:id="@+id/edt_message"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:lines="5"
-        style="@style/EditText"
-        android:gravity="top|left"
-        />
+            <TextView
+                android:id="@+id/txt_recipients"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Text"
+                android:text=""/>
 
-    <Button
-        android:id="@+id/btn_send_message"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Send message" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="Message:"/>
+
+            <EditText
+                android:id="@+id/edt_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:lines="5"
+                style="@style/EditText"
+                android:gravity="top|left"
+                />
+
+            <Button
+                android:id="@+id/btn_send_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Send message" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
