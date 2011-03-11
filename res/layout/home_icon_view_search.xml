@@ -2,7 +2,6 @@
 
 <LinearLayout
         android:orientation="vertical"
-        android:focusable="true"
         android:layout_width="90.0dip"
         android:layout_height="70.0dip"
         android:layout_margin="5.0dip"
@@ -16,9 +15,13 @@
 
         <ImageView
                 android:id="@+id/img_search"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusDown="@+id/img_settings"
+                android:nextFocusLeft="@+id/img_messages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_home_search"
+                android:src="@drawable/ic_home_search_selector"
                 android:clickable="true"
                 android:onClick="onClickHandler"
                 android:scaleType="center" />

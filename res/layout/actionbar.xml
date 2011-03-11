@@ -48,6 +48,10 @@
 
         <ImageButton
                 android:id="@+id/actionbar_button_1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusDown="@+id/img_search"
+                android:nextFocusRight="@+id/img_groups"
                 android:visibility="gone"
                 android:src="@drawable/actionbar_ic_refresh"
                 android:tag="Refresh"
