@@ -36,6 +36,7 @@ import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.ContactService;
+import net.frontlinesms.android.model.SmsService;
 import net.frontlinesms.android.model.model.Contact;
 
 import java.util.ArrayList;
@@ -96,8 +97,8 @@ public class MessageComposer extends BaseActivity {
                 new AsyncTask() {
                     @Override
                     protected Object doInBackground(Object... objects) {
-                        ContactService.sendMessage(getApplicationContext(),
-                        mContacts, ((EditText)findViewById(R.id.edt_message)).getText().toString());
+                        SmsService.sendMessage(getApplicationContext(),
+                                mContacts, ((EditText) findViewById(R.id.edt_message)).getText().toString());
                         return null;
                     }
 

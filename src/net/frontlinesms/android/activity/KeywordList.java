@@ -28,8 +28,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.model.KeywordAction;
-import net.frontlinesms.android.model.repository.DbKeywordActionDao;
-import net.frontlinesms.android.model.repository.KeywordActionDao;
+import net.frontlinesms.android.model.model.KeywordActionDao;
+import net.frontlinesms.android.model.model.IKeywordActionDao;
 
 import java.util.HashMap;
 
@@ -50,7 +50,7 @@ public final class KeywordList extends BaseActivity {
     private KeywordListAdapter mAdapter;
 
     /** Keyword db access object. */
-    private KeywordActionDao keywordDao;
+    private IKeywordActionDao keywordDao;
 
     /** Menu item to send message to selected rules. */
     private static final int MENU_OPTION_NEW = Menu.FIRST;
@@ -104,7 +104,7 @@ public final class KeywordList extends BaseActivity {
      */
     private Cursor getKeywords()
     {
-        keywordDao = new DbKeywordActionDao(getContentResolver());
+        keywordDao = new KeywordActionDao(getContentResolver());
             if(keywordDao.getKeywords().size() == 0) {
         	createDemoKeywords();
         }
@@ -113,11 +113,11 @@ public final class KeywordList extends BaseActivity {
 
     private void createDemoKeywords() {
 		// Populate the map with some keyword actions
-		keywordDao.addAction(KeywordAction.createReplyAction("hi", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
+		keywordDao.addAction(KeywordAction.createReplyAction("hi", "Test", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
                 + ", i do like your phone number (PropertySubstituter.KEY_SENDER_PHONENUMBER)"));
-		keywordDao.addAction(KeywordAction.createJoinAction("join", "demoGroup"));
-		keywordDao.addAction(KeywordAction.createJoinAction("stop", "demoGroup"));
-		keywordDao.addAction(KeywordAction.createForwardAction("say",
+		keywordDao.addAction(KeywordAction.createJoinAction("join", "test", "demoGroup"));
+		keywordDao.addAction(KeywordAction.createJoinAction("stop", "test", "demoGroup"));
+		keywordDao.addAction(KeywordAction.createForwardAction("say", "test",
 				"PropertySubstituter.KEY_SENDER_NAME says  PropertySubstituter.KEY_ORIGINAL_MESSAGE",
 				"demoGroup"));
 	}

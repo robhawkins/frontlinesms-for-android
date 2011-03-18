@@ -1,13 +1,11 @@
 /**
  * 
  */
-package net.frontlinesms.android.model.repository;
+package net.frontlinesms.android.model.model;
 
 import java.util.List;
-import java.util.TreeSet;
 
 import android.database.Cursor;
-import net.frontlinesms.android.model.model.KeywordAction;
 
 import net.frontlinesms.android.db.BaseDbAccessObject;
 
@@ -17,9 +15,9 @@ import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
 /**
  * @author aga
  */
-public class DbKeywordActionDao extends BaseDbAccessObject implements KeywordActionDao {
+public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActionDao {
 
-    public DbKeywordActionDao(ContentResolver contentResolver) {
+    public KeywordActionDao(ContentResolver contentResolver) {
 		super(contentResolver);
 	}
 

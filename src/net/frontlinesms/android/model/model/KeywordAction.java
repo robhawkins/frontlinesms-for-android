@@ -26,28 +26,43 @@ import net.frontlinesms.android.db.DbEntity;
  */
 public final class KeywordAction implements DbEntity {
 
+    /** Unique id. */
 	private Long _id;
+
+    /** Action type. */
 	private Type type;
+
+    /** Keyword to look for. */
 	private String keyword;
+
+    /** Description. */
+    private String description;
+
+    /** Auto reply text. */
 	private String text;
-	private String list;
-	
+
+    /** TODO: what is this field for? */
+	private String group;
+
+    /** Constructor/ */
 	public KeywordAction() {}
 	
-	private KeywordAction(Type type, String keyword, String text, String list) {
+	private KeywordAction(Type type, String keyword, String description, String text, String group) {
+
 		this.type = type;
 		// convert all keywords to lower-case so they take up less space
 		this.keyword = keyword.toLowerCase();
+        this.description = description;
 		
 		if(!type.hasText() && text!=null) {
 			throw new IllegalStateException("Cannot set text on an action of type: " + type);
 		}
 		this.text = text;
 		
-		if(!type.hasList() && list!=null) {
+		if(!type.hasGroup() && group !=null) {
 			throw new IllegalStateException("Cannot set list on an action of type: " + type);
 		}
-		this.list = list;
+		this.group = group;
 	}
 	
 //> ACCESSORS
@@ -72,26 +87,26 @@ public final class KeywordAction implements DbEntity {
 		if(!type.hasText()) throw new IllegalStateException("Cannot set text on an action of type: " + type);
 		this.text = text;
 	}
-	public String getList() {
-		return list;
+	public String getGroup() {
+		return group;
 	}
-	public void setList(String list) {
-		if(!type.hasList()) throw new IllegalStateException("Cannot set list on an action of type: " + type);
-		this.list = list;
+	public void setGroup(String group) {
+		if(!type.hasGroup()) throw new IllegalStateException("Cannot set list on an action of type: " + type);
+		this.group = group;
 	}
 	
 //> STATIC FACTORY METHODS
-	public static KeywordAction createReplyAction(String keyword, String replyText) {
-		return new KeywordAction(Type.REPLY, keyword, replyText, null);
+	public static KeywordAction createReplyAction(String keyword, String description, String replyText) {
+		return new KeywordAction(Type.REPLY, keyword, description, replyText, null);
 	}
-	public static KeywordAction createForwardAction(String keyword, String forwardText, String list) {
-		return new KeywordAction(Type.FORWARD, keyword, forwardText, list);
+	public static KeywordAction createForwardAction(String keyword, String description, String forwardText, String group) {
+		return new KeywordAction(Type.FORWARD, keyword, description, forwardText, group);
 	}
-	public static KeywordAction createJoinAction(String keyword, String list) {
-		return new KeywordAction(Type.JOIN, keyword, null, list);
+	public static KeywordAction createJoinAction(String keyword, String description, String group) {
+		return new KeywordAction(Type.JOIN, keyword, description, null, group);
 	}
-	public static KeywordAction createLeaveAction(String keyword, String list) {
-		return new KeywordAction(Type.LEAVE, keyword, null, list);
+	public static KeywordAction createLeaveAction(String keyword, String description, String group) {
+		return new KeywordAction(Type.LEAVE, keyword, description, null, group);
 	}
 	
 //> ENUMS
@@ -102,18 +117,18 @@ public final class KeywordAction implements DbEntity {
 		LEAVE(false, true);
 
 		private final boolean hasText;
-		private final boolean hasList;
+		private final boolean hasGroup;
 		
-		private Type(boolean hasText, boolean hasList) {
+		private Type(boolean hasText, boolean hasGroup) {
 			this.hasText = hasText;
-			this.hasList = hasList;
+			this.hasGroup = hasGroup;
 		}
 
 		boolean hasText() {
 			return this.hasText;
 		}
-		boolean hasList() {
-			return this.hasList;
+		boolean hasGroup() {
+			return this.hasGroup();
 		}
 	}
 	

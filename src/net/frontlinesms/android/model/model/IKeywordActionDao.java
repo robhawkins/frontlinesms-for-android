@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.frontlinesms.android.model.repository;
+package net.frontlinesms.android.model.model;
 
 import android.database.Cursor;
 import net.frontlinesms.android.model.model.KeywordAction;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Alex Anderson
  */
-public interface KeywordActionDao {
+public interface IKeywordActionDao {
 
     Cursor getKeywordsCursor();
 	List<KeywordAction> getKeywords();

@@ -40,7 +40,6 @@ public class Dashboard extends BaseActivity {
      * @param v Clicked icon.
      */
     public void onClickHandler(final View v) {
-        Toast.makeText(this, "Clicked " + v.getId(), Toast.LENGTH_SHORT).show();
         switch (v.getId()) {
             case R.id.ll_groups:
             case R.id.img_groups:
