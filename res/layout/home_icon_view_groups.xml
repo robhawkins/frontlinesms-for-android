@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <LinearLayout
+        android:id="@+id/ll_groups"
         android:orientation="vertical"
         android:layout_width="90.0dip"
         android:layout_height="70.0dip"
@@ -17,7 +18,7 @@
         <ImageView
                 android:id="@+id/img_groups"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:focusableInTouchMode="false"
                 android:nextFocusDown="@+id/img_rules"
                 android:nextFocusRight="@+id/img_messages"
                 android:layout_width="wrap_content"

@@ -14,6 +14,7 @@ import android.net.Uri;
  * @author aga
  */
 public abstract class DbContentProvider extends ContentProvider {
+
 	private DbSqliteHelper helper;
 	
 	/** @see ContentProvider#delete(Uri, String, String[]) */

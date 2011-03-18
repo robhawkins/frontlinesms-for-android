@@ -45,7 +45,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
             <include android:id="@+id/home_photos_icon" layout="@layout/home_icon_view_rules" />
-            <include android:id="@+id/home_events_icon" layout="@layout/home_icon_view_log" />
+            <!--<include android:id="@+id/home_events_icon" layout="@layout/home_icon_view_log" />-->
             <include android:id="@+id/home_messages_icon" layout="@layout/home_icon_view_settings" />
         </LinearLayout>
 

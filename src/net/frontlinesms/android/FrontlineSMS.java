@@ -29,4 +29,6 @@ public class FrontlineSMS extends Application {
     public static final String EXTRA_SELECTED_ITEMS = "EXTRA_SELECTED_ITEMS";
     public static final String EXTRA_RECIPIENT_TYPE = "EXTRA_RECIPIENT_TYPE";
 
+    public static final String EXTRA_KEYWORD_ID = "EXTRA_KEYWORD_ID";
+    public static final String EXTRA_KEYWORD_KEYWORD = "EXTRA_KEYWORD_KEYWORD";
 }

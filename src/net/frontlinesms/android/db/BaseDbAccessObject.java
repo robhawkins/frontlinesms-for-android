@@ -51,9 +51,16 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 		this.contentResolver.delete(whereClause.getUri(), whereClause.getWhere(), whereClause.getSelectionArgs());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DbEntity> List<T> get(T example) {
+	public <T extends DbEntity> Cursor getCursor(Class<T> entityClass) {
+		Uri uri = Uri.parse(getUri(entityClass));
+		Cursor cursor = this.contentResolver.query(uri, null, null, null, null);
+		return cursor;
+	}
+
+    @SuppressWarnings("unchecked")
+	@Override
+    public <T extends DbEntity> List<T> get(T example) {
 		WhereClause whereClause = getWhereClause(example);
 		Cursor cursor = this.contentResolver.query(whereClause.getUri(), null,
 				whereClause.getWhere(), whereClause.getSelectionArgs(), null);

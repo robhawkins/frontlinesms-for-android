@@ -19,37 +19,38 @@
  */
 package net.frontlinesms.android.activity;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.model.model.KeywordAction;
+import net.frontlinesms.android.model.repository.DbKeywordActionDao;
+import net.frontlinesms.android.model.repository.KeywordActionDao;
 
 import java.util.HashMap;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public final class RuleList extends BaseActivity {
+public final class KeywordList extends BaseActivity {
 
-    public static final String TAG = RuleList.class.getSimpleName();
+    public static final String TAG = KeywordList.class.getSimpleName();
 
     /** Cached group id to rule name mappings, for faster rules name lookup. */
     public static HashMap<Integer, String> ruleNameCache = new HashMap<Integer, String>();
 
     /** List view that displays the rules. */
-    private ListView mRuleList;
+    private ListView mKeywordList;
 
     /** List adapter. */
-    private RuleListAdapter mAdapter;
+    private KeywordListAdapter mAdapter;
+
+    /** Keyword db access object. */
+    private KeywordActionDao keywordDao;
 
     /** Menu item to send message to selected rules. */
     private static final int MENU_OPTION_NEW = Menu.FIRST;
@@ -67,16 +68,16 @@ public final class RuleList extends BaseActivity {
         setContentView(R.layout.rule_list);
 
         // Obtain handles to UI objects
-        mRuleList = (ListView) findViewById(R.id.lst_rules);
+        mKeywordList = (ListView) findViewById(R.id.lst_rules);
 
         // Populate the rule list
-        initRuleList();
+        initKeywordList();
     }
 
     /**
      * Populate the rule list based on account currently selected in the account spinner.
      */
-    private void initRuleList() {
+    private void initKeywordList() {
 
         // List header
         TextView txtHeader = new TextView(this);
@@ -88,12 +89,12 @@ public final class RuleList extends BaseActivity {
         txtHeader.setPadding(10, 10, 10, 10);
         txtHeader.setBackgroundColor(Color.parseColor("#8E0052"));
         txtHeader.setTextColor(Color.WHITE);
-        mRuleList.addHeaderView(txtHeader);
+        mKeywordList.addHeaderView(txtHeader);
 
         // Build adapter with contact entries
-        Cursor cursor = getRules();
-        mAdapter = new RuleListAdapter(this, cursor);
-        mRuleList.setAdapter(mAdapter);
+        Cursor cursor = getKeywords();
+        mAdapter = new KeywordListAdapter(this, cursor);
+        mKeywordList.setAdapter(mAdapter);
     }
 
     /**
@@ -101,27 +102,25 @@ public final class RuleList extends BaseActivity {
      *
      * @return A cursor for for accessing the contact list.
      */
-    private Cursor getRules()
+    private Cursor getKeywords()
     {
-        // Run query
-        Uri uri = ContactsContract.Groups.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Groups._ID,
-                ContactsContract.Groups.TITLE,
-                ContactsContract.Groups.ACCOUNT_NAME
-        };
-        String selection = ContactsContract.Groups.TITLE + " not like 'System Group:%'";
-        String sortOrder = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
-
-        Cursor cursor = managedQuery(uri, projection, selection, null, sortOrder);
-        if (ruleNameCache.isEmpty() && cursor.moveToFirst()) {
-            do {
-                ruleNameCache.put(cursor.getInt(0), cursor.getString(1));
-            } while (cursor.moveToNext());
-            cursor.moveToFirst();
+        keywordDao = new DbKeywordActionDao(getContentResolver());
+            if(keywordDao.getKeywords().size() == 0) {
+        	createDemoKeywords();
         }
-        return cursor;
+        return keywordDao.getKeywordsCursor();
     }
+
+    private void createDemoKeywords() {
+		// Populate the map with some keyword actions
+		keywordDao.addAction(KeywordAction.createReplyAction("hi", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
+                + ", i do like your phone number (PropertySubstituter.KEY_SENDER_PHONENUMBER)"));
+		keywordDao.addAction(KeywordAction.createJoinAction("join", "demoGroup"));
+		keywordDao.addAction(KeywordAction.createJoinAction("stop", "demoGroup"));
+		keywordDao.addAction(KeywordAction.createForwardAction("say",
+				"PropertySubstituter.KEY_SENDER_NAME says  PropertySubstituter.KEY_ORIGINAL_MESSAGE",
+				"demoGroup"));
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -17,7 +17,7 @@
         <ImageView
                 android:id="@+id/img_rules"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:focusableInTouchMode="false"
                 android:nextFocusUp="@+id/img_groups"
                 android:nextFocusRight="@+id/img_log"
                 android:layout_width="wrap_content"

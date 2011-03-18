@@ -40,10 +40,13 @@ public class Dashboard extends BaseActivity {
      * @param v Clicked icon.
      */
     public void onClickHandler(final View v) {
+        Toast.makeText(this, "Clicked " + v.getId(), Toast.LENGTH_SHORT).show();
         switch (v.getId()) {
+            case R.id.ll_groups:
             case R.id.img_groups:
                 startActivity(new Intent(this, GroupList.class));
                 break;
+            case R.id.ll_messages:
             case R.id.img_messages:
                 startActivity(new Intent(this, MessageList.class));
                 break;
@@ -54,10 +57,9 @@ public class Dashboard extends BaseActivity {
                 startActivity(new Intent(this, Settings.class));
                 break;
             case R.id.img_rules:
-                startActivity(new Intent(this, RuleList.class));
+                startActivity(new Intent(this, KeywordList.class));
                 break;
             default:
-                Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

@@ -33,9 +33,9 @@ import net.frontlinesms.android.R;
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class RuleListAdapter extends BaseListAdapter {
+public class KeywordListAdapter extends BaseListAdapter {
 
-    public RuleListAdapter(Context context, Cursor cursor) {
+    public KeywordListAdapter(Context context, Cursor cursor) {
         super(context, cursor);
     }
 
@@ -58,26 +58,26 @@ public class RuleListAdapter extends BaseListAdapter {
         });
         view.setTag(holder);
 
-        // display group title
-        int columnIndex = cursor.getColumnIndex(ContactsContract.Groups.TITLE);
-        final String groupTitle = cursor.getString(columnIndex);
-        holder.txtTitle.setText(groupTitle);
+        // keyword
+        int columnIndex = cursor.getColumnIndex("keyword");
+        final String keyword = cursor.getString(columnIndex);
+        holder.txtTitle.setText(keyword);
 
-        // display account
-        columnIndex = cursor.getColumnIndex(ContactsContract.Groups.ACCOUNT_NAME);
+        // description
+        columnIndex = cursor.getColumnIndex("text");
         holder.txtDescription.setText(cursor.getString(columnIndex));
 
-        // get group id
-        columnIndex = cursor.getColumnIndex(ContactsContract.Groups._ID);
-        final int groupId = cursor.getInt(columnIndex);
-        holder.id = groupId;
+        // get keyword id
+        columnIndex = cursor.getColumnIndex("_id");
+        final int keywordId = cursor.getInt(columnIndex);
+        holder.id = keywordId;
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(context, ContactList.class);
-                intent.putExtra(FrontlineSMS.EXTRA_GROUP_ID, groupId);
-                intent.putExtra(FrontlineSMS.EXTRA_GROUP_NAME, groupTitle);
+                intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_ID, keywordId);
+                intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_KEYWORD, keyword);
                 context.startActivity(intent);
             }
         });

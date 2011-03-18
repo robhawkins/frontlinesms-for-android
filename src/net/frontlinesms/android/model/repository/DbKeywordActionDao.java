@@ -6,6 +6,7 @@ package net.frontlinesms.android.model.repository;
 import java.util.List;
 import java.util.TreeSet;
 
+import android.database.Cursor;
 import net.frontlinesms.android.model.model.KeywordAction;
 
 import net.frontlinesms.android.db.BaseDbAccessObject;
@@ -17,7 +18,8 @@ import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
  * @author aga
  */
 public class DbKeywordActionDao extends BaseDbAccessObject implements KeywordActionDao {
-	public DbKeywordActionDao(ContentResolver contentResolver) {
+
+    public DbKeywordActionDao(ContentResolver contentResolver) {
 		super(contentResolver);
 	}
 
@@ -34,17 +36,25 @@ public class DbKeywordActionDao extends BaseDbAccessObject implements KeywordAct
 	}
 
 	@Override
-	public String[] getKeywords() {
-		// TODO could re-implement this to directly select unique keywords
-		List<KeywordAction> actions = super.get(KeywordAction.class);
+	public List<KeywordAction> getKeywords() {
+		List<KeywordAction> keywordList = super.get(KeywordAction.class);
+        return keywordList;
+
+        /*
 		TreeSet<String> keywords = new TreeSet<String>();
-		for(KeywordAction action : actions) {
+		for(KeywordAction action : keywordList) {
 			keywords.add(action.getKeyword());
 		}
 		return keywords.toArray(new String[0]);
+		*/
 	}
 
-	@Override
+    @Override
+    public Cursor getKeywordsCursor() {
+        return super.getCursor(KeywordAction.class);
+    }
+
+    @Override
 	protected String getBaseUri() {
 		return FrontlineSmsSqliteHelper.CONTENT_URI;
 	}

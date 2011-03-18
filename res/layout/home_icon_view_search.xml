@@ -16,7 +16,7 @@
         <ImageView
                 android:id="@+id/img_search"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:focusableInTouchMode="false"
                 android:nextFocusDown="@+id/img_settings"
                 android:nextFocusLeft="@+id/img_messages"
                 android:layout_width="wrap_content"

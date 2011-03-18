@@ -67,7 +67,7 @@
         </activity>
 
         <!-- RULE LIST -->
-        <activity android:name=".activity.RuleList">
+        <activity android:name=".activity.KeywordList">
             <intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>
@@ -111,7 +111,7 @@
 
         <provider
                 android:name=".db.FrontlineSmsContentProvider"
-                android:authorities="net.frontlinesms.android.model.repository.frontlinesmscontentprovider"/>
+                android:authorities="net.frontlinesms.android.db.frontlinesmscontentprovider"/>
 
         <provider android:name=".search.SuggestionProvider"
             android:authorities="net.frontlinesms.android.search.SuggestionProvider" />

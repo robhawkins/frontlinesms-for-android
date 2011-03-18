@@ -9,7 +9,8 @@ import android.content.Context;
  * @author aga
  */
 public class FrontlineSmsContentProvider extends DbContentProvider {
-	/** DbContentProvider#getDatabaseHelper() */
+
+    /** DbContentProvider#getDatabaseHelper() */
 	@Override
 	protected DbSqliteHelper getDatabaseHelper(Context context) {
 		return new FrontlineSmsSqliteHelper(context);
