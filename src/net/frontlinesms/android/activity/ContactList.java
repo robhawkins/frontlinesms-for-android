@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.model.ContactService;
+import net.frontlinesms.android.model.PIMService;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
@@ -86,7 +86,7 @@ public final class ContactList extends BaseActivity {
 
         // Build adapter with contact entries
 //        Cursor cursor = getContacts(mGroupId);
-        Cursor cursor = ContactService.getContactsByGroup(this, new Integer[]{mGroupId});
+        Cursor cursor = PIMService.getContactsByGroup(this, new Integer[]{mGroupId});
         mAdapter = new ContactListAdapter(this, cursor);
         mContactList.setAdapter(mAdapter);
     }

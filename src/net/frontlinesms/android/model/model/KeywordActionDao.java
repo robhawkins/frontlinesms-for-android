@@ -23,7 +23,7 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 	}
 
 	@Override
-	public void addAction(KeywordAction action) {
+	public void saveOrUpdateAction(KeywordAction action) {
 		super.save(action);
 	}
 
@@ -36,7 +36,7 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 
     @Override
     public KeywordAction getKeywordById(long id) {
-        return super.get(KeywordAction.class, (long)id);
+        return super.get(KeywordAction.class, id);
     }
 
     @Override

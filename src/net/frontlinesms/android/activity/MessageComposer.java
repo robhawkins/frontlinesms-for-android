@@ -19,15 +19,9 @@
  */
 package net.frontlinesms.android.activity;
 
-import android.app.PendingIntent;
-import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -35,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.model.ContactService;
+import net.frontlinesms.android.model.PIMService;
 import net.frontlinesms.android.model.SmsService;
 import net.frontlinesms.android.model.model.Contact;
 
@@ -74,12 +68,12 @@ public class MessageComposer extends BaseActivity {
 
             if (recipientIds!=null) {
                 for (Integer id:recipientIds) {
-                    recipients += (!"".equals(recipients)?", ":"") + GroupList.groupNameCache.get(id);
+                    recipients += (!"".equals(recipients)?", ":"") + PIMService.groupNameCache.get(id);
                 }
             }
 
         } else {
-            Cursor c = ContactService.getContactsById(this, recipientIds.toArray(new Integer[recipientIds.size()]));
+            Cursor c = PIMService.getContactsById(this, recipientIds.toArray(new Integer[recipientIds.size()]));
             if (c.moveToFirst()) {
                 do {
                     Contact contact = new Contact();

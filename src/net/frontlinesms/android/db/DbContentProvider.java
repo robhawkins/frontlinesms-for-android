@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.net.Uri;
 import android.util.Log;
 
@@ -40,7 +41,15 @@ public abstract class DbContentProvider extends ContentProvider {
 	/** @see ContentProvider#insert(Uri, ContentValues) */
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		long insertId = this.helper.getWritableDatabase().insert(DbUtils.getTableName(uri), "_id", values);
+        long insertId;
+        Integer objId = values.getAsInteger("_id");
+        if (objId!=null && objId>=0) {
+            insertId = this.helper.getWritableDatabase().update(DbUtils.getTableName(uri), values, "_id=?",
+                    new String[]{values.getAsInteger("_id").toString()});
+        } else {
+            insertId = this.helper.getWritableDatabase().insert(DbUtils.getTableName(uri), "_id", values);
+        }
+
         Uri u = ContentUris.withAppendedId(uri, insertId);
         getContext().getContentResolver().notifyChange(uri, null);
 		return u;

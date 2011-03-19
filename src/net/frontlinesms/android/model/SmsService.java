@@ -20,7 +20,7 @@ import java.util.Vector;
  */
 public class SmsService {
 
-    private final static String TAG = ContactService.class.getSimpleName();
+    private final static String TAG = PIMService.class.getSimpleName();
 
     /**
      * Sends out a SMS to a provided list of recipients (contacts).

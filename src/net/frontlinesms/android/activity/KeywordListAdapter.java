@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -75,6 +76,8 @@ public class KeywordListAdapter extends BaseListAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("onClick", "onClick.tag: " + view.getTag());
+                Log.d("onClick", "onClick.keywordId: " + keywordId);
                 final Intent intent = new Intent(context, Keyword.class);
                 intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_ID, keywordId);
                 context.startActivity(intent);

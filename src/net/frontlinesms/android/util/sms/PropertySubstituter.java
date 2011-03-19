@@ -4,9 +4,8 @@
 package net.frontlinesms.android.util.sms;
 
 import android.content.ContentResolver;
-import net.frontlinesms.android.model.ContactService;
+import net.frontlinesms.android.model.PIMService;
 import net.frontlinesms.android.model.model.KeywordAction;
-import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 /**
  * @author aga
@@ -28,14 +27,14 @@ public class PropertySubstituter {
 	/** Substitute properties of the message into the reply text */
 	public String substitute(KeywordAction action, WholeSmsMessage message, String destinationAddress, String subText) {
 		if(subText.contains(KEY_SENDER_NAME)) {
-			String contactName = ContactService.getContactNameByPhoneNumber(message.getOriginatingAddress());
+			String contactName = PIMService.getContactNameByPhoneNumber(message.getOriginatingAddress());
 			if(contactName != null) {
 				subText = subText.replace(KEY_SENDER_NAME, contactName);
 			}
 		}
 		
 		if(subText.contains(KEY_DESTINATION_NAME)) {
-			String contactName = ContactService.getContactNameByPhoneNumber(destinationAddress);
+			String contactName = PIMService.getContactNameByPhoneNumber(destinationAddress);
 			if(contactName != null) {
 				subText = subText.replace(KEY_DESTINATION_NAME, contactName);
 			}

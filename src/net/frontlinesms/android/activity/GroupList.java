@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.model.PIMService;
 
 import java.util.HashMap;
 
@@ -41,9 +42,6 @@ import java.util.HashMap;
 public final class GroupList extends BaseActivity {
 
     public static final String TAG = GroupList.class.getSimpleName();
-
-    /** Cached group id to group name mappings, for faster group name lookup, i.e. in message composer. */
-    public static HashMap<Integer, String> groupNameCache = new HashMap<Integer, String>();
 
     /** List view that displays the groups. */
     private ListView mGroupList;
@@ -89,37 +87,12 @@ public final class GroupList extends BaseActivity {
         mGroupList.addHeaderView(txtHeader);
 
         // Build adapter with contact entries
-        Cursor cursor = getGroups();
+        Cursor cursor = PIMService.getGroups(this.getApplicationContext());
         mAdapter = new GroupListAdapter(this, cursor);
         mGroupList.setAdapter(mAdapter);
     }
 
-    /**
-     * Obtains the group list for the currently selected account.
-     *
-     * @return A cursor for for accessing the contact list.
-     */
-    private Cursor getGroups()
-    {
-        // Run query
-        Uri uri = ContactsContract.Groups.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Groups._ID,
-                ContactsContract.Groups.TITLE,
-                ContactsContract.Groups.ACCOUNT_NAME
-        };
-        String selection = ContactsContract.Groups.TITLE + " not like 'System Group:%'";
-        String sortOrder = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
 
-        Cursor cursor = managedQuery(uri, projection, selection, null, sortOrder);
-        if (groupNameCache.isEmpty() && cursor.moveToFirst()) {
-            do {
-                groupNameCache.put(cursor.getInt(0), cursor.getString(1));
-            } while (cursor.moveToNext());
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

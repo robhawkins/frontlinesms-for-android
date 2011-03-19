@@ -78,6 +78,16 @@ public final class KeywordList extends BaseActivity {
         initKeywordList();
     }
 
+    // TODO
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // update the list if user came from editing a keyword
+        mAdapter.changeCursor(keywordDao.getAllKeywordsCursor());
+    }
+
     /**
      * Populate the rule list based on account currently selected in the account spinner.
      */
@@ -99,16 +109,6 @@ public final class KeywordList extends BaseActivity {
         Cursor cursor = getKeywords();
         mAdapter = new KeywordListAdapter(this, cursor);
         mKeywordList.setAdapter(mAdapter);
-
-        /*mKeywordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Intent intent = new Intent(KeywordList.this, Keyword.class);
-                intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_ID, (Integer)view.getTag());
-                //intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_KEYWORD, keyword);
-                KeywordList.this.startActivity(intent);
-            }
-        });*/
     }
 
     /**
@@ -127,11 +127,11 @@ public final class KeywordList extends BaseActivity {
 
     private void createDemoKeywords() {
 		// Populate the map with some keyword actions
-		keywordDao.addAction(KeywordAction.createReplyAction("hi", "Test", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
+		keywordDao.saveOrUpdateAction(KeywordAction.createReplyAction("hi", "Test", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
                 + ", i do like your phone number (PropertySubstituter.KEY_SENDER_PHONENUMBER)"));
-		keywordDao.addAction(KeywordAction.createJoinAction("join", "test", "demoGroup"));
-		keywordDao.addAction(KeywordAction.createJoinAction("stop", "test", "demoGroup"));
-		keywordDao.addAction(KeywordAction.createForwardAction("say", "test",
+		keywordDao.saveOrUpdateAction(KeywordAction.createJoinAction("join", "test", "demoGroup"));
+		keywordDao.saveOrUpdateAction(KeywordAction.createJoinAction("stop", "test", "demoGroup"));
+		keywordDao.saveOrUpdateAction(KeywordAction.createForwardAction("say", "test",
                 "PropertySubstituter.KEY_SENDER_NAME says  PropertySubstituter.KEY_ORIGINAL_MESSAGE",
                 "demoGroup"));
 	}

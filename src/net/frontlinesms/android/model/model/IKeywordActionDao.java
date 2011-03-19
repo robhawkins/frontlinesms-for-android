@@ -19,6 +19,6 @@ public interface IKeywordActionDao {
     KeywordAction getKeywordById(long id);
     void deleteKeyword(DbEntity entity);
 	KeywordAction[] getActions(String messageContent);
-	void addAction(KeywordAction action);
+	void saveOrUpdateAction(KeywordAction action);
 
 }

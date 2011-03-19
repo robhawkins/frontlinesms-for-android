@@ -3,6 +3,7 @@ package net.frontlinesms.android.db;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 	@Override
 	public <T extends DbEntity> T get(Class<T> entityClass, long databaseId) {
 		Uri entityUri = getUri(entityClass, databaseId);
-		Cursor cursor = this.contentResolver.query(entityUri, null, null, null, null);
+		Cursor cursor = this.contentResolver.query(entityUri, null, "_id=?",
+                new String[]{new Long(databaseId).toString()}, null);
 		return DbUtils.asList(entityClass, cursor).get(0);
 	}
 
@@ -76,6 +78,9 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 
 	@Override
 	public void save(DbEntity entity) {
+        Log.d(getClass().getSimpleName(), "contentResolver: " + contentResolver);
+        Log.d(getClass().getSimpleName(), "getUri(entity.getClass()): " + getUri(entity.getClass()));
+        Log.d(getClass().getSimpleName(), "DbUtils.getNonNullValues(entity): " + DbUtils.getNonNullValues(entity));
 		contentResolver.insert(
 				Uri.parse(getUri(entity.getClass())),
 				DbUtils.getNonNullValues(entity));
@@ -83,8 +88,10 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 
 	public void saveOrUpdate(DbEntity entity) {
 		if(entity.getDbId() == null) {
+            Log.d(getClass().getSimpleName(), "save..");
 			save(entity);
 		} else {
+            Log.d(getClass().getSimpleName(), "update..");
 			update(entity);
 		}
 	}

@@ -34,6 +34,8 @@
     <string name="menu_option_new">New</string>
     <string name="menu_option_edit">Edit</string>
     <string name="menu_option_delete">Delete</string>
+    <string name="menu_option_save">Save</string>
+    <string name="menu_option_cancel">Cancel</string>
 
     <!-- Keyword -->
     <string name="keyword_remove_from_group">Remove from group</string>

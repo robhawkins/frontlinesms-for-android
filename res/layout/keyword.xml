@@ -111,6 +111,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
                 android:prompt="@string/choose_group"/>
 
             <LinearLayout
@@ -132,6 +135,9 @@
                 android:id="@+id/spn_remove_from_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
                 android:layout_margin="5dp"
                 android:prompt="@string/choose_group"/>
 
