@@ -19,13 +19,17 @@
  */
 package net.frontlinesms.android.activity;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.*;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.model.KeywordAction;
 import net.frontlinesms.android.model.model.KeywordActionDao;
@@ -95,6 +99,16 @@ public final class KeywordList extends BaseActivity {
         Cursor cursor = getKeywords();
         mAdapter = new KeywordListAdapter(this, cursor);
         mKeywordList.setAdapter(mAdapter);
+
+        /*mKeywordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final Intent intent = new Intent(KeywordList.this, Keyword.class);
+                intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_ID, (Integer)view.getTag());
+                //intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_KEYWORD, keyword);
+                KeywordList.this.startActivity(intent);
+            }
+        });*/
     }
 
     /**
@@ -105,10 +119,10 @@ public final class KeywordList extends BaseActivity {
     private Cursor getKeywords()
     {
         keywordDao = new KeywordActionDao(getContentResolver());
-            if(keywordDao.getKeywords().size() == 0) {
+            if(keywordDao.getAllKeywords().size() == 0) {
         	createDemoKeywords();
         }
-        return keywordDao.getKeywordsCursor();
+        return keywordDao.getAllKeywordsCursor();
     }
 
     private void createDemoKeywords() {
@@ -118,8 +132,8 @@ public final class KeywordList extends BaseActivity {
 		keywordDao.addAction(KeywordAction.createJoinAction("join", "test", "demoGroup"));
 		keywordDao.addAction(KeywordAction.createJoinAction("stop", "test", "demoGroup"));
 		keywordDao.addAction(KeywordAction.createForwardAction("say", "test",
-				"PropertySubstituter.KEY_SENDER_NAME says  PropertySubstituter.KEY_ORIGINAL_MESSAGE",
-				"demoGroup"));
+                "PropertySubstituter.KEY_SENDER_NAME says  PropertySubstituter.KEY_ORIGINAL_MESSAGE",
+                "demoGroup"));
 	}
 
     @Override
@@ -138,7 +152,39 @@ public final class KeywordList extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-
+        switch (itemId) {
+            case MENU_OPTION_NEW:
+                Intent intent = new Intent(this, Keyword.class);
+                startActivity(intent);
+                break;
+            case MENU_OPTION_EDIT:
+                if (mAdapter.getSelectedItems().size()==1) {
+                    intent = new Intent(this, Keyword.class);
+                    intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_ID, mAdapter.getSelectedItems().get(0));
+                    startActivity(intent);
+                } else {
+                    String msg = "No keyword selected.";
+                    if (mAdapter.getSelectedItems().size()>1) {
+                        msg = "To edit, only select 1 keyword.";
+                    }
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case MENU_OPTION_DELETE:
+                if (mAdapter.getSelectedItems().size()>0) {
+                    for (int id:mAdapter.getSelectedItems()) {
+                        keywordDao = new KeywordActionDao(getContentResolver());
+                        keywordDao.deleteKeyword(keywordDao.getKeywordById(id));
+                    }
+                    mAdapter.getSelectedItems().clear();
+                    mAdapter.notifyDataSetChanged();
+                    mAdapter.changeCursor(keywordDao.getAllKeywordsCursor());
+                    Toast.makeText(this, "Keyword(s) deleted.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "No keyword(s) selected.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

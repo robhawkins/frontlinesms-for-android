@@ -52,7 +52,7 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 	}
 
 	@Override
-	public <T extends DbEntity> Cursor getCursor(Class<T> entityClass) {
+	public <T extends DbEntity> Cursor getAllCursor(Class<T> entityClass) {
 		Uri uri = Uri.parse(getUri(entityClass));
 		Cursor cursor = this.contentResolver.query(uri, null, null, null, null);
 		return cursor;
@@ -60,7 +60,7 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public <T extends DbEntity> List<T> get(T example) {
+    public <T extends DbEntity> List<T> getAll(T example) {
 		WhereClause whereClause = getWhereClause(example);
 		Cursor cursor = this.contentResolver.query(whereClause.getUri(), null,
 				whereClause.getWhere(), whereClause.getSelectionArgs(), null);
@@ -68,7 +68,7 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 	}
 
 	@Override
-	public <T extends DbEntity> List<T> get(Class<T> entityClass) {
+	public <T extends DbEntity> List<T> getAll(Class<T> entityClass) {
 		Uri uri = Uri.parse(getUri(entityClass));
 		Cursor cursor = this.contentResolver.query(uri, null, null, null, null);
 		return DbUtils.asList(entityClass, cursor);
@@ -127,24 +127,24 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 }
 
 class WhereClause {
-	private final Uri uri;
-	private final String where;
-	private final String[] selectionArgs;
+    private final Uri uri;
+    private final String where;
+    private final String[] selectionArgs;
 
-	public WhereClause(Uri uri, String where, String[] selectionArgs) {
-		super();
-		this.uri = uri;
-		this.where = where;
-		this.selectionArgs = selectionArgs;
-	}
+    public WhereClause(Uri uri, String where, String[] selectionArgs) {
+        super();
+        this.uri = uri;
+        this.where = where;
+        this.selectionArgs = selectionArgs;
+    }
 
-	public String getWhere() {
-		return where;
-	}
-	public String[] getSelectionArgs() {
-		return selectionArgs;
-	}
-	public Uri getUri() {
-		return uri;
-	}
+    public String getWhere() {
+        return where;
+    }
+    public String[] getSelectionArgs() {
+        return selectionArgs;
+    }
+    public Uri getUri() {
+        return uri;
+    }
 }

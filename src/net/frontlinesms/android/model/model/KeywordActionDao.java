@@ -10,6 +10,7 @@ import android.database.Cursor;
 import net.frontlinesms.android.db.BaseDbAccessObject;
 
 import android.content.ContentResolver;
+import net.frontlinesms.android.db.DbEntity;
 import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
 
 /**
@@ -30,12 +31,22 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 	public KeywordAction[] getActions(String messageContent) {
 		KeywordAction example = new KeywordAction();
 		example.setKeyword(KeywordAction.getKeyword(messageContent));
-		return super.get(example).toArray(new KeywordAction[0]);
+		return super.getAll(example).toArray(new KeywordAction[0]);
 	}
 
-	@Override
-	public List<KeywordAction> getKeywords() {
-		List<KeywordAction> keywordList = super.get(KeywordAction.class);
+    @Override
+    public KeywordAction getKeywordById(long id) {
+        return super.get(KeywordAction.class, (long)id);
+    }
+
+    @Override
+    public void deleteKeyword(DbEntity entity) {
+        super.delete(entity);
+    }
+
+    @Override
+	public List<KeywordAction> getAllKeywords() {
+		List<KeywordAction> keywordList = super.getAll(KeywordAction.class);
         return keywordList;
 
         /*
@@ -48,8 +59,8 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 	}
 
     @Override
-    public Cursor getKeywordsCursor() {
-        return super.getCursor(KeywordAction.class);
+    public Cursor getAllKeywordsCursor() {
+        return super.getAllCursor(KeywordAction.class);
     }
 
     @Override

@@ -4,6 +4,7 @@
 package net.frontlinesms.android.model.model;
 
 import android.database.Cursor;
+import net.frontlinesms.android.db.DbEntity;
 import net.frontlinesms.android.model.model.KeywordAction;
 
 import java.util.List;
@@ -13,8 +14,10 @@ import java.util.List;
  */
 public interface IKeywordActionDao {
 
-    Cursor getKeywordsCursor();
-	List<KeywordAction> getKeywords();
+    Cursor getAllKeywordsCursor();
+	List<KeywordAction> getAllKeywords();
+    KeywordAction getKeywordById(long id);
+    void deleteKeyword(DbEntity entity);
 	KeywordAction[] getActions(String messageContent);
 	void addAction(KeywordAction action);
 

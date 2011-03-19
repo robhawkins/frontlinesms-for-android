@@ -64,7 +64,7 @@ public class KeywordListAdapter extends BaseListAdapter {
         holder.txtTitle.setText(keyword);
 
         // description
-        columnIndex = cursor.getColumnIndex("text");
+        columnIndex = cursor.getColumnIndex("description");
         holder.txtDescription.setText(cursor.getString(columnIndex));
 
         // get keyword id
@@ -75,9 +75,8 @@ public class KeywordListAdapter extends BaseListAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(context, ContactList.class);
+                final Intent intent = new Intent(context, Keyword.class);
                 intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_ID, keywordId);
-                intent.putExtra(FrontlineSMS.EXTRA_KEYWORD_KEYWORD, keyword);
                 context.startActivity(intent);
             }
         });

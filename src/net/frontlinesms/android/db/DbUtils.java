@@ -13,6 +13,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * @author aga
@@ -220,12 +221,16 @@ class DbUtils {
 	}
 
 	static String getWhereClause(Uri uri, String selection) {
+        Log.d("URI", "URI: " + uri + "");
+        if (selection==null) selection = "";
 		List<String> pathSegments = uri.getPathSegments();
 		if(pathSegments.size() > 1) {
 			if(selection.length() > 0) selection += " AND ";
 			selection += "_id=" + pathSegments.get(1);
 		}
-		return null;
+        Log.d("URI", "selection: " + selection + "");
+        return selection;
+		//return null;
 	}
 
 	static String getTableName(Uri uri) {

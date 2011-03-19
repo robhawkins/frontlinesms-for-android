@@ -23,13 +23,13 @@ public interface DbAccessObject {
 
     /** @return all instances of <code>T</code> from the database whose
 	 * values match the non-null fields of <code>example</code> */
-	public <T extends DbEntity> List<T> get(T example);
+	public <T extends DbEntity> List<T> getAll(T example);
 
     /** @return cursor to all instances of <code>T</code> from the database whose
      * values match the non-null fields of <code>example</code> */
-    public <T extends DbEntity> Cursor getCursor(Class<T> entityClass);
+    public <T extends DbEntity> Cursor getAllCursor(Class<T> entityClass);
 
 
 	/** @return all instances of <code>T</code> found in the database. */
-	public <T extends DbEntity> List<T> get(Class<T> entityClass);
+	public <T extends DbEntity> List<T> getAll(Class<T> entityClass);
 }

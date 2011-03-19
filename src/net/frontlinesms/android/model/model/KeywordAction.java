@@ -41,7 +41,7 @@ public final class KeywordAction implements DbEntity {
     /** Auto reply text. */
 	private String text;
 
-    /** TODO: what is this field for? */
+    /** Group to leave or join. */
 	private String group;
 
     /** Constructor/ */
@@ -94,8 +94,16 @@ public final class KeywordAction implements DbEntity {
 		if(!type.hasGroup()) throw new IllegalStateException("Cannot set list on an action of type: " + type);
 		this.group = group;
 	}
-	
-//> STATIC FACTORY METHODS
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    //> STATIC FACTORY METHODS
 	public static KeywordAction createReplyAction(String keyword, String description, String replyText) {
 		return new KeywordAction(Type.REPLY, keyword, description, replyText, null);
 	}
@@ -128,7 +136,7 @@ public final class KeywordAction implements DbEntity {
 			return this.hasText;
 		}
 		boolean hasGroup() {
-			return this.hasGroup();
+			return this.hasGroup;
 		}
 	}
 	

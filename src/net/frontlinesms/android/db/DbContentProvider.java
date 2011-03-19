@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * @author aga
@@ -21,7 +22,10 @@ public abstract class DbContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		String whereClause = DbUtils.getWhereClause(uri, selection);
-		return helper.getWritableDatabase().delete(DbUtils.getTableName(uri), whereClause, selectionArgs);
+        int i = helper.getWritableDatabase().delete(DbUtils.getTableName(uri), whereClause, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        Log.d("DbContentProvider", "notifyChange!!");
+		return i;
 	}
 
 	/** @see ContentProvider#getType(Uri) */
@@ -37,7 +41,9 @@ public abstract class DbContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		long insertId = this.helper.getWritableDatabase().insert(DbUtils.getTableName(uri), "_id", values);
-		return ContentUris.withAppendedId(uri, insertId);
+        Uri u = ContentUris.withAppendedId(uri, insertId);
+        getContext().getContentResolver().notifyChange(uri, null);
+		return u;
 	}
 
 	/** @see ContentProvider#onCreate() */
@@ -61,8 +67,10 @@ public abstract class DbContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		return this.helper.getReadableDatabase().update(DbUtils.getTableName(uri),
-				values, selection, selectionArgs);
+        int i =  this.helper.getReadableDatabase().update(DbUtils.getTableName(uri),
+                values, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+		return i;
 	}
 
 }

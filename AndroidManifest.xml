@@ -66,8 +66,17 @@
 				android:resource="@xml/searchable" />
         </activity>
 
-        <!-- RULE LIST -->
+        <!-- KEYWORD LIST -->
         <activity android:name=".activity.KeywordList">
+            <intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+			</intent-filter>
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+        </activity>
+
+        <!-- KEYWORD DETAIL -->
+        <activity android:name=".activity.Keyword">
             <intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>

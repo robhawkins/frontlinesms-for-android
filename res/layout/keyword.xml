@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fsms="http://schemas.android.com/apk/res/net.frontlinesms.android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="#CCCCCC"
+        >
+
+    <net.frontlinesms.android.ui.view.ActionBar
+            android:id="@+id/actionbar"
+            fsms:button1="@drawable/global_search_icon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+    <View android:background="@drawable/menubar_divider_xml"
+          android:layout_width="fill_parent"
+          android:layout_height="0dp"/>
+
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                android:id="@+id/txt_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Keyword"
+                android:background="#8E0052"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                    />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_keyword"/>
+
+            <EditText
+                android:id="@+id/edt_keyword"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:layout_margin="5dp"
+                android:lines="1"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_description"/>
+
+            <EditText
+                android:id="@+id/edt_description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:layout_margin="5dp"
+                android:lines="3"/>
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp">
+                <CheckBox
+                    android:id="@+id/chk_autoreply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_autoreply"/>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edt_autoreply"
+                android:gravity="top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="140"
+                android:layout_margin="5dp"
+                android:lines="3"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp">
+                <CheckBox
+                    android:id="@+id/chk_add_to_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_add_to_group"/>
+            </LinearLayout>
+
+
+            <Spinner
+                android:id="@+id/spn_add_to_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:prompt="@string/choose_group"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp">
+                <CheckBox
+                    android:id="@+id/chk_remove_from_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_remove_from_group"/>
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/spn_remove_from_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:prompt="@string/choose_group"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

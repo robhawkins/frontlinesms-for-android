@@ -19,6 +19,11 @@ public abstract class BaseListAdapter extends CursorAdapter {
         this.mSelectedItems.clear();
     }
 
+    /**
+     * Handles click on checkbox for a list item.
+     * @param chkBox Checkbox view
+     * @param id Id assigned to the list item
+     */
     protected void toggleCheck(CheckBox chkBox, int id) {
         if (mSelectedItems.contains(id)) {
             mSelectedItems.removeElement(id);
@@ -28,6 +33,10 @@ public abstract class BaseListAdapter extends CursorAdapter {
         chkBox.setChecked(mSelectedItems.contains(id));
     }
 
+    /**
+     * Returns the ids of the selected list items.
+     * @return List of ids of selected list items.
+     */
     public Vector<Integer> getSelectedItems() {
         return mSelectedItems;
     }
