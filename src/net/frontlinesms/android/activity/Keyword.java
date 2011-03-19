@@ -119,18 +119,16 @@ public class Keyword extends BaseActivity {
         // TODO values not reset properly when saving
         if ( ((CheckBox)findViewById(R.id.chk_add_to_group)).isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.JOIN);
-            mKeywordAction.setGroup(((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString());
         }
         else if ( ((CheckBox)findViewById(R.id.chk_remove_from_group)).isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.LEAVE);
-            mKeywordAction.setGroup( ((Spinner)findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString() );
         }
         else if ( ((CheckBox)findViewById(R.id.chk_autoreply)).isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.REPLY);
-            mKeywordAction.setText( ((EditText)findViewById(R.id.edt_autoreply)).getText().toString() );
         }
-        if ("".equals(mKeywordAction.getGroup())) mKeywordAction.setGroup(null);
-        if ("".equals(mKeywordAction.getText())) mKeywordAction.setText(null);
+        mKeywordAction.setGroup(((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString());
+        mKeywordAction.setText(((EditText)findViewById(R.id.edt_autoreply)).getText().toString());
+        mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString());
     }
 
     @Override
