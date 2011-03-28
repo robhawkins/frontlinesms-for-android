@@ -31,7 +31,8 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 	public KeywordAction[] getActions(String messageContent) {
 		KeywordAction example = new KeywordAction();
 		example.setKeyword(KeywordAction.getKeyword(messageContent));
-		return super.getAll(example).toArray(new KeywordAction[0]);
+        List<KeywordAction> list = super.getAll(example);
+		return list.toArray(new KeywordAction[list.size()]);
 	}
 
     @Override

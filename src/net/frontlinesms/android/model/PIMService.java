@@ -23,11 +23,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.util.Log;
+import net.frontlinesms.android.model.model.Contact;
+import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class PIMService {
 
@@ -72,19 +76,142 @@ public class PIMService {
         }
         Log.d(TAG, "getContactsById: " + idString);
         Cursor c = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, new String[] {
-                ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME,ContactsContract.Contacts.HAS_PHONE_NUMBER},
+                ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.HAS_PHONE_NUMBER},
                 ContactsContract.Contacts._ID + " IN (" + idString + ")" +
                 " AND " + ContactsContract.Contacts.HAS_PHONE_NUMBER + " > 0",
+                // " AND " + ContactsContract.Contacts.HAS_PHONE_NUMBER + " <> 1110",
                 null, sortOrder);
         Log.d(TAG, "getContactsById - c.results: " + c.getCount());
         return c;
     }
 
 
-    public static String getContactNameByPhoneNumber(String number) {
-        return "Mathias Lin";
+    public static String getPhoneNumberByContactId(Context context, Integer contactId) {
+        Cursor pCur = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                new String[]{contactId.toString()}, null);
+
+        String phone = null;
+        while (pCur.moveToNext()) {
+            phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+        pCur.close();
+        return phone;
     }
 
+    private static Contact cursorToContact(Context context, Cursor c) {
+        if (c.moveToFirst()) {
+            Contact contact = new Contact();
+            contact.setId(c.getInt(0));
+            contact.setDisplayName(c.getString(1));
+            contact.setMobile(getPhoneNumberByContactId(context, contact.getId()));
+            return contact;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Return contact name by searching address book for a given phone number.
+     * @param context Context
+     * @param number Phone number
+     * @return Contact name that belongs to the given phone number
+     */
+    public static String getContactNameByPhoneNumber(final Context context, String number) {
+        return (String)returnContactProperty(context, number, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, true);
+    }
+
+
+    /**
+     * Return contact id by searching address book for a given phone number.
+     * @param context Context
+     * @param number Phone number
+     * @return Contact id that belongs to the given phone number
+     */
+    public static Integer getContactIdByPhoneNumber(final Context context, final String number) {
+        return (Integer)returnContactProperty(context, number, ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID, true);
+    }
+
+    public static Contact getContactByPhoneNumber(final Context context, final String number) {
+        Integer contactId = (Integer)returnContactProperty(context,
+                number, ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID, true);
+        Log.d("MsgActions", "getContactByPhoneNumber --> : " + contactId);
+        if (contactId!=null) {
+            Contact c = cursorToContact(context, getContactsById(context, new Integer[]{contactId}));
+            Log.d("MsgActions", "Contact --> : " + c);
+            return c;
+        } else {
+            return null;
+        }
+    }
+
+
+    private static Object returnContactProperty(Context context, final String number, String property, boolean createIfNotFound) {
+        String[] whereArgs = new String[] {
+                String.valueOf(number),  // "+86" +
+                String.valueOf(ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) };
+
+        Cursor c = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{property},
+                ContactsContract.CommonDataKinds.Phone.NUMBER + " = ? and "
+                        + ContactsContract.CommonDataKinds.Phone.TYPE + " = ?", whereArgs, null);
+
+        Object result = null;
+
+        while (c.moveToNext()) {
+            for (int i=0;i<c.getColumnCount();i++) {
+                Log.d("C2.result: ", c.getColumnName(i) + ": " + c.getString(i));
+                result = c.getInt(i);
+            }
+        }
+         // TODO fix exception here!!!
+        if (c.moveToFirst()) {
+            int colIndex = c.getColumnIndexOrThrow(property);
+            if (property.equals(ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID)) {
+                result = c.getInt(colIndex);
+            } else {
+                result = c.getString(colIndex);
+            }
+            Log.d("MsgActions", "Matched contactId: " + result);
+            c.close();
+            return result;
+        } else if (createIfNotFound) {
+            // if contact doesn't exist yet, create first
+            c.close();
+            createContactFromMessage(context, number);
+            return returnContactProperty(context, number, property, false);
+            /*c = context.getContentResolver().
+                    query(uri, new String[]{property}, null, null, null);
+            if (c.moveToFirst()) {
+                int colIndex = c.getColumnIndexOrThrow(property);
+                if (property.equals(ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID)) {
+                    result = c.getInt(colIndex);
+                } else {
+                    result = c.getString(colIndex);
+                }
+            }*/
+        } else {
+            c.close();
+            return result;
+        }
+
+    }
+
+
+    public static Integer getGroupIdByName(final Context context, String groupName) {
+        // group list
+        if (PIMService.groupNameCache.isEmpty()) {
+            PIMService.getGroups(context.getApplicationContext()).close();
+        }
+        for (Iterator iter=groupNameCache.keySet().iterator(); iter.hasNext();) {
+            Integer key = (Integer)iter.next();
+            if (groupName.equals(groupNameCache.get(key))) {
+                return key;
+            }
+        }
+        return null;
+    }
 
     /**
      * Obtains the group list for the currently selected account.
@@ -157,7 +284,32 @@ public class PIMService {
 
         return context.getContentResolver().delete(
                 ContactsContract.Data.CONTENT_URI, "_id=?",
-                new String[]{values.getAsInteger("_id").toString()});
+                new String[]{values.getAsInteger(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID).toString()});
+    }
+
+    public static Uri createContactFromMessage(Context context, String number) {
+        ContentValues values = new ContentValues();
+
+        // TODO this api is deprecated, should be replaced with 2.x api
+        // Add contact base record
+        values.put(Contacts.People.NAME, number);
+        Uri uri = context.getContentResolver().insert(Contacts.People.CONTENT_URI, values);
+
+        // Add a phone number for Abraham Lincoln.  Begin with the URI for
+        // the new record just returned by insert(); it ends with the _ID
+        // of the new record, so we don't have to add the ID ourselves.
+        // Then append the designation for the phone table to this URI,
+        // and use the resulting URI to insert the phone number.
+        Uri phoneUri = Uri.withAppendedPath(uri, Contacts.People.Phones.CONTENT_DIRECTORY);
+        values.clear();
+        values.put(Contacts.People.Phones.TYPE, Contacts.People.Phones.TYPE_MOBILE);
+        values.put(Contacts.People.Phones.NUMBER, number);
+        uri = context.getContentResolver().insert(phoneUri, values);
+
+        context.getContentResolver().notifyChange(Contacts.People.CONTENT_URI, null);
+        context.getContentResolver().notifyChange(ContactsContract.Contacts.CONTENT_URI, null);
+
+        return uri;
     }
 
 }

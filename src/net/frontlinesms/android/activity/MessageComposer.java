@@ -83,6 +83,7 @@ public class MessageComposer extends BaseActivity {
                     recipients += (!"".equals(recipients)?", ":"") + contact.getDisplayName();
                 } while (c.moveToNext());
             }
+            c.close();
         }
         ((TextView) findViewById(R.id.txt_recipients)).setText(recipients);
         findViewById(R.id.btn_send_message).setOnClickListener(new View.OnClickListener() {

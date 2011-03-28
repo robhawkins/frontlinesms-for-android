@@ -20,10 +20,14 @@
 package net.frontlinesms.android.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.model.SmsService;
+import net.frontlinesms.android.util.sms.MessageProcessor;
+import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 public class Dashboard extends BaseActivity {
     /**

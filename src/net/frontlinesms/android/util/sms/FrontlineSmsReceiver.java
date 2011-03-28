@@ -16,7 +16,7 @@ public class FrontlineSmsReceiver extends SmsReceiver implements IReceivedSmsHan
 
 	@Override
 	protected void init() {
-		this.messageProcessor = new MessageProcessor(this.getContext().getContentResolver());
+		this.messageProcessor = new MessageProcessor(this.getContext());
 	}
 	
 	@Override

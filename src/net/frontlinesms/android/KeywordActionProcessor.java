@@ -5,11 +5,20 @@ package net.frontlinesms.android;
 
 import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.util.Log;
+import net.frontlinesms.android.model.PIMService;
+import net.frontlinesms.android.model.SmsService;
+import net.frontlinesms.android.model.model.Contact;
 import net.frontlinesms.android.model.model.KeywordAction;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * @author Alex Anderson
@@ -17,9 +26,14 @@ import java.util.Set;
 public class KeywordActionProcessor {
 	//private final SmsSender smsSender = new SmsSender();
 	private final PropertySubstituter propSub;
+    //private final ContentResolver mResolver;
+    private final Context mContext;
+
 	
-	public KeywordActionProcessor(ContentResolver contentResolver) {
-		this.propSub = new PropertySubstituter(contentResolver);
+	public KeywordActionProcessor(Context context) {
+		this.propSub = new PropertySubstituter(context);
+        this.mContext = context;
+      //  this.mResolver = contentResolver;
 	}
 
 	public void process(KeywordAction action, WholeSmsMessage message) {
@@ -43,25 +57,48 @@ public class KeywordActionProcessor {
 	
 	private void processJoin(KeywordAction action, WholeSmsMessage message) {
 		if(action.getType() != KeywordAction.Type.JOIN) throw new IllegalStateException();
-		// this.listDao.addToList(action.getList(), message.getOriginatingAddress());
-        // TODO add to google group
+        Integer contactId = PIMService.getContactIdByPhoneNumber(mContext, message.getOriginatingAddress());
+        Integer groupId = PIMService.getGroupIdByName(mContext, action.getGroup());
+        if (groupId!=null && contactId!=null) {
+            PIMService.addContactToGroup( mContext, (long) contactId, (long) groupId);
+        }
 	}
 	
 	private void processLeave(KeywordAction action, WholeSmsMessage message) {
 		if(action.getType() != KeywordAction.Type.LEAVE) throw new IllegalStateException();
-		// this.listDao.removeFromList(action.getList(), message.getOriginatingAddress());
-        // TODO remove from google group
+		Integer contactId = PIMService.getContactIdByPhoneNumber(mContext, message.getOriginatingAddress());
+        Integer groupId = PIMService.getGroupIdByName(mContext, action.getGroup());
+        if (groupId!=null && contactId!=null) {
+            PIMService.removeContactFromGroup(mContext, (long) contactId, (long) groupId);
+        }
 	}
+
+
+	private void processReply(KeywordAction action, WholeSmsMessage message) {
+		if(action.getType() != KeywordAction.Type.REPLY) throw new IllegalStateException();
+		String unformattedReplyText = action.getText();
+		String replyText = this.propSub.substitute(action, message, message.getOriginatingAddress(), unformattedReplyText);
+        Vector<Contact> contacts = new Vector<Contact>();
+        Contact contact = PIMService.getContactByPhoneNumber(mContext, message.getOriginatingAddress());
+        Log.d("reply", "reply to: " + message.getOriginatingAddress());
+        Log.d("reply", "reply contact: " + contact);
+        Log.d("reply", "reply replyText: " + replyText);
+        if (contact!=null) {
+            contacts.add(contact);
+            SmsService.sendMessage(mContext, contacts, replyText);
+        }
+	}
+
 
 	private void processForward(KeywordAction action, WholeSmsMessage message) {
 		if(action.getType() != KeywordAction.Type.FORWARD) throw new IllegalStateException();
 		String unformattedText = action.getText();
-		
+
 		// get the group to send to
 		Set<String> recipients = null; // TODO was: this.listDao.getNumbers(action.getList());
 		// remove the original sender from the forward group
 		recipients.remove(message.getOriginatingAddress());
-		
+
 		for(String recipient : recipients) {
 			String forwardText = this.propSub.substitute(action, message, recipient, unformattedText);
 			// TODO send SMS
@@ -69,20 +106,5 @@ public class KeywordActionProcessor {
 		}
 	}
 
-	private void processReply(KeywordAction action, WholeSmsMessage message) {
-		if(action.getType() != KeywordAction.Type.REPLY) throw new IllegalStateException();
-		String unformattedReplyText = action.getText();
-		String replyText = this.propSub.substitute(action, message, message.getOriginatingAddress(), unformattedReplyText);
-		// TODO send SMS
-//        this.smsSender.sendSms(message.getOriginatingAddress(),
-//				replyText, getSentIntent(), getDeliveryIntent());
-	}
 
-	private PendingIntent getDeliveryIntent() {
-		return null;
-	}
-
-	private PendingIntent getSentIntent() {
-		return null;
-	}
 }
