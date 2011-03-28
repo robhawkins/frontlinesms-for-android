@@ -18,6 +18,7 @@
  */
 package net.frontlinesms.android.model.model;
 
+import android.util.Log;
 import net.frontlinesms.android.db.DbEntity;
 
 /**
@@ -101,6 +102,7 @@ public final class KeywordAction implements DbEntity {
             throw new IllegalStateException("Cannot set list on an action of type: " + type);
         if ("".equals(group)) group = null;
 		this.group = group;
+        Log.d("SetGroup", "Set Group to " + this.group);
 	}
 
     public String getDescription() {

@@ -74,8 +74,14 @@ public class Keyword extends BaseActivity {
         groups.add("");
         int ix = 1;
         int groupListIndex = -1;
+
+        Log.d("Group", "Group cache size: " + PIMService.groupNameCache.keySet().size());
+
         for (Iterator iter=PIMService.groupNameCache.keySet().iterator();iter.hasNext();) {
-            String g = (String)PIMService.groupNameCache.get(iter.next());
+            String g = PIMService.groupNameCache.get(iter.next());
+
+            Log.d("Group", "Group cache g: " + g + " = " + mKeywordAction.getGroup() + "?");
+
             if (g.equals(mKeywordAction.getGroup())) {
                 groupListIndex = ix;
             }
@@ -87,6 +93,8 @@ public class Keyword extends BaseActivity {
         spinnerAddToGroup.setAdapter(spinnerArrayAdapter);
         Spinner spinnerRemoveFromGroup = ((Spinner)findViewById(R.id.spn_remove_from_group));
         spinnerRemoveFromGroup.setAdapter(spinnerArrayAdapter);
+
+        Log.d("Group", "Group listIndex: " + groupListIndex);
 
         // group
         if (mKeywordAction.getType()==KeywordAction.Type.JOIN) {
@@ -115,20 +123,22 @@ public class Keyword extends BaseActivity {
     private void assignFormValuesToDao() {
         mKeywordAction.setKeyword(((EditText) findViewById(R.id.edt_keyword)).getText().toString());
         mKeywordAction.setDescription( ((EditText)findViewById(R.id.edt_description)).getText().toString() );
+        mKeywordAction.setGroup(null);
 
         // TODO values not reset properly when saving
         if ( ((CheckBox)findViewById(R.id.chk_add_to_group)).isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.JOIN);
+            mKeywordAction.setGroup(((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString());
         }
         else if ( ((CheckBox)findViewById(R.id.chk_remove_from_group)).isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.LEAVE);
+            mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString());
         }
         else if ( ((CheckBox)findViewById(R.id.chk_autoreply)).isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.REPLY);
         }
-        mKeywordAction.setGroup(((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString());
+
         mKeywordAction.setText(((EditText)findViewById(R.id.edt_autoreply)).getText().toString());
-        mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString());
     }
 
     @Override
@@ -150,6 +160,7 @@ public class Keyword extends BaseActivity {
                 try {
                     assignFormValuesToDao();
                     Log.d("Keyword", "Keyword to store: " + mKeywordAction);
+                    Log.d("Keyword", "Keyword.group to store: " + mKeywordAction.getGroup());
                     mKeywordDao.saveOrUpdateAction(mKeywordAction);
                     Toast.makeText(this, "Keyword saved.", Toast.LENGTH_SHORT).show();
                     finish();
