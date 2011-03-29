@@ -34,6 +34,7 @@ import net.frontlinesms.android.model.SmsService;
 import net.frontlinesms.android.model.model.Contact;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -44,7 +45,7 @@ public class MessageComposer extends BaseActivity {
     public final static int RECIPIENT_TYPE_GROUPS = 1;
     public final static int RECIPIENT_TYPE_CONTACTS = 2;
 
-    private Vector<Contact> mContacts = new Vector<Contact>();
+    private List<Contact> mContacts = new ArrayList<Contact>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class MessageComposer extends BaseActivity {
             }
 
         } else {
-            Cursor c = PIMService.getContactsById(this, recipientIds.toArray(new Integer[recipientIds.size()]));
+            Cursor c = PIMService.getContactsCursorById(this, recipientIds.toArray(new Integer[recipientIds.size()]));
             if (c.moveToFirst()) {
                 do {
                     Contact contact = new Contact();

@@ -3,6 +3,7 @@ package net.frontlinesms.android.model.model;
 public class Contact {
 
     private Integer id;
+    private Integer rawId;
     private String displayName;
     private String mobile;
 
@@ -12,6 +13,14 @@ public class Contact {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRawId() {
+        return rawId;
+    }
+
+    public void setRawId(Integer rawId) {
+        this.rawId = rawId;
     }
 
     public String getDisplayName() {

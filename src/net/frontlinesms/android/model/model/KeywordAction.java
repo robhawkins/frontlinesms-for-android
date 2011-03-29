@@ -89,7 +89,7 @@ public final class KeywordAction implements DbEntity {
 		return text;
 	}
 	public void setText(String text) {
-		if(!type.hasText() && text!=null && !"".equals(text))
+		if(text!=null && !type.hasText() && !"".equals(text))
             throw new IllegalStateException("Cannot set text on an action of type: " + type);
 		if ("".equals(text)) text = null;
         this.text = text;
@@ -98,7 +98,7 @@ public final class KeywordAction implements DbEntity {
 		return group;
 	}
 	public void setGroup(String group) {
-		if(!type.hasGroup() && group!=null && !"".equals(group))
+		if(group!=null && !type.hasGroup() && !"".equals(group))
             throw new IllegalStateException("Cannot set list on an action of type: " + type);
         if ("".equals(group)) group = null;
 		this.group = group;

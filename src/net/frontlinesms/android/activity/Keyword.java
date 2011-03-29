@@ -19,11 +19,11 @@
  */
 package net.frontlinesms.android.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
@@ -46,6 +46,17 @@ public class Keyword extends BaseActivity {
     private static final int MENU_OPTION_SAVE = Menu.FIRST;
     private static final int MENU_OPTION_CANCEL = 2;
 
+    // Views
+    private CheckBox mChkReply;
+    private CheckBox mChkForward;
+    private CheckBox mChkAddToGroup;
+    private CheckBox mChkRemoveFromGroup;
+    private Spinner mSpinnerAddToGroup;
+    private Spinner mSpinnerRemoveFromGroup;
+    private Spinner mSpinnerForwardToGroup;
+    private EditText mEdtText;
+    private TextView mTxtText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +75,23 @@ public class Keyword extends BaseActivity {
         initView();
     }
 
+    /**
+     * Initialize views
+     */
     private void initView() {
+        mChkForward = ((CheckBox)findViewById(R.id.chk_forward));
+        mChkReply = ((CheckBox)findViewById(R.id.chk_autoreply));
+        mChkAddToGroup = ((CheckBox)findViewById(R.id.chk_add_to_group));
+        mChkRemoveFromGroup = ((CheckBox)findViewById(R.id.chk_remove_from_group));
+        mSpinnerAddToGroup = ((Spinner)findViewById(R.id.spn_add_to_group));
+        mSpinnerRemoveFromGroup = ((Spinner)findViewById(R.id.spn_remove_from_group));
+        mSpinnerForwardToGroup = ((Spinner)findViewById(R.id.spn_forward_to_group));
+        mEdtText = ((EditText)findViewById(R.id.edt_text));
+        mTxtText = ((TextView)findViewById(R.id.txt_text));
 
         // group list
         if (PIMService.groupNameCache.isEmpty()) {
-            PIMService.getGroups(getApplicationContext()).close();
+            PIMService.getGroupsCursor(getApplicationContext()).close();
         }
         ArrayList<String> groups = new ArrayList<String>();
         groups.add("");
@@ -89,20 +112,28 @@ public class Keyword extends BaseActivity {
             ix++;
         }
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, groups);
-        Spinner spinnerAddToGroup = ((Spinner)findViewById(R.id.spn_add_to_group));
-        spinnerAddToGroup.setAdapter(spinnerArrayAdapter);
-        Spinner spinnerRemoveFromGroup = ((Spinner)findViewById(R.id.spn_remove_from_group));
-        spinnerRemoveFromGroup.setAdapter(spinnerArrayAdapter);
+        mSpinnerAddToGroup.setAdapter(spinnerArrayAdapter);
+        mSpinnerRemoveFromGroup.setAdapter(spinnerArrayAdapter);
+        mSpinnerForwardToGroup.setAdapter(spinnerArrayAdapter);
 
         Log.d("Group", "Group listIndex: " + groupListIndex);
 
         // group
         if (mKeywordAction.getType()==KeywordAction.Type.JOIN) {
-            spinnerAddToGroup.setSelection(groupListIndex);
-        } else spinnerAddToGroup.setSelection(0);
+            mSpinnerAddToGroup.setSelection(groupListIndex);
+        } else {
+            mSpinnerAddToGroup.setSelection(0);
+        }
         if (mKeywordAction.getType()==KeywordAction.Type.LEAVE) {
-            spinnerRemoveFromGroup.setSelection(groupListIndex);
-        } else spinnerRemoveFromGroup.setSelection(0);
+            mSpinnerRemoveFromGroup.setSelection(groupListIndex);
+        } else {
+            mSpinnerRemoveFromGroup.setSelection(0);
+        }
+        if (mKeywordAction.getType()==KeywordAction.Type.FORWARD) {
+            mSpinnerForwardToGroup.setSelection(groupListIndex);
+        } else {
+            mSpinnerRemoveFromGroup.setSelection(0);
+        }
 
         // set title
         if (mKeywordAction==null) {
@@ -111,40 +142,92 @@ public class Keyword extends BaseActivity {
             ((TextView)findViewById(R.id.txt_header)).setText("Keyword: " + mKeywordAction.getKeyword());
             ((TextView)findViewById(R.id.edt_keyword)).setText(mKeywordAction.getKeyword());
             ((TextView)findViewById(R.id.edt_description)).setText(mKeywordAction.getDescription());
-            ((TextView)findViewById(R.id.edt_autoreply)).setText(mKeywordAction.getText());
+            mEdtText.setText(mKeywordAction.getText());
 
-            ((CheckBox)findViewById(R.id.chk_autoreply)).setChecked(mKeywordAction.getType()==KeywordAction.Type.REPLY);
-            ((CheckBox)findViewById(R.id.chk_add_to_group)).setChecked(mKeywordAction.getType()==KeywordAction.Type.JOIN);
-            ((CheckBox)findViewById(R.id.chk_remove_from_group)).setChecked(mKeywordAction.getType()==KeywordAction.Type.LEAVE);
+            mChkForward.setChecked(mKeywordAction.getType()==KeywordAction.Type.FORWARD);
+            mChkReply.setChecked(mKeywordAction.getType()==KeywordAction.Type.REPLY);
+            mChkAddToGroup.setChecked(mKeywordAction.getType()==KeywordAction.Type.JOIN);
+            mChkRemoveFromGroup.setChecked(mKeywordAction.getType()==KeywordAction.Type.LEAVE);
         }
 
+        checkCheckBoxLogic(null);
     }
 
+    /**
+     * Prepare the keyword action object with form values for storing in database.
+     */
     private void assignFormValuesToDao() {
         mKeywordAction.setKeyword(((EditText) findViewById(R.id.edt_keyword)).getText().toString());
         mKeywordAction.setDescription( ((EditText)findViewById(R.id.edt_description)).getText().toString() );
         mKeywordAction.setGroup(null);
+        mKeywordAction.setText(null);
 
-        // TODO values not reset properly when saving
-        if ( ((CheckBox)findViewById(R.id.chk_add_to_group)).isChecked()) {
+        if (mChkAddToGroup.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.JOIN);
             mKeywordAction.setGroup(((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString());
         }
-        else if ( ((CheckBox)findViewById(R.id.chk_remove_from_group)).isChecked()) {
+        else if (mChkRemoveFromGroup.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.LEAVE);
             mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString());
         }
-        else if ( ((CheckBox)findViewById(R.id.chk_autoreply)).isChecked()) {
+        else if (mChkReply.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.REPLY);
         }
+        else if (mChkForward.isChecked()) {
+            mKeywordAction.setType(KeywordAction.Type.FORWARD);
+            mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_forward_to_group)).getSelectedItem().toString());
+        }
 
-        mKeywordAction.setText(((EditText)findViewById(R.id.edt_autoreply)).getText().toString());
+        mKeywordAction.setText(mEdtText.getText().toString());
+    }
+
+    /**
+     * Checks that only auto-reply or forward is checked at the same time.
+     * @param v View (Checkbox)
+     */
+    public void checkCheckBoxLogic(View v) {
+        if ((v==null || v.getId()==R.id.chk_forward) && mChkForward.isChecked()) {
+            mChkReply.setChecked(false);
+            mChkAddToGroup.setChecked(false);
+            mChkRemoveFromGroup.setChecked(false);
+            mEdtText.setVisibility(View.VISIBLE);
+            mTxtText.setVisibility(View.VISIBLE);
+            mSpinnerAddToGroup.setVisibility(View.GONE);
+            mSpinnerRemoveFromGroup.setVisibility(View.GONE);
+            mSpinnerForwardToGroup.setVisibility(View.VISIBLE);
+        } else if ((v==null || v.getId()==R.id.chk_autoreply) && mChkReply.isChecked()) {
+            mChkForward.setChecked(false);
+            mChkAddToGroup.setChecked(false);
+            mChkRemoveFromGroup.setChecked(false);
+            mEdtText.setVisibility(View.VISIBLE);
+            mTxtText.setVisibility(View.VISIBLE);
+            mSpinnerAddToGroup.setVisibility(View.GONE);
+            mSpinnerRemoveFromGroup.setVisibility(View.GONE);
+            mSpinnerForwardToGroup.setVisibility(View.GONE);
+        } else if ((v==null || v.getId()==R.id.chk_add_to_group) && mChkAddToGroup.isChecked()) {
+            mChkForward.setChecked(false);
+            mChkReply.setChecked(false);
+            mChkRemoveFromGroup.setChecked(false);
+            mEdtText.setVisibility(View.GONE);
+            mTxtText.setVisibility(View.GONE);
+            mSpinnerAddToGroup.setVisibility(View.VISIBLE);
+            mSpinnerRemoveFromGroup.setVisibility(View.GONE);
+            mSpinnerForwardToGroup.setVisibility(View.GONE);
+        } else if ((v==null || v.getId()==R.id.chk_remove_from_group) && mChkRemoveFromGroup.isChecked()) {
+            mChkForward.setChecked(false);
+            mChkReply.setChecked(false);
+            mChkAddToGroup.setChecked(false);
+            mEdtText.setVisibility(View.GONE);
+            mTxtText.setVisibility(View.GONE);
+            mSpinnerAddToGroup.setVisibility(View.GONE);
+            mSpinnerRemoveFromGroup.setVisibility(View.VISIBLE);
+            mSpinnerForwardToGroup.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        int groupId = 0;
         MenuItem menuItem = menu.add(MENU_OPTION_SAVE, MENU_OPTION_SAVE, Menu.NONE, R.string.menu_option_save);
         menuItem.setIcon(android.R.drawable.ic_menu_save);
         menuItem = menu.add(MENU_OPTION_CANCEL, MENU_OPTION_CANCEL, Menu.NONE, R.string.menu_option_cancel);

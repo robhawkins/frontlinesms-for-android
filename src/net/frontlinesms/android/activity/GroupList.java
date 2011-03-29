@@ -22,9 +22,7 @@ package net.frontlinesms.android.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -33,8 +31,6 @@ import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.PIMService;
-
-import java.util.HashMap;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
@@ -87,7 +83,7 @@ public final class GroupList extends BaseActivity {
         mGroupList.addHeaderView(txtHeader);
 
         // Build adapter with contact entries
-        Cursor cursor = PIMService.getGroups(this.getApplicationContext());
+        Cursor cursor = PIMService.getGroupsCursor(this.getApplicationContext());
         mAdapter = new GroupListAdapter(this, cursor);
         mGroupList.setAdapter(mAdapter);
     }

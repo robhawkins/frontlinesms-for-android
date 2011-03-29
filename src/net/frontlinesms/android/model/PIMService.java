@@ -27,7 +27,6 @@ import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.util.Log;
 import net.frontlinesms.android.model.model.Contact;
-import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class PIMService {
      *
      * @return A cursor for for accessing the contact list.
      */
-    public static Cursor getContactsByGroup(final Context context, final Integer[] ids)
+    public static Cursor getContactsCursorByGroup(final Context context, final Integer[] ids)
     {
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
         String idString = "";
@@ -58,16 +57,32 @@ public class PIMService {
                 ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN (" + idString + ")",
                 null, sortOrder);
 
-        // filter only those contacts who have a phone number
         ArrayList<Integer> idList = new ArrayList<Integer>();
         while (cTmp.moveToNext()) {
+
             idList.add(cTmp.getInt(cTmp.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
         }
         Integer[] contactIds = idList.toArray(new Integer[idList.size()]);
-        return getContactsById(context, contactIds);
+        // filter only those contacts who have a phone number
+        return getContactsCursorById(context, contactIds);
     }
 
-    public static Cursor getContactsById(final Context context, final Integer[] ids)
+    public static ArrayList<Contact> getContactsByGroup(final Context context, final String groupName) {
+        Log.d("PIMService", "getContactsByGroup... ");
+        Integer groupId = getGroupIdByName(context, groupName);
+        Cursor c = getContactsCursorByGroup(context, new Integer[]{groupId});
+        Log.d("PIMService", "getContactsByGroup... cursor size " + c.getCount());
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        while (c.moveToNext()) {
+            contacts.add(cursorToContact(context, c));
+        }
+        c.close();
+        Log.d("PIMService", "getContactsByGroup... contacts " + contacts.size());
+        Log.d("PIMService", "getContactsByGroup... returning ");
+        return contacts;
+    }
+
+    public static Cursor getContactsCursorById(final Context context, final Integer[] ids)
     {
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
         String idString = "";
@@ -76,10 +91,11 @@ public class PIMService {
         }
         Log.d(TAG, "getContactsById: " + idString);
         Cursor c = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, new String[] {
-                ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.HAS_PHONE_NUMBER},
+                ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.Contacts.HAS_PHONE_NUMBER},
                 ContactsContract.Contacts._ID + " IN (" + idString + ")" +
                 " AND " + ContactsContract.Contacts.HAS_PHONE_NUMBER + " > 0",
-                // " AND " + ContactsContract.Contacts.HAS_PHONE_NUMBER + " <> 1110",
                 null, sortOrder);
         Log.d(TAG, "getContactsById - c.results: " + c.getCount());
         return c;
@@ -88,7 +104,9 @@ public class PIMService {
 
     public static String getPhoneNumberByContactId(Context context, Integer contactId) {
         Cursor pCur = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                 new String[]{contactId.toString()}, null);
 
         String phone = null;
@@ -100,15 +118,16 @@ public class PIMService {
     }
 
     private static Contact cursorToContact(Context context, Cursor c) {
-        if (c.moveToFirst()) {
+
+        //if (c.moveToFirst()) {
             Contact contact = new Contact();
             contact.setId(c.getInt(0));
             contact.setDisplayName(c.getString(1));
             contact.setMobile(getPhoneNumberByContactId(context, contact.getId()));
             return contact;
-        } else {
-            return null;
-        }
+//        } else {
+//            return null;
+//        }
     }
 
     /**
@@ -129,17 +148,23 @@ public class PIMService {
      * @return Contact id that belongs to the given phone number
      */
     public static Integer getContactIdByPhoneNumber(final Context context, final String number) {
+        return (Integer)returnContactProperty(context, number, ContactsContract.CommonDataKinds.Phone.CONTACT_ID, true);
+    }
+    public static Integer getRawContactIdByPhoneNumber(final Context context, final String number) {
         return (Integer)returnContactProperty(context, number, ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID, true);
     }
 
     public static Contact getContactByPhoneNumber(final Context context, final String number) {
         Integer contactId = (Integer)returnContactProperty(context,
-                number, ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID, true);
+                number, ContactsContract.CommonDataKinds.Phone.CONTACT_ID, true); // was: RAW_
         Log.d("MsgActions", "getContactByPhoneNumber --> : " + contactId);
         if (contactId!=null) {
-            Contact c = cursorToContact(context, getContactsById(context, new Integer[]{contactId}));
-            Log.d("MsgActions", "Contact --> : " + c);
-            return c;
+            Cursor cursor = getContactsCursorById(context, new Integer[]{contactId});
+            if (cursor.moveToFirst()) {
+                Contact c = cursorToContact(context, cursor);
+                Log.d("MsgActions", "Contact --> : " + c);
+                return c;
+            } else return null;
         } else {
             return null;
         }
@@ -168,7 +193,8 @@ public class PIMService {
          // TODO fix exception here!!!
         if (c.moveToFirst()) {
             int colIndex = c.getColumnIndexOrThrow(property);
-            if (property.equals(ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID)) {
+            if (property.equals(ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID)
+                    || property.equals(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)) {
                 result = c.getInt(colIndex);
             } else {
                 result = c.getString(colIndex);
@@ -200,9 +226,9 @@ public class PIMService {
 
 
     public static Integer getGroupIdByName(final Context context, String groupName) {
-        // group list
+        // group list, load into cache first if cache is empty
         if (PIMService.groupNameCache.isEmpty()) {
-            PIMService.getGroups(context.getApplicationContext()).close();
+            PIMService.getGroupsCursor(context.getApplicationContext()).close();
         }
         for (Iterator iter=groupNameCache.keySet().iterator(); iter.hasNext();) {
             Integer key = (Integer)iter.next();
@@ -218,7 +244,7 @@ public class PIMService {
      *
      * @return A cursor for for accessing the contact list.
      */
-    public static Cursor getGroups(Context context)
+    public static Cursor getGroupsCursor(Context context)
     {
         // Run query
         Uri uri = ContactsContract.Groups.CONTENT_URI;
@@ -244,22 +270,25 @@ public class PIMService {
     /**
      * Adds a contact to a group.
      * @param context Context
-     * @param personId Raw contact id
+     * @param contactId Raw contact id
      * @param groupId Group id
      * @return Uri to the contact data entry
      */
-    public static Uri addContactToGroup(Context context, long personId, long groupId) {
+    public static Uri addContactToGroup(Context context, long contactId, long rawContactId, long groupId) {
         //remove if exists
-        removeContactFromGroup(context, personId, groupId);
+        removeContactFromGroup(context, contactId, rawContactId, groupId);
         ContentValues values = new ContentValues();
-        values.put(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID,
-                personId);
-        values.put(
-                ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,
-                groupId);
+        //values.put(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, contactId); // WAS: RAW
+        values.put(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, groupId);
         values.put(
                     ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE,
                     ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE);
+
+        Log.d("add", "context " + context);
+        Log.d("add", "values " + values);
+        Log.d("add", "ContactsContract.Data.CONTENT_URI " + ContactsContract.Data.CONTENT_URI);
+
         return context.getContentResolver().insert(
                 ContactsContract.Data.CONTENT_URI, values);
     }
@@ -267,24 +296,30 @@ public class PIMService {
     /**
      * Removes a contact from a group.
      * @param context Context
-     * @param personId Raw contact id
+     * @param contactId Raw contact id
      * @param groupId Group id
      * @return
      */
-    public static int removeContactFromGroup(Context context, long personId, long groupId) {
+    public static int removeContactFromGroup(Context context, long contactId, long rawContactId, long groupId) {
         ContentValues values = new ContentValues();
-        values.put(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID,
-                personId);
-        values.put(
-                ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,
-                groupId);
+        //values.put(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, contactId); // WAS: RAW_
+        values.put(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, groupId);
         values.put(
                     ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE,
                     ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE);
 
         return context.getContentResolver().delete(
-                ContactsContract.Data.CONTENT_URI, "_id=?",
-                new String[]{values.getAsInteger(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID).toString()});
+                ContactsContract.Data.CONTENT_URI,
+                //"_id=? ",
+                ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID + "=? AND " +
+                ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=?"
+                ,
+                new String[]{
+                        new Long(rawContactId).toString(),
+                        new Long(groupId).toString()
+                });
+//        return context.getContentResolver().delete(ContactsContract.Data.CONTENT_URI, null, null);
     }
 
     public static Uri createContactFromMessage(Context context, String number) {
@@ -293,7 +328,9 @@ public class PIMService {
         // TODO this api is deprecated, should be replaced with 2.x api
         // Add contact base record
         values.put(Contacts.People.NAME, number);
+//        values.put(ContactsContract.Contacts.DISPLAY_NAME, number);
         Uri uri = context.getContentResolver().insert(Contacts.People.CONTENT_URI, values);
+//        Uri uri = context.getContentResolver().insert(ContactsContract.Contacts.CONTENT_URI, values);
 
         // Add a phone number for Abraham Lincoln.  Begin with the URI for
         // the new record just returned by insert(); it ends with the _ID

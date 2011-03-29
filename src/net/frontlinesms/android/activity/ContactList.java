@@ -86,7 +86,7 @@ public final class ContactList extends BaseActivity {
 
         // Build adapter with contact entries
 //        Cursor cursor = getContacts(mGroupId);
-        Cursor cursor = PIMService.getContactsByGroup(this, new Integer[]{mGroupId});
+        Cursor cursor = PIMService.getContactsCursorByGroup(this, new Integer[]{mGroupId});
         mAdapter = new ContactListAdapter(this, cursor);
         mContactList.setAdapter(mAdapter);
     }

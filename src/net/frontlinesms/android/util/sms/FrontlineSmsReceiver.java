@@ -3,6 +3,7 @@
  */
 package net.frontlinesms.android.util.sms;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 /**
@@ -25,9 +26,17 @@ public class FrontlineSmsReceiver extends SmsReceiver implements IReceivedSmsHan
 	}
 
 	@Override
-	public void handleReceivedSms(WholeSmsMessage message) {
+	public void handleReceivedSms(final WholeSmsMessage message) {
         Log.d(TAG, "handleReceivedSms " + message);
-		this.messageProcessor.process(message);
+        new AsyncTask() {
+
+            @Override
+            protected Object doInBackground(Object... objects) {
+                FrontlineSmsReceiver.this.messageProcessor.process(message);
+                return null;
+            }
+        }.execute();
+
 	}
 
 }
