@@ -11,17 +11,18 @@
     <ImageView
             android:src="@drawable/splash"
             android:clickable="true"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             android:layout_gravity="bottom|center_horizontal"
             android:onClick="skip"/>
 
-    <TextView android:id="@+id/TextView01"
+    <!--<TextView android:id="@+id/TextView01"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="left|bottom"
               android:gravity="left|bottom"
               android:padding="10dp"
-              android:text="v0.1 alpha"/>
+              android:text="v0.1 alpha"/>-->
 
 </LinearLayout>
