@@ -19,17 +19,20 @@
  */
 package net.frontlinesms.android.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.text.util.Linkify;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.model.SmsService;
-import net.frontlinesms.android.util.sms.MessageProcessor;
-import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 public class Dashboard extends BaseActivity {
+
+    private static final int MENU_OPTION_INFO = Menu.FIRST;
+
     /**
      * Called when the activity is first created.
      */
@@ -65,5 +68,40 @@ public class Dashboard extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuItem menuItem = menu.add(MENU_OPTION_INFO, MENU_OPTION_INFO, Menu.NONE, R.string.menu_option_info);
+        menuItem.setIcon(android.R.drawable.ic_menu_info_details);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case MENU_OPTION_INFO:
+                showInfoDialog();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showInfoDialog() {
+        new AlertDialog.Builder(this)
+            .setIcon(R.drawable.icon)
+            .setTitle("About FrontlineSMS for Android")
+            .setMessage("This is an early alpha release of FrontlineSMS for Android, not intended to be used in production.\n" +
+                "If you experience any problems, please report them at https://github.com/mathiaslin/frontlinesms-for-android/issues\n\n" +
+                "Mathias Lin\nmathias.lin@metahealthcare.com")
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            })
+            .create()
+            .show();
     }
 }

@@ -119,13 +119,13 @@ public final class KeywordList extends BaseActivity {
     private Cursor getKeywords()
     {
         keywordDao = new KeywordActionDao(getContentResolver());
-            if(keywordDao.getAllKeywords().size() == 0) {
+        /*if(keywordDao.getAllKeywords().size() == 0) {
         	createDemoKeywords();
-        }
+        }*/
         return keywordDao.getAllKeywordsCursor();
     }
 
-    private void createDemoKeywords() {
+    /*private void createDemoKeywords() {
 		// Populate the map with some keyword actions
 		keywordDao.saveOrUpdateAction(KeywordAction.createReplyAction("hi", "Test", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
                 + ", i do like your phone number (PropertySubstituter.KEY_SENDER_PHONENUMBER)"));
@@ -134,7 +134,7 @@ public final class KeywordList extends BaseActivity {
 		keywordDao.saveOrUpdateAction(KeywordAction.createForwardAction("say", "test",
                 "PropertySubstituter.KEY_SENDER_NAME says PropertySubstituter.KEY_ORIGINAL_MESSAGE",
                 null));
-	}
+	}*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -94,7 +94,7 @@ public class Keyword extends BaseActivity {
             PIMService.getGroupsCursor(getApplicationContext()).close();
         }
         ArrayList<String> groups = new ArrayList<String>();
-        groups.add("");
+        groups.add(getResources().getString(R.string.choose_group));
         int ix = 1;
         int groupListIndex = -1;
 
@@ -136,7 +136,7 @@ public class Keyword extends BaseActivity {
         }
 
         // set title
-        if (mKeywordAction==null) {
+        if (mKeywordAction==null || mKeywordAction.getKeyword()==null) {
             ((TextView)findViewById(R.id.txt_header)).setText("New Keyword");
         } else {
             ((TextView)findViewById(R.id.txt_header)).setText("Keyword: " + mKeywordAction.getKeyword());
@@ -161,10 +161,15 @@ public class Keyword extends BaseActivity {
         mKeywordAction.setDescription( ((EditText)findViewById(R.id.edt_description)).getText().toString() );
         mKeywordAction.setGroup(null);
         mKeywordAction.setText(null);
+        String spinnerValue;
 
         if (mChkAddToGroup.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.JOIN);
-            mKeywordAction.setGroup(((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString());
+            spinnerValue = ((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString();
+            if (getResources().getString(R.string.choose_group).equals(spinnerValue)) {
+
+            }
+            mKeywordAction.setGroup(spinnerValue);
         }
         else if (mChkRemoveFromGroup.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.LEAVE);

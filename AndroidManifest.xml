@@ -3,7 +3,7 @@
           package="net.frontlinesms.android"
           android:installLocation="auto"
           android:versionCode="1"
-          android:versionName="0.0.1">
+          android:versionName="0.1a">
 
     <uses-sdk android:minSdkVersion="7"/>
     <uses-sdk android:targetSdkVersion="7"/>
