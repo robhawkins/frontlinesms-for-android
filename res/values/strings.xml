@@ -28,7 +28,13 @@
 
     <!-- Settings -->
     <string name="choose_language">Choose a language</string>
-    <string name="settings_language">Language:</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_email">Email Settings</string>
+    <string name="settings_email_server">Account Server:</string>
+    <string name="settings_email_username">Account Username:</string>
+    <string name="settings_email_password">Account Password:</string>
+    <string name="settings_email_port">Account Server Port:</string>
+    <string name="settings_email_ssl">Use SSL</string>
 
     <!-- Keyword List -->
     <string name="menu_option_new">New</string>
@@ -48,12 +54,6 @@
     <string name="keyword_forward">Auto Forward</string>
     <string name="keyword_text">Text:</string>
 
-    <!-- Settings -->
-    <string name="settings_email_server">Account Server</string>
-    <string name="settings_email_username">Account Username</string>
-    <string name="settings_email_password">Password</string>
-    <string name="settings_email_port">Account Server Port</string>
-    <string name="settings_email_ssl">Use SSL</string>
 
 
 </resources>

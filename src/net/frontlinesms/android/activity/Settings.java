@@ -19,7 +19,17 @@
  */
 package net.frontlinesms.android.activity;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 
 /**
@@ -27,9 +37,85 @@ import net.frontlinesms.android.R;
  */
 public class Settings extends BaseActivity {
 
+    private SharedPreferences mySharedPreferences;
+    private Spinner mSpnLanguage;
+    private EditText mEdtEmailServer;
+    private EditText mEdtEmailPort;
+    private EditText mEdtEmailUsername;
+    private EditText mEdtEmailPassword;
+    private CheckBox mChkEmailSSL;
+
+    /** Menu item to save / cancel operation. */
+    private static final int MENU_OPTION_SAVE = Menu.FIRST;
+    private static final int MENU_OPTION_CANCEL = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
+        mySharedPreferences = getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE);
+        mSpnLanguage = (Spinner) findViewById(R.id.spn_language);
+        mEdtEmailServer = (EditText) findViewById(R.id.edt_email_server);
+        mEdtEmailPort = (EditText) findViewById(R.id.edt_email_port);
+        mEdtEmailUsername = (EditText) findViewById(R.id.edt_email_username);
+        mEdtEmailPassword = (EditText) findViewById(R.id.edt_email_password);
+        mChkEmailSSL = (CheckBox) findViewById(R.id.chk_email_ssl);
+        loadPreferences();
     }
+
+    private void loadPreferences() {
+        // language
+        mSpnLanguage.setSelection(mySharedPreferences.getInt(FrontlineSMS.PREF_SETTINGS_LANGUAGE, 0));
+        // email settings
+        mEdtEmailServer.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SERVER, ""));
+        mEdtEmailUsername.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_USERNAME,""));
+        mEdtEmailPassword.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD,""));
+        mEdtEmailPort.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT,""));
+        mChkEmailSSL.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, false));
+    }
+
+    private void savePreferences() {
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        // language
+        editor.putInt(FrontlineSMS.PREF_SETTINGS_LANGUAGE, mSpnLanguage.getSelectedItemPosition());
+        // email settings
+        editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_SERVER, mEdtEmailServer.getText().toString());
+        editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_USERNAME, mEdtEmailUsername.getText().toString());
+        editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD, mEdtEmailPassword.getText().toString());
+        editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT, mEdtEmailPort.getText().toString());
+        editor.putBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, mChkEmailSSL.isChecked());
+        editor.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuItem menuItem = menu.add(MENU_OPTION_SAVE, MENU_OPTION_SAVE, Menu.NONE, R.string.menu_option_save);
+        menuItem.setIcon(android.R.drawable.ic_menu_save);
+        menuItem = menu.add(MENU_OPTION_CANCEL, MENU_OPTION_CANCEL, Menu.NONE, R.string.menu_option_cancel);
+        menuItem.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case MENU_OPTION_SAVE:
+                try {
+                    savePreferences();
+                    Toast.makeText(this, "Settings saved.", Toast.LENGTH_SHORT).show();
+                    finish();
+                } catch (Exception e) {
+                    Log.e("Keyword", "Saving failed.", e);
+                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case MENU_OPTION_CANCEL:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

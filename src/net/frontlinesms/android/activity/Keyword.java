@@ -42,7 +42,7 @@ public class Keyword extends BaseActivity {
     private KeywordActionDao mKeywordDao;
     private KeywordAction mKeywordAction;
 
-    /** Menu item to send message to selected rules. */
+    /** Menu item to save / cancel operation. */
     private static final int MENU_OPTION_SAVE = Menu.FIRST;
     private static final int MENU_OPTION_CANCEL = 2;
 
@@ -167,20 +167,28 @@ public class Keyword extends BaseActivity {
             mKeywordAction.setType(KeywordAction.Type.JOIN);
             spinnerValue = ((Spinner) findViewById(R.id.spn_add_to_group)).getSelectedItem().toString();
             if (getResources().getString(R.string.choose_group).equals(spinnerValue)) {
-
+                 spinnerValue = null;
             }
             mKeywordAction.setGroup(spinnerValue);
         }
         else if (mChkRemoveFromGroup.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.LEAVE);
-            mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString());
+            spinnerValue = ((Spinner) findViewById(R.id.spn_remove_from_group)).getSelectedItem().toString();
+            if (getResources().getString(R.string.choose_group).equals(spinnerValue)) {
+                 spinnerValue = null;
+            }
+            mKeywordAction.setGroup(spinnerValue);
         }
         else if (mChkReply.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.REPLY);
         }
         else if (mChkForward.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.FORWARD);
-            mKeywordAction.setGroup(((Spinner)findViewById(R.id.spn_forward_to_group)).getSelectedItem().toString());
+            spinnerValue = ((Spinner) findViewById(R.id.spn_forward_to_group)).getSelectedItem().toString();
+            if (getResources().getString(R.string.choose_group).equals(spinnerValue)) {
+                 spinnerValue = null;
+            }
+            mKeywordAction.setGroup(spinnerValue);
         }
 
         mKeywordAction.setText(mEdtText.getText().toString());

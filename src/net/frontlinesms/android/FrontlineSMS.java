@@ -23,12 +23,22 @@ import android.app.Application;
 
 public class FrontlineSMS extends Application {
 
+    // intent extras
+
     public static final String EXTRA_SEARCH_QUERY = "EXTRA_SEARCH_QUERY";
     public static final String EXTRA_GROUP_NAME = "EXTRA_GROUP_NAME";
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
     public static final String EXTRA_SELECTED_ITEMS = "EXTRA_SELECTED_ITEMS";
     public static final String EXTRA_RECIPIENT_TYPE = "EXTRA_RECIPIENT_TYPE";
-
     public static final String EXTRA_KEYWORD_ID = "EXTRA_KEYWORD_ID";
     public static final String EXTRA_KEYWORD_KEYWORD = "EXTRA_KEYWORD_KEYWORD";
+
+    // shared prefs
+    public static final String SHARED_PREFS_ID = "FRONTLINESMS_SETTINGS";
+    public static final String PREF_SETTINGS_LANGUAGE = "Settings.Language";
+    public static final String PREF_SETTINGS_EMAIL_SERVER = "Settings.Email.Server";
+    public static final String PREF_SETTINGS_EMAIL_PORT = "Settings.Email.Port";
+    public static final String PREF_SETTINGS_EMAIL_USERNAME = "Settings.Email.Username";
+    public static final String PREF_SETTINGS_EMAIL_PASSWORD = "Settings.Email.Password";
+    public static final String PREF_SETTINGS_EMAIL_SSL = "Settings.Email.SSL";
 }
