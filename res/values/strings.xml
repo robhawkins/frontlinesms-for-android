@@ -35,6 +35,7 @@
     <string name="settings_email_password">Account Password:</string>
     <string name="settings_email_port">Account Server Port:</string>
     <string name="settings_email_ssl">Use SSL</string>
+    <string name="settings_email_sender">Sender Name &amp; Address:</string>
 
     <!-- Keyword List -->
     <string name="menu_option_new">New</string>
@@ -53,7 +54,8 @@
     <string name="keyword_description">Description:</string>
     <string name="keyword_forward">Auto Forward</string>
     <string name="keyword_text">Text:</string>
-
-
+    <string name="keyword_forward_to_group">to Group:</string>
+    <string name="keyword_email">Send E-Mail</string>
+    <string name="keyword_subject">Subject:</string>
 
 </resources>

@@ -43,6 +43,7 @@ public class Settings extends BaseActivity {
     private EditText mEdtEmailPort;
     private EditText mEdtEmailUsername;
     private EditText mEdtEmailPassword;
+    private EditText mEdtEmailSender;
     private CheckBox mChkEmailSSL;
 
     /** Menu item to save / cancel operation. */
@@ -57,6 +58,7 @@ public class Settings extends BaseActivity {
         mSpnLanguage = (Spinner) findViewById(R.id.spn_language);
         mEdtEmailServer = (EditText) findViewById(R.id.edt_email_server);
         mEdtEmailPort = (EditText) findViewById(R.id.edt_email_port);
+        mEdtEmailSender = (EditText) findViewById(R.id.edt_email_sender);
         mEdtEmailUsername = (EditText) findViewById(R.id.edt_email_username);
         mEdtEmailPassword = (EditText) findViewById(R.id.edt_email_password);
         mChkEmailSSL = (CheckBox) findViewById(R.id.chk_email_ssl);
@@ -69,6 +71,7 @@ public class Settings extends BaseActivity {
         // email settings
         mEdtEmailServer.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SERVER, ""));
         mEdtEmailUsername.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_USERNAME,""));
+        mEdtEmailSender.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SENDER,""));
         mEdtEmailPassword.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD,""));
         mEdtEmailPort.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT,""));
         mChkEmailSSL.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, false));
@@ -81,6 +84,7 @@ public class Settings extends BaseActivity {
         // email settings
         editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_SERVER, mEdtEmailServer.getText().toString());
         editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_USERNAME, mEdtEmailUsername.getText().toString());
+        editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_SENDER, mEdtEmailSender.getText().toString());
         editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD, mEdtEmailPassword.getText().toString());
         editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT, mEdtEmailPort.getText().toString());
         editor.putBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, mChkEmailSSL.isChecked());

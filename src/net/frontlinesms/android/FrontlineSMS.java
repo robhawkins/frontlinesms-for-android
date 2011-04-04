@@ -20,11 +20,15 @@
 package net.frontlinesms.android;
 
 import android.app.Application;
+import org.acra.ACRA;
+import org.acra.annotation.ReportsCrashes;
 
+// https://spreadsheets0.google.com/viewform?formkey=dHFwTUN4MFdkZ3lnZjZIcWktZjVwcXc6MQ
+
+@ReportsCrashes(formKey = "dHFwTUN4MFdkZ3lnZjZIcWktZjVwcXc6MQ")
 public class FrontlineSMS extends Application {
 
     // intent extras
-
     public static final String EXTRA_SEARCH_QUERY = "EXTRA_SEARCH_QUERY";
     public static final String EXTRA_GROUP_NAME = "EXTRA_GROUP_NAME";
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
@@ -41,4 +45,13 @@ public class FrontlineSMS extends Application {
     public static final String PREF_SETTINGS_EMAIL_USERNAME = "Settings.Email.Username";
     public static final String PREF_SETTINGS_EMAIL_PASSWORD = "Settings.Email.Password";
     public static final String PREF_SETTINGS_EMAIL_SSL = "Settings.Email.SSL";
+    public static final String PREF_SETTINGS_EMAIL_SENDER = "Settings.Email.Sender";
+
+    @Override
+    public void onCreate() {
+        // The following line triggers the initialization of ACRA
+        ACRA.init(this);
+        super.onCreate();
+    }
+
 }

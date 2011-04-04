@@ -38,6 +38,7 @@
                 android:textColor="@android:color/white"
                     />
 
+            <!-- ========== Keyword ========== -->
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -52,6 +53,9 @@
                 android:layout_margin="5dp"
                 android:lines="1"/>
 
+
+            <!-- ========== Description ========== -->
+
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -65,6 +69,9 @@
                 android:gravity="top"
                 android:layout_margin="5dp"
                 android:lines="3"/>
+
+
+            <!-- ========== Reply ========== -->
 
             <LinearLayout
                     android:layout_width="fill_parent"
@@ -81,6 +88,27 @@
                     style="@style/Content.Label"
                     android:text="@string/keyword_autoreply"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_text_reply"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_text"/>
+
+            <EditText
+                android:id="@+id/edt_text_reply"
+                android:visibility="gone"
+                android:gravity="top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="140"
+                android:layout_margin="5dp"
+                android:lines="3"/>
+
+
+            <!-- ========== Forward ========== -->
 
             <LinearLayout
                     android:layout_width="fill_parent"
@@ -99,7 +127,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txt_text"
+                android:id="@+id/txt_text_forward"
                 android:visibility="gone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +135,7 @@
                 android:text="@string/keyword_text"/>
 
             <EditText
-                android:id="@+id/edt_text"
+                android:id="@+id/edt_text_forward"
                 android:visibility="gone"
                 android:gravity="top"
                 android:layout_width="fill_parent"
@@ -115,6 +143,14 @@
                 android:maxLines="140"
                 android:layout_margin="5dp"
                 android:lines="3"/>
+
+            <TextView
+                android:id="@+id/txt_forward_to_group"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_forward_to_group"/>
 
             <Spinner
                 android:id="@+id/spn_forward_to_group"
@@ -126,6 +162,64 @@
                 android:paddingBottom="0dp"
                 android:layout_margin="5dp"
                 android:prompt="@string/choose_group"/>
+
+
+            <!-- ========== E-Mail ========== -->
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp">
+                <CheckBox
+                    android:id="@+id/chk_email"
+                    android:onClick="checkCheckBoxLogic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_email"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_text_email"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_subject"/>
+
+            <EditText
+                android:id="@+id/edt_subject_email"
+                android:visibility="gone"
+                android:gravity="top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="140"
+                android:layout_margin="5dp"
+                android:lines="1"/>
+
+            <TextView
+                android:id="@+id/txt_text_email"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_text"/>
+
+            <EditText
+                android:id="@+id/edt_text_email"
+                android:visibility="gone"
+                android:gravity="top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="140"
+                android:layout_margin="5dp"
+                android:lines="3"/>
+
+
+            <!-- ========== Add to Group ========== -->
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -154,6 +248,9 @@
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
                 android:prompt="@string/choose_group"/>
+
+
+            <!-- ========== Remove from Group ========== -->
 
             <LinearLayout
                 android:layout_width="fill_parent"
