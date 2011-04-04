@@ -77,9 +77,9 @@ public class MailService {
         if (mPrefs.getBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, false)) {
             props.put("mail.smtp.starttls.enable", "true");  // needed for gmail
             props.put("mail.smtp.auth", "true"); // needed for gmail
-            props.put("mail.smtp.port", mPrefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SERVER, "587"));
+            props.put("mail.smtp.port", mPrefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT, "587"));
         } else {
-            props.put("mail.smtp.port", mPrefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SERVER, "25"));
+            props.put("mail.smtp.port", mPrefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT, "25"));
         }
 
 		/*Authenticator auth = new Authenticator() {
