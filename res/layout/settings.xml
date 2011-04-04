@@ -98,12 +98,13 @@
 
             <EditText
                 android:id="@+id/edt_email_sender"
-                android:hint="(e.g. FrontlineSMS [noreply@frontlinesms.com]) "
+                android:hint="(e.g. noreply@frontlinesms.com)"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:layout_margin="5dp"
-                android:lines="1"/>
+                android:lines="1"
+                android:maxLines="1"/>
 
             <TextView
                 android:layout_width="fill_parent"
@@ -148,6 +149,37 @@
                     style="@style/Content.Label"
                     android:text="@string/settings_email_ssl"/>
             </LinearLayout>
+
+
+            <!-- Google Analytics -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:textStyle="bold"
+                android:text="@string/settings_analytics"/>
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp">
+                <CheckBox
+                    android:id="@+id/chk_analytics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/settings_allow_analytics"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/Content.Label"
+                android:text="@string/settings_analytics_info"/>
 
         </LinearLayout>
 

@@ -36,6 +36,9 @@
     <string name="settings_email_port">Account Server Port:</string>
     <string name="settings_email_ssl">Use SSL</string>
     <string name="settings_email_sender">Sender Name &amp; Address:</string>
+    <string name="settings_analytics">Google Analytics</string>
+    <string name="settings_allow_analytics">Allow statistics collection</string>
+    <string name="settings_analytics_info">Google Analytics helps us to improve FrontlineSMS for Android by collection ANONYMOUS data on the usage of the various features that the app offers. No SMS or contact data is collected!</string>
 
     <!-- Keyword List -->
     <string name="menu_option_new">New</string>
@@ -57,5 +60,7 @@
     <string name="keyword_forward_to_group">to Group:</string>
     <string name="keyword_email">Send E-Mail</string>
     <string name="keyword_subject">Subject:</string>
+    <string name="keyword_http_url">URL:</string>
+    <string name="keyword_http_request">HTTP Request</string>
 
 </resources>

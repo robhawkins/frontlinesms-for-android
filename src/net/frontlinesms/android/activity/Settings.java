@@ -45,6 +45,7 @@ public class Settings extends BaseActivity {
     private EditText mEdtEmailPassword;
     private EditText mEdtEmailSender;
     private CheckBox mChkEmailSSL;
+    private CheckBox mChkAnalytics;
 
     /** Menu item to save / cancel operation. */
     private static final int MENU_OPTION_SAVE = Menu.FIRST;
@@ -62,6 +63,7 @@ public class Settings extends BaseActivity {
         mEdtEmailUsername = (EditText) findViewById(R.id.edt_email_username);
         mEdtEmailPassword = (EditText) findViewById(R.id.edt_email_password);
         mChkEmailSSL = (CheckBox) findViewById(R.id.chk_email_ssl);
+        mChkAnalytics = (CheckBox) findViewById(R.id.chk_analytics);
         loadPreferences();
     }
 
@@ -75,6 +77,7 @@ public class Settings extends BaseActivity {
         mEdtEmailPassword.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD,""));
         mEdtEmailPort.setText(mySharedPreferences.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT,""));
         mChkEmailSSL.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, false));
+        mChkAnalytics.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_ANALYTICS, false));
     }
 
     private void savePreferences() {
@@ -88,6 +91,7 @@ public class Settings extends BaseActivity {
         editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD, mEdtEmailPassword.getText().toString());
         editor.putString(FrontlineSMS.PREF_SETTINGS_EMAIL_PORT, mEdtEmailPort.getText().toString());
         editor.putBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, mChkEmailSSL.isChecked());
+        editor.putBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_ANALYTICS, mChkAnalytics.isChecked());
         editor.commit();
     }
 

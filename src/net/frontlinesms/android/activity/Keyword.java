@@ -50,12 +50,22 @@ public class Keyword extends BaseActivity {
     private CheckBox mChkReply;
     private CheckBox mChkForward;
     private CheckBox mChkAddToGroup;
+    private CheckBox mChkEmail;
+    private CheckBox mChkHttpRequest;
     private CheckBox mChkRemoveFromGroup;
     private Spinner mSpinnerAddToGroup;
     private Spinner mSpinnerRemoveFromGroup;
     private Spinner mSpinnerForwardToGroup;
-    private EditText mEdtText;
-    private TextView mTxtText;
+    private EditText mEdtTextReply;
+    private TextView mTxtTextReply;
+    private EditText mEdtTextForward;
+    private TextView mTxtTextForward;
+    private EditText mEdtSubjectEmail;
+    private EditText mEdtTextEmail;
+    private TextView mTxtTextEmail;
+    private TextView mTxtSubjectEmail;
+    private EditText mEdtHttpUrl;
+    private TextView mTxtTextHttpRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +91,24 @@ public class Keyword extends BaseActivity {
     private void initView() {
         mChkForward = ((CheckBox)findViewById(R.id.chk_forward));
         mChkReply = ((CheckBox)findViewById(R.id.chk_autoreply));
+        mChkEmail = ((CheckBox)findViewById(R.id.chk_email));
+        mChkHttpRequest = ((CheckBox)findViewById(R.id.chk_http_request));
         mChkAddToGroup = ((CheckBox)findViewById(R.id.chk_add_to_group));
         mChkRemoveFromGroup = ((CheckBox)findViewById(R.id.chk_remove_from_group));
         mSpinnerAddToGroup = ((Spinner)findViewById(R.id.spn_add_to_group));
         mSpinnerRemoveFromGroup = ((Spinner)findViewById(R.id.spn_remove_from_group));
         mSpinnerForwardToGroup = ((Spinner)findViewById(R.id.spn_forward_to_group));
-        mEdtText = ((EditText)findViewById(R.id.edt_text));
-        mTxtText = ((TextView)findViewById(R.id.txt_text));
-
+        mEdtTextReply = ((EditText)findViewById(R.id.edt_text_reply));
+        mTxtTextReply = ((TextView)findViewById(R.id.txt_text_reply));
+        mEdtTextForward = ((EditText) findViewById(R.id.edt_text_forward));
+        mTxtTextForward = ((TextView)findViewById(R.id.txt_text_forward));
+        mEdtTextEmail = ((EditText)findViewById(R.id.edt_text_email));
+        mTxtTextEmail = ((TextView)findViewById(R.id.txt_text_email));
+        mEdtSubjectEmail = ((EditText)findViewById(R.id.edt_subject_email));
+        mTxtSubjectEmail = ((TextView)findViewById(R.id.txt_subject_email));
+        mEdtHttpUrl = ((EditText)findViewById(R.id.edt_http_url));
+        mTxtTextHttpRequest = ((TextView)findViewById(R.id.txt_text_http_request));
+        
         // group list
         if (PIMService.groupNameCache.isEmpty()) {
             PIMService.getGroupsCursor(getApplicationContext()).close();
@@ -98,13 +118,8 @@ public class Keyword extends BaseActivity {
         int ix = 1;
         int groupListIndex = -1;
 
-        Log.d("Group", "Group cache size: " + PIMService.groupNameCache.keySet().size());
-
         for (Iterator iter=PIMService.groupNameCache.keySet().iterator();iter.hasNext();) {
             String g = PIMService.groupNameCache.get(iter.next());
-
-            Log.d("Group", "Group cache g: " + g + " = " + mKeywordAction.getGroup() + "?");
-
             if (g.equals(mKeywordAction.getGroup())) {
                 groupListIndex = ix;
             }
@@ -142,10 +157,12 @@ public class Keyword extends BaseActivity {
             ((TextView)findViewById(R.id.txt_header)).setText("Keyword: " + mKeywordAction.getKeyword());
             ((TextView)findViewById(R.id.edt_keyword)).setText(mKeywordAction.getKeyword());
             ((TextView)findViewById(R.id.edt_description)).setText(mKeywordAction.getDescription());
-            mEdtText.setText(mKeywordAction.getText());
+            mEdtTextReply.setText(mKeywordAction.getText());
 
             mChkForward.setChecked(mKeywordAction.getType()==KeywordAction.Type.FORWARD);
             mChkReply.setChecked(mKeywordAction.getType()==KeywordAction.Type.REPLY);
+            mChkEmail.setChecked(mKeywordAction.getType()==KeywordAction.Type.EMAIL);
+            mChkHttpRequest.setChecked(mKeywordAction.getType()==KeywordAction.Type.HTTP_REQUEST);
             mChkAddToGroup.setChecked(mKeywordAction.getType()==KeywordAction.Type.JOIN);
             mChkRemoveFromGroup.setChecked(mKeywordAction.getType()==KeywordAction.Type.LEAVE);
         }
@@ -181,6 +198,7 @@ public class Keyword extends BaseActivity {
         }
         else if (mChkReply.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.REPLY);
+            mKeywordAction.setText(mEdtTextReply.getText().toString());
         }
         else if (mChkForward.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.FORWARD);
@@ -189,9 +207,18 @@ public class Keyword extends BaseActivity {
                  spinnerValue = null;
             }
             mKeywordAction.setGroup(spinnerValue);
+            mKeywordAction.setText(mEdtTextForward.getText().toString());
+        }
+        else if (mChkEmail.isChecked()) {
+            mKeywordAction.setType(KeywordAction.Type.EMAIL);
+            mKeywordAction.setText(mEdtTextEmail.getText().toString());
+            mKeywordAction.setSubject(mEdtSubjectEmail.getText().toString());
+        }
+        else if (mChkHttpRequest.isChecked()) {
+            mKeywordAction.setType(KeywordAction.Type.HTTP_REQUEST);
+            mKeywordAction.setText(mEdtHttpUrl.getText().toString());
         }
 
-        mKeywordAction.setText(mEdtText.getText().toString());
     }
 
     /**
@@ -200,40 +227,137 @@ public class Keyword extends BaseActivity {
      */
     public void checkCheckBoxLogic(View v) {
         if ((v==null || v.getId()==R.id.chk_forward) && mChkForward.isChecked()) {
+            mChkEmail.setChecked(false);
+            mChkHttpRequest.setChecked(false);
             mChkReply.setChecked(false);
             mChkAddToGroup.setChecked(false);
             mChkRemoveFromGroup.setChecked(false);
-            mEdtText.setVisibility(View.VISIBLE);
-            mTxtText.setVisibility(View.VISIBLE);
+
+            mTxtTextEmail.setVisibility(View.GONE);
+            mTxtSubjectEmail.setVisibility(View.GONE);
+            mTxtTextHttpRequest.setVisibility(View.GONE);
+            mTxtTextReply.setVisibility(View.GONE);
+            mTxtTextEmail.setVisibility(View.GONE);
+            mTxtTextForward.setVisibility(View.VISIBLE);
+
+            mEdtTextReply.setVisibility(View.GONE);
+            mEdtTextEmail.setVisibility(View.GONE);
+            mEdtTextForward.setVisibility(View.VISIBLE);
+            mEdtHttpUrl.setVisibility(View.GONE);
+            mEdtSubjectEmail.setVisibility(View.GONE);
+
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
             mSpinnerForwardToGroup.setVisibility(View.VISIBLE);
         } else if ((v==null || v.getId()==R.id.chk_autoreply) && mChkReply.isChecked()) {
+            mChkEmail.setChecked(false);
+            mChkHttpRequest.setChecked(false);
             mChkForward.setChecked(false);
             mChkAddToGroup.setChecked(false);
             mChkRemoveFromGroup.setChecked(false);
-            mEdtText.setVisibility(View.VISIBLE);
-            mTxtText.setVisibility(View.VISIBLE);
+
+            mTxtTextEmail.setVisibility(View.GONE);
+            mTxtSubjectEmail.setVisibility(View.GONE);
+            mTxtTextHttpRequest.setVisibility(View.GONE);
+            mTxtTextReply.setVisibility(View.VISIBLE);
+            mTxtTextForward.setVisibility(View.GONE);
+
+            mEdtTextReply.setVisibility(View.VISIBLE);
+            mEdtTextForward.setVisibility(View.GONE);
+            mEdtTextEmail.setVisibility(View.GONE);
+            mEdtHttpUrl.setVisibility(View.GONE);
+            mEdtSubjectEmail.setVisibility(View.GONE);
+
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
             mSpinnerForwardToGroup.setVisibility(View.GONE);
         } else if ((v==null || v.getId()==R.id.chk_add_to_group) && mChkAddToGroup.isChecked()) {
+            mChkEmail.setChecked(false);
+            mChkHttpRequest.setChecked(false);
             mChkForward.setChecked(false);
             mChkReply.setChecked(false);
             mChkRemoveFromGroup.setChecked(false);
-            mEdtText.setVisibility(View.GONE);
-            mTxtText.setVisibility(View.GONE);
+
+            mTxtTextEmail.setVisibility(View.GONE);
+            mTxtSubjectEmail.setVisibility(View.GONE);
+            mTxtTextHttpRequest.setVisibility(View.GONE);
+            mTxtTextForward.setVisibility(View.GONE);
+            mTxtTextReply.setVisibility(View.GONE);
+
+            mEdtTextReply.setVisibility(View.GONE);
+            mEdtTextForward.setVisibility(View.GONE);
+            mEdtTextEmail.setVisibility(View.GONE);
+            mEdtHttpUrl.setVisibility(View.GONE);
+            mEdtSubjectEmail.setVisibility(View.GONE);
+
             mSpinnerAddToGroup.setVisibility(View.VISIBLE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
             mSpinnerForwardToGroup.setVisibility(View.GONE);
         } else if ((v==null || v.getId()==R.id.chk_remove_from_group) && mChkRemoveFromGroup.isChecked()) {
+            mChkEmail.setChecked(false);
+            mChkHttpRequest.setChecked(false);
             mChkForward.setChecked(false);
             mChkReply.setChecked(false);
             mChkAddToGroup.setChecked(false);
-            mEdtText.setVisibility(View.GONE);
-            mTxtText.setVisibility(View.GONE);
+
+            mTxtTextEmail.setVisibility(View.GONE);
+            mTxtSubjectEmail.setVisibility(View.GONE);
+            mTxtTextHttpRequest.setVisibility(View.GONE);
+            mTxtTextReply.setVisibility(View.GONE);
+            mTxtTextForward.setVisibility(View.GONE);
+
+            mEdtTextReply.setVisibility(View.GONE);
+            mEdtTextForward.setVisibility(View.GONE);
+            mEdtHttpUrl.setVisibility(View.GONE);
+            mEdtTextEmail.setVisibility(View.GONE);
+            mEdtSubjectEmail.setVisibility(View.GONE);
+
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.VISIBLE);
+            mSpinnerForwardToGroup.setVisibility(View.GONE);
+        } else if ((v==null || v.getId()==R.id.chk_email) && mChkEmail.isChecked()) {
+            mChkEmail.setChecked(true);
+            mChkHttpRequest.setChecked(false);
+            mChkForward.setChecked(false);
+            mChkReply.setChecked(false);
+            mChkAddToGroup.setChecked(false);
+
+            mTxtTextEmail.setVisibility(View.VISIBLE);
+            mTxtSubjectEmail.setVisibility(View.VISIBLE);
+            mTxtTextHttpRequest.setVisibility(View.GONE);
+            mTxtTextReply.setVisibility(View.GONE);
+            mTxtTextForward.setVisibility(View.GONE);
+
+            mEdtTextReply.setVisibility(View.GONE);
+            mEdtTextForward.setVisibility(View.GONE);
+            mEdtHttpUrl.setVisibility(View.GONE);
+            mEdtTextEmail.setVisibility(View.VISIBLE);
+            mEdtSubjectEmail.setVisibility(View.VISIBLE);
+
+            mSpinnerAddToGroup.setVisibility(View.GONE);
+            mSpinnerRemoveFromGroup.setVisibility(View.GONE);
+            mSpinnerForwardToGroup.setVisibility(View.GONE);
+        } else if ((v==null || v.getId()==R.id.chk_http_request) && mChkHttpRequest.isChecked()) {
+            mChkEmail.setChecked(false);
+            mChkHttpRequest.setChecked(true);
+            mChkForward.setChecked(false);
+            mChkReply.setChecked(false);
+            mChkAddToGroup.setChecked(false);
+
+            mTxtTextEmail.setVisibility(View.GONE);
+            mTxtSubjectEmail.setVisibility(View.GONE);
+            mTxtTextHttpRequest.setVisibility(View.VISIBLE);
+            mTxtTextReply.setVisibility(View.GONE);
+            mTxtTextForward.setVisibility(View.GONE);
+
+            mEdtHttpUrl.setVisibility(View.VISIBLE);
+            mEdtTextReply.setVisibility(View.GONE);
+            mEdtTextForward.setVisibility(View.GONE);
+            mEdtTextEmail.setVisibility(View.VISIBLE);
+            mEdtSubjectEmail.setVisibility(View.VISIBLE);
+
+            mSpinnerAddToGroup.setVisibility(View.GONE);
+            mSpinnerRemoveFromGroup.setVisibility(View.GONE);
             mSpinnerForwardToGroup.setVisibility(View.GONE);
         }
     }

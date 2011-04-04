@@ -18,7 +18,6 @@
  */
 package net.frontlinesms.android.model.model;
 
-import android.util.Log;
 import net.frontlinesms.android.db.DbEntity;
 
 /**
@@ -39,21 +38,25 @@ public final class KeywordAction implements DbEntity {
     /** Description. */
     private String description;
 
-    /** Auto reply text. */
+    /** Auto reply/forward/email text. */
 	private String text;
 
     /** Group to leave or join. */
 	private String group;
 
+    /** Subject (used for e-mail action). */
+	private String subject;
+
     /** Constructor/ */
 	public KeywordAction() {}
 	
-	private KeywordAction(Type type, String keyword, String description, String text, String group) {
+	private KeywordAction(Type type, String keyword, String description, String subject, String text, String group) {
 
 		this.type = type;
 		// convert all keywords to lower-case so they take up less space
 		this.keyword = keyword.toLowerCase();
         this.description = description;
+        this.subject = subject;
 		
 		if(!type.hasText() && text!=null) {
 			throw new IllegalStateException("Cannot set text on an action of type: " + type);
@@ -71,8 +74,16 @@ public final class KeywordAction implements DbEntity {
 	public Long getDbId() {
 		return _id;
 	}
-	
-	public Type getType() {
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public Type getType() {
 		return type;
 	}
     public void setType(Type type) {
@@ -113,17 +124,17 @@ public final class KeywordAction implements DbEntity {
     }
 
     //> STATIC FACTORY METHODS
-	public static KeywordAction createReplyAction(String keyword, String description, String replyText) {
-		return new KeywordAction(Type.REPLY, keyword, description, replyText, null);
+	public static KeywordAction createReplyAction(String keyword, String subject, String description, String replyText) {
+		return new KeywordAction(Type.REPLY, keyword, subject, description, replyText, null);
 	}
-	public static KeywordAction createForwardAction(String keyword, String description, String forwardText, String group) {
-		return new KeywordAction(Type.FORWARD, keyword, description, forwardText, group);
+	public static KeywordAction createForwardAction(String keyword, String subject, String description, String forwardText, String group) {
+		return new KeywordAction(Type.FORWARD, keyword, subject, description, forwardText, group);
 	}
-	public static KeywordAction createJoinAction(String keyword, String description, String group) {
-		return new KeywordAction(Type.JOIN, keyword, description, null, group);
+	public static KeywordAction createJoinAction(String keyword, String subject, String description, String group) {
+		return new KeywordAction(Type.JOIN, keyword, subject, description, null, group);
 	}
-	public static KeywordAction createLeaveAction(String keyword, String description, String group) {
-		return new KeywordAction(Type.LEAVE, keyword, description, null, group);
+	public static KeywordAction createLeaveAction(String keyword, String subject, String description, String group) {
+		return new KeywordAction(Type.LEAVE, keyword, subject, description, null, group);
 	}
 	
 //> ENUMS
@@ -131,7 +142,9 @@ public final class KeywordAction implements DbEntity {
 		REPLY(true, false),
 		FORWARD(true, true),
 		JOIN(false, true),
-		LEAVE(false, true);
+		LEAVE(false, true),
+        EMAIL(true,false),
+        HTTP_REQUEST(true,false);
 
 		private final boolean hasText;
 		private final boolean hasGroup;
