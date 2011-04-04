@@ -27,9 +27,9 @@ import android.view.View;
 import android.widget.*;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.model.KeywordAction;
 import net.frontlinesms.android.model.PIMService;
-import net.frontlinesms.android.model.model.KeywordAction;
-import net.frontlinesms.android.model.model.KeywordActionDao;
+import net.frontlinesms.android.model.KeywordActionDao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,9 +61,11 @@ public class Keyword extends BaseActivity {
     private EditText mEdtTextForward;
     private TextView mTxtTextForward;
     private EditText mEdtSubjectEmail;
+    private EditText mEdtRecipientEmail;
     private EditText mEdtTextEmail;
     private TextView mTxtTextEmail;
     private TextView mTxtSubjectEmail;
+    private TextView mTxtRecipientEmail;
     private EditText mEdtHttpUrl;
     private TextView mTxtTextHttpRequest;
 
@@ -106,6 +108,8 @@ public class Keyword extends BaseActivity {
         mTxtTextEmail = ((TextView)findViewById(R.id.txt_text_email));
         mEdtSubjectEmail = ((EditText)findViewById(R.id.edt_subject_email));
         mTxtSubjectEmail = ((TextView)findViewById(R.id.txt_subject_email));
+        mEdtRecipientEmail = ((EditText)findViewById(R.id.edt_recipient_email));
+        mTxtRecipientEmail = ((TextView)findViewById(R.id.txt_recipient_email));
         mEdtHttpUrl = ((EditText)findViewById(R.id.edt_http_url));
         mTxtTextHttpRequest = ((TextView)findViewById(R.id.txt_text_http_request));
         
@@ -149,6 +153,14 @@ public class Keyword extends BaseActivity {
         } else {
             mSpinnerRemoveFromGroup.setSelection(0);
         }
+        if (mKeywordAction.getType()==KeywordAction.Type.EMAIL) {
+            mEdtTextEmail.setText(mKeywordAction.getText());
+            mEdtSubjectEmail.setText(mKeywordAction.getSubject());
+            mEdtRecipientEmail.setText(mKeywordAction.getRecipient());
+        }
+        if (mKeywordAction.getType()==KeywordAction.Type.HTTP_REQUEST) {
+            mEdtHttpUrl.setText(mKeywordAction.getText());
+        }
 
         // set title
         if (mKeywordAction==null || mKeywordAction.getKeyword()==null) {
@@ -157,7 +169,6 @@ public class Keyword extends BaseActivity {
             ((TextView)findViewById(R.id.txt_header)).setText("Keyword: " + mKeywordAction.getKeyword());
             ((TextView)findViewById(R.id.edt_keyword)).setText(mKeywordAction.getKeyword());
             ((TextView)findViewById(R.id.edt_description)).setText(mKeywordAction.getDescription());
-            mEdtTextReply.setText(mKeywordAction.getText());
 
             mChkForward.setChecked(mKeywordAction.getType()==KeywordAction.Type.FORWARD);
             mChkReply.setChecked(mKeywordAction.getType()==KeywordAction.Type.REPLY);
@@ -178,6 +189,8 @@ public class Keyword extends BaseActivity {
         mKeywordAction.setDescription( ((EditText)findViewById(R.id.edt_description)).getText().toString() );
         mKeywordAction.setGroup(null);
         mKeywordAction.setText(null);
+        mKeywordAction.setRecipient(null);
+        mKeywordAction.setSubject(null);
         String spinnerValue;
 
         if (mChkAddToGroup.isChecked()) {
@@ -213,6 +226,7 @@ public class Keyword extends BaseActivity {
             mKeywordAction.setType(KeywordAction.Type.EMAIL);
             mKeywordAction.setText(mEdtTextEmail.getText().toString());
             mKeywordAction.setSubject(mEdtSubjectEmail.getText().toString());
+            mKeywordAction.setRecipient(mEdtRecipientEmail.getText().toString());
         }
         else if (mChkHttpRequest.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.HTTP_REQUEST);
@@ -239,12 +253,14 @@ public class Keyword extends BaseActivity {
             mTxtTextReply.setVisibility(View.GONE);
             mTxtTextEmail.setVisibility(View.GONE);
             mTxtTextForward.setVisibility(View.VISIBLE);
+            mTxtRecipientEmail.setVisibility(View.GONE);
 
             mEdtTextReply.setVisibility(View.GONE);
             mEdtTextEmail.setVisibility(View.GONE);
             mEdtTextForward.setVisibility(View.VISIBLE);
             mEdtHttpUrl.setVisibility(View.GONE);
             mEdtSubjectEmail.setVisibility(View.GONE);
+            mEdtRecipientEmail.setVisibility(View.GONE);
 
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
@@ -261,12 +277,14 @@ public class Keyword extends BaseActivity {
             mTxtTextHttpRequest.setVisibility(View.GONE);
             mTxtTextReply.setVisibility(View.VISIBLE);
             mTxtTextForward.setVisibility(View.GONE);
+            mTxtRecipientEmail.setVisibility(View.GONE);
 
             mEdtTextReply.setVisibility(View.VISIBLE);
             mEdtTextForward.setVisibility(View.GONE);
             mEdtTextEmail.setVisibility(View.GONE);
             mEdtHttpUrl.setVisibility(View.GONE);
             mEdtSubjectEmail.setVisibility(View.GONE);
+            mEdtRecipientEmail.setVisibility(View.GONE);
 
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
@@ -283,12 +301,14 @@ public class Keyword extends BaseActivity {
             mTxtTextHttpRequest.setVisibility(View.GONE);
             mTxtTextForward.setVisibility(View.GONE);
             mTxtTextReply.setVisibility(View.GONE);
+            mTxtRecipientEmail.setVisibility(View.GONE);
 
             mEdtTextReply.setVisibility(View.GONE);
             mEdtTextForward.setVisibility(View.GONE);
             mEdtTextEmail.setVisibility(View.GONE);
             mEdtHttpUrl.setVisibility(View.GONE);
             mEdtSubjectEmail.setVisibility(View.GONE);
+            mEdtRecipientEmail.setVisibility(View.GONE);
 
             mSpinnerAddToGroup.setVisibility(View.VISIBLE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
@@ -305,12 +325,14 @@ public class Keyword extends BaseActivity {
             mTxtTextHttpRequest.setVisibility(View.GONE);
             mTxtTextReply.setVisibility(View.GONE);
             mTxtTextForward.setVisibility(View.GONE);
+            mTxtRecipientEmail.setVisibility(View.GONE);
 
             mEdtTextReply.setVisibility(View.GONE);
             mEdtTextForward.setVisibility(View.GONE);
             mEdtHttpUrl.setVisibility(View.GONE);
             mEdtTextEmail.setVisibility(View.GONE);
             mEdtSubjectEmail.setVisibility(View.GONE);
+            mEdtRecipientEmail.setVisibility(View.GONE);
 
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.VISIBLE);
@@ -327,12 +349,14 @@ public class Keyword extends BaseActivity {
             mTxtTextHttpRequest.setVisibility(View.GONE);
             mTxtTextReply.setVisibility(View.GONE);
             mTxtTextForward.setVisibility(View.GONE);
+            mTxtRecipientEmail.setVisibility(View.VISIBLE);
 
             mEdtTextReply.setVisibility(View.GONE);
             mEdtTextForward.setVisibility(View.GONE);
             mEdtHttpUrl.setVisibility(View.GONE);
             mEdtTextEmail.setVisibility(View.VISIBLE);
             mEdtSubjectEmail.setVisibility(View.VISIBLE);
+            mEdtRecipientEmail.setVisibility(View.VISIBLE);
 
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);
@@ -349,12 +373,14 @@ public class Keyword extends BaseActivity {
             mTxtTextHttpRequest.setVisibility(View.VISIBLE);
             mTxtTextReply.setVisibility(View.GONE);
             mTxtTextForward.setVisibility(View.GONE);
+            mTxtRecipientEmail.setVisibility(View.GONE);
 
             mEdtHttpUrl.setVisibility(View.VISIBLE);
             mEdtTextReply.setVisibility(View.GONE);
             mEdtTextForward.setVisibility(View.GONE);
-            mEdtTextEmail.setVisibility(View.VISIBLE);
-            mEdtSubjectEmail.setVisibility(View.VISIBLE);
+            mEdtTextEmail.setVisibility(View.GONE);
+            mEdtSubjectEmail.setVisibility(View.GONE);
+            mEdtRecipientEmail.setVisibility(View.GONE);
 
             mSpinnerAddToGroup.setVisibility(View.GONE);
             mSpinnerRemoveFromGroup.setVisibility(View.GONE);

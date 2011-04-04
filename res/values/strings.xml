@@ -62,5 +62,6 @@
     <string name="keyword_subject">Subject:</string>
     <string name="keyword_http_url">URL:</string>
     <string name="keyword_http_request">HTTP Request</string>
+    <string name="keyword_recipient">Recipient:</string>
 
 </resources>

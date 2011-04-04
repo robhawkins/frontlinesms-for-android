@@ -16,7 +16,7 @@
  * <p/>
  * (c)2010 Meta Healthcare Systems Ltd. All rights reserved.
  */
-package net.frontlinesms.android.model.model;
+package net.frontlinesms.android.model;
 
 import net.frontlinesms.android.db.DbEntity;
 
@@ -47,16 +47,21 @@ public final class KeywordAction implements DbEntity {
     /** Subject (used for e-mail action). */
 	private String subject;
 
+    /** Subject (used for e-mail action). */
+	private String recipient;
+
     /** Constructor/ */
 	public KeywordAction() {}
 	
-	private KeywordAction(Type type, String keyword, String description, String subject, String text, String group) {
+	private KeywordAction(Type type, String keyword, String description, String subject, String text, String group,
+                          String recipient) {
 
 		this.type = type;
 		// convert all keywords to lower-case so they take up less space
 		this.keyword = keyword.toLowerCase();
         this.description = description;
         this.subject = subject;
+        this.recipient = recipient;
 		
 		if(!type.hasText() && text!=null) {
 			throw new IllegalStateException("Cannot set text on an action of type: " + type);
@@ -123,19 +128,30 @@ public final class KeywordAction implements DbEntity {
         this.description = description;
     }
 
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
     //> STATIC FACTORY METHODS
-	public static KeywordAction createReplyAction(String keyword, String subject, String description, String replyText) {
-		return new KeywordAction(Type.REPLY, keyword, subject, description, replyText, null);
+	/*public static KeywordAction createReplyAction(String keyword, String subject, String description, String replyText) {
+		return new KeywordAction(Type.REPLY, keyword, subject, description, replyText, null, null);
 	}
 	public static KeywordAction createForwardAction(String keyword, String subject, String description, String forwardText, String group) {
-		return new KeywordAction(Type.FORWARD, keyword, subject, description, forwardText, group);
+		return new KeywordAction(Type.FORWARD, keyword, subject, description, forwardText, group, null);
 	}
 	public static KeywordAction createJoinAction(String keyword, String subject, String description, String group) {
-		return new KeywordAction(Type.JOIN, keyword, subject, description, null, group);
+		return new KeywordAction(Type.JOIN, keyword, subject, description, null, group, null);
 	}
 	public static KeywordAction createLeaveAction(String keyword, String subject, String description, String group) {
-		return new KeywordAction(Type.LEAVE, keyword, subject, description, null, group);
+		return new KeywordAction(Type.LEAVE, keyword, subject, description, null, group, null);
 	}
+    public static KeywordAction createEmailAction(String keyword, String subject, String description, String group, String recipient) {
+		return new KeywordAction(Type.LEAVE, keyword, subject, description, null, group, recipient);
+	}*/
 	
 //> ENUMS
 	public enum Type {

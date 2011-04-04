@@ -29,13 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
+import net.frontlinesms.android.model.Contact;
 import net.frontlinesms.android.model.PIMService;
 import net.frontlinesms.android.model.SmsService;
-import net.frontlinesms.android.model.model.Contact;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>

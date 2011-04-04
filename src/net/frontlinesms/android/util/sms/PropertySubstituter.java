@@ -20,8 +20,8 @@
 package net.frontlinesms.android.util.sms;
 
 import android.content.Context;
+import net.frontlinesms.android.model.Contact;
 import net.frontlinesms.android.model.PIMService;
-import net.frontlinesms.android.model.model.Contact;
 
 /**
  * @author Alexander Anderson

@@ -7,13 +7,10 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
-import net.frontlinesms.android.model.model.Contact;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by IntelliJ IDEA.

@@ -21,8 +21,8 @@ package net.frontlinesms.android.util.sms;
 
 import android.content.Context;
 import net.frontlinesms.android.KeywordActionProcessor;
-import net.frontlinesms.android.model.model.KeywordAction;
-import net.frontlinesms.android.model.model.KeywordActionDao;
+import net.frontlinesms.android.model.KeywordAction;
+import net.frontlinesms.android.model.KeywordActionDao;
 
 public class MessageProcessor {
 	//private final Logger log = Logger.getLogger(this);

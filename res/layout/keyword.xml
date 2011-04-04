@@ -183,6 +183,24 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txt_recipient_email"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/Content.Label"
+                android:text="@string/keyword_recipient"/>
+
+            <EditText
+                android:id="@+id/edt_recipient_email"
+                android:visibility="gone"
+                android:gravity="top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="140"
+                android:layout_margin="5dp"
+                android:lines="1"/>
+
+            <TextView
                 android:id="@+id/txt_subject_email"
                 android:visibility="gone"
                 android:layout_width="fill_parent"

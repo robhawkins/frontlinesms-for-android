@@ -26,7 +26,6 @@ import android.net.Uri;
 import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.util.Log;
-import net.frontlinesms.android.model.model.Contact;
 
 import java.util.ArrayList;
 import java.util.HashMap;

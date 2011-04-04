@@ -19,15 +19,16 @@
  */
 package net.frontlinesms.android;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
-import net.frontlinesms.android.model.PIMService;
-import net.frontlinesms.android.model.SmsService;
-import net.frontlinesms.android.model.model.Contact;
-import net.frontlinesms.android.model.model.KeywordAction;
+import net.frontlinesms.android.model.*;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -60,11 +61,42 @@ public class KeywordActionProcessor {
 		case LEAVE:
 			processLeave(action, message);
 			break;
+        case EMAIL:
+			processEmail(action, message);
+			break;
+        case HTTP_REQUEST:
+			processHttpRequest(action, message);
+			break;
 		default:
 			throw new IllegalStateException("Unknown action type: " + action.getClass());
 		}
 	}
-	
+
+    private void processEmail(KeywordAction action, WholeSmsMessage message) {
+        SharedPreferences prefs = mContext.getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE);
+        String from = prefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SENDER, "");
+        MailService mailer = new MailService(mContext, from, action.getRecipient(), action.getSubject(), action.getText());
+        try {
+            mailer.send();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error sending e-mail.", e);
+        }
+    }
+
+    private void processHttpRequest(KeywordAction action, WholeSmsMessage message) {
+        try {
+            Contact contact = PIMService.getContactByPhoneNumber(mContext, message.getOriginatingAddress());
+            String url = this.propSub.substitute(action.getKeyword(), message, contact, action.getText());
+            final URL aUrl = new URL(url);
+            final URLConnection conn = aUrl.openConnection();
+            conn.setReadTimeout(15 * 1000);  // timeout 15 secs
+            conn.connect();
+            //Log.d(getClass().getSimpleName(), "http response: " + content);
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error with http request.", e);
+        }
+    }
+
 	private void processJoin(KeywordAction action, WholeSmsMessage message) {
 		if(action.getType() != KeywordAction.Type.JOIN) throw new IllegalStateException();
         Integer contactId = PIMService.getContactIdByPhoneNumber(mContext, message.getOriginatingAddress());
@@ -96,15 +128,15 @@ public class KeywordActionProcessor {
 		if(action.getType() != KeywordAction.Type.REPLY) throw new IllegalStateException();
         Contact contact = PIMService.getContactByPhoneNumber(mContext, message.getOriginatingAddress());
 		String unformattedReplyText = action.getText();
-        String replyText = this.propSub.substitute(action.getKeyword(), message, contact, unformattedReplyText);
+        String text = this.propSub.substitute(action.getKeyword(), message, contact, unformattedReplyText);
         ArrayList<Contact> contacts = new ArrayList<Contact>();
         Log.d("reply", "reply to: " + message.getOriginatingAddress());
         Log.d("reply", "reply contact: " + contact);
-        Log.d("reply", "reply replyText: " + replyText);
+        Log.d("reply", "reply replyText: " + text);
         if (contact!=null) {
             contacts.add(contact);
             Log.d("reply", "reply replyText send to: " + contact.getDisplayName());
-            SmsService.individualizeAndSendMessage(mContext, contacts, replyText, action.getKeyword(), message);
+            SmsService.individualizeAndSendMessage(mContext, contacts, text, action.getKeyword(), message);
         }
 	}
 
@@ -124,8 +156,10 @@ public class KeywordActionProcessor {
                 recipients.remove(r);
             }
         }
+        Contact contact = PIMService.getContactByPhoneNumber(mContext, message.getOriginatingAddress());
+        String text = this.propSub.substitute(action.getKeyword(), message, contact, action.getText());
         Log.d("forward", "forward msg to recipients after: " + recipients.size());
-        SmsService.individualizeAndSendMessage(mContext, recipients, action.getText(), action.getKeyword(), message);
+        SmsService.individualizeAndSendMessage(mContext, recipients, text, action.getKeyword(), message);
 	}
 
 

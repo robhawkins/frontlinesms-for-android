@@ -21,19 +21,15 @@ package net.frontlinesms.android.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.*;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.model.model.KeywordAction;
-import net.frontlinesms.android.model.model.KeywordActionDao;
-import net.frontlinesms.android.model.model.IKeywordActionDao;
+import net.frontlinesms.android.model.KeywordActionDao;
+import net.frontlinesms.android.model.IKeywordActionDao;
 
 import java.util.HashMap;
 

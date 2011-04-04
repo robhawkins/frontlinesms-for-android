@@ -16,7 +16,7 @@
  * <p/>
  * (c)2010 Meta Healthcare Systems Ltd. All rights reserved.
  */
-package net.frontlinesms.android.model.model;
+package net.frontlinesms.android.model;
 
 import java.sql.Timestamp;
 

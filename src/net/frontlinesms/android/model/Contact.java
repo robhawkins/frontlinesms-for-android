@@ -1,4 +1,4 @@
-package net.frontlinesms.android.model.model;
+package net.frontlinesms.android.model;
 
 public class Contact {
 
