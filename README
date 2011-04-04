@@ -1,0 +1,5 @@
+FrontlineSMS is award-winning free, open source software that turns a laptop and a mobile phone into a central communications hub. Once installed, the program enables users to send and receive text messages with groups of people through mobile phones. What you communicate is up to you, making FrontlineSMS useful in many different ways. See www.frontlinesms.com for more information.
+
+This github project "FrontlineSMS for Android" is a port of the desktop application to the Android platform, so that users don't need a PC + phone anymore but can handle their SMS programs with an Android powered smartphone only.
+
+For more information, see https://github.com/mathiaslin/frontlinesms-for-android/wiki
