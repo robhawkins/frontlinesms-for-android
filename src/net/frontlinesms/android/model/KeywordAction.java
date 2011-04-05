@@ -180,28 +180,29 @@ public final class KeywordAction implements DbEntity {
 			return this.hasGroup;
 		}
 	}
-	
-	/** @return the first word from the message, or <code>null</code> if there
-	 * don't appear to be any */
-	public static String getKeyword(ContentResolver contentResolver, String messageContent, boolean allowAnywhere) {
 
+    /**
+     * Checks the message for a keyword, by default checks for first word.
+     * @param contentResolver Content resolver
+     * @param messageContent SMS content
+     * @param allowAnywhere Keyword can be anywhere in message, otherwise only check first word
+     * @return
+     */
+    // TODO if we allow keywordAnywhere, then we should allow multiple keyword executions as well
+	public static String getKeyword(ContentResolver contentResolver, String messageContent, boolean allowAnywhere) {
+        messageContent = messageContent.toLowerCase().trim();
+        String k = null;
         if (allowAnywhere) {
-            String k = "";
             List<KeywordAction> keywords = new KeywordActionDao(contentResolver).getAllKeywords();
             for (KeywordAction keyword:keywords) {
-                if (messageContent.toLowerCase().indexOf(keyword.getKeyword().toLowerCase())>=0) {
+                if (messageContent.indexOf(keyword.getKeyword().toLowerCase())>=0) {
                     k = keyword.getKeyword();
                 }
             }
-            return k;
-        } else {
-            // convert to lower case to save space
-            messageContent = messageContent.toLowerCase().trim();
-            if(messageContent.length() == 0) {
-                return null;
-            } else {
-                return messageContent.split("\\s", 2)[0];
-            }
         }
+        if  (k==null && messageContent.length()>0) {
+            k = messageContent.split("\\s", 2)[0];
+        }
+        return k;
 	}
 }
