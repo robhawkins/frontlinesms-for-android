@@ -19,7 +19,9 @@
  */
 package net.frontlinesms.android.util.sms;
 
+import android.app.Activity;
 import android.content.Context;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.KeywordActionProcessor;
 import net.frontlinesms.android.model.KeywordAction;
 import net.frontlinesms.android.model.KeywordActionDao;
@@ -28,9 +30,11 @@ public class MessageProcessor {
 	//private final Logger log = Logger.getLogger(this);
 	private final KeywordActionProcessor mKeywordActionProcessor;
 	private final KeywordActionDao mKeywordActionDao;
+    private final Context mContext;
 //    private final ContentResolver mResolver;
 	
 	public MessageProcessor(Context context) {
+        this.mContext = context;
 		this.mKeywordActionDao = new KeywordActionDao(context.getContentResolver());
 		this.mKeywordActionProcessor = new KeywordActionProcessor(context);
 //        this.mResolver = resolver;
@@ -38,7 +42,9 @@ public class MessageProcessor {
 
     // process keyword actions
 	public void process(WholeSmsMessage message) {
-		KeywordAction[] actions = this.mKeywordActionDao.getActions(message.getMessageBody());
+        boolean allowAnywhere = mContext.getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE)
+                .getBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_KEYWORD_ANYWHERE, false);
+		KeywordAction[] actions = this.mKeywordActionDao.getActions(message.getMessageBody(), allowAnywhere);
 		for(KeywordAction action : actions) {
 			this.mKeywordActionProcessor.process(action, message);
 		}

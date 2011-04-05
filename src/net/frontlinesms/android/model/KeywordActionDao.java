@@ -3,23 +3,24 @@
  */
 package net.frontlinesms.android.model;
 
-import java.util.List;
-
-import android.database.Cursor;
-
-import net.frontlinesms.android.db.BaseDbAccessObject;
-
 import android.content.ContentResolver;
+import android.database.Cursor;
+import net.frontlinesms.android.db.BaseDbAccessObject;
 import net.frontlinesms.android.db.DbEntity;
 import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
+
+import java.util.List;
 
 /**
  * @author aga
  */
 public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActionDao {
 
+    ContentResolver mContentResolver;
+
     public KeywordActionDao(ContentResolver contentResolver) {
 		super(contentResolver);
+        this.mContentResolver = contentResolver;
 	}
 
 	@Override
@@ -28,9 +29,9 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 	}
 
 	@Override
-	public KeywordAction[] getActions(String messageContent) {
+	public KeywordAction[] getActions(String messageContent, boolean allowAnywhere) {
 		KeywordAction example = new KeywordAction();
-		example.setKeyword(KeywordAction.getKeyword(messageContent));
+		example.setKeyword(KeywordAction.getKeyword(mContentResolver, messageContent, allowAnywhere));
         List<KeywordAction> list = super.getAll(example);
 		return list.toArray(new KeywordAction[list.size()]);
 	}

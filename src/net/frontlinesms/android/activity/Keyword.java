@@ -28,8 +28,8 @@ import android.widget.*;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 import net.frontlinesms.android.model.KeywordAction;
-import net.frontlinesms.android.model.PIMService;
 import net.frontlinesms.android.model.KeywordActionDao;
+import net.frontlinesms.android.model.PIMService;
 
 import java.util.ArrayList;
 import java.util.Iterator;

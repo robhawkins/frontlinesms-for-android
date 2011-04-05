@@ -25,11 +25,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.*;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
-import net.frontlinesms.android.model.KeywordActionDao;
 import net.frontlinesms.android.model.IKeywordActionDao;
+import net.frontlinesms.android.model.KeywordActionDao;
 
 import java.util.HashMap;
 

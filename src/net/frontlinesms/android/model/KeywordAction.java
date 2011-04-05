@@ -18,7 +18,10 @@
  */
 package net.frontlinesms.android.model;
 
+import android.content.ContentResolver;
 import net.frontlinesms.android.db.DbEntity;
+
+import java.util.List;
 
 /**
  * @author Alex Anderson
@@ -180,13 +183,25 @@ public final class KeywordAction implements DbEntity {
 	
 	/** @return the first word from the message, or <code>null</code> if there
 	 * don't appear to be any */
-	public static String getKeyword(String messageContent) {
-		// convert to lower case to save space
-		messageContent = messageContent.toLowerCase().trim();
-		if(messageContent.length() == 0) {
-			return null;
-		} else {
-			return messageContent.split("\\s", 2)[0];
-		}
+	public static String getKeyword(ContentResolver contentResolver, String messageContent, boolean allowAnywhere) {
+
+        if (allowAnywhere) {
+            String k = "";
+            List<KeywordAction> keywords = new KeywordActionDao(contentResolver).getAllKeywords();
+            for (KeywordAction keyword:keywords) {
+                if (messageContent.toLowerCase().indexOf(keyword.getKeyword().toLowerCase())>=0) {
+                    k = keyword.getKeyword();
+                }
+            }
+            return k;
+        } else {
+            // convert to lower case to save space
+            messageContent = messageContent.toLowerCase().trim();
+            if(messageContent.length() == 0) {
+                return null;
+            } else {
+                return messageContent.split("\\s", 2)[0];
+            }
+        }
 	}
 }
