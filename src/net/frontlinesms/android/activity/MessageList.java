@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import net.frontlinesms.android.FrontlineSMS;
@@ -85,6 +86,8 @@ public final class MessageList extends BaseActivity {
         // Obtain handles to UI objects
         mMessageList = (ListView) findViewById(R.id.lst_messages);
 
+
+
         // Populate the message list
         initMessageList();
     }
@@ -111,9 +114,7 @@ public final class MessageList extends BaseActivity {
         String query = null;
         if (getIntent()!=null) {
             query = getIntent().getStringExtra(FrontlineSMS.EXTRA_SEARCH_QUERY);
-            Log.d("MessageList", "intent query " +query);
-        } else {
-            Log.d("MessageList", "intent is null!!!!!");
+            if (query!=null) findViewById(R.id.actionbar_button_1).setVisibility(View.GONE);
         }
         Cursor cursor = getMessages(query);
         String[] fields = new String[] {

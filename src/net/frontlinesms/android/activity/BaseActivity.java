@@ -65,6 +65,7 @@ public abstract class BaseActivity extends Activity {
 				final Intent i = new Intent(this, MessageList.class);
 				i.putExtra(FrontlineSMS.EXTRA_SEARCH_QUERY, query);
 				startActivity(i);
+                finish();
 			}
 		}
 	}

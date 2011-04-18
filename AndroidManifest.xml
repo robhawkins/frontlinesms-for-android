@@ -90,7 +90,7 @@
         </activity>
 
         <!-- MESSAGES -->
-        <activity android:name=".activity.MessageList" android:launchMode="singleTop">
+        <activity android:name=".activity.MessageList" >
             <intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>
