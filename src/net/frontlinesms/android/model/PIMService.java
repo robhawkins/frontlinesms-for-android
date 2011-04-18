@@ -67,8 +67,12 @@ public class PIMService {
     }
 
     public static ArrayList<Contact> getContactsByGroup(final Context context, final String groupName) {
-        Log.d("PIMService", "getContactsByGroup... ");
         Integer groupId = getGroupIdByName(context, groupName);
+        return getContactsByGroup(context, groupId);
+    }
+    public static ArrayList<Contact> getContactsByGroup(final Context context, final Integer groupId) {
+        Log.d("PIMService", "getContactsByGroup... ");
+        //Integer groupId = getGroupIdByName(context, groupName);
         Cursor c = getContactsCursorByGroup(context, new Integer[]{groupId});
         Log.d("PIMService", "getContactsByGroup... cursor size " + c.getCount());
         ArrayList<Contact> contacts = new ArrayList<Contact>();

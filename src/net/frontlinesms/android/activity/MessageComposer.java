@@ -69,9 +69,10 @@ public class MessageComposer extends BaseActivity {
             if (recipientIds!=null) {
                 for (Integer id:recipientIds) {
                     recipients += (!"".equals(recipients)?", ":"") + PIMService.groupNameCache.get(id);
+                    mContacts.addAll(PIMService.getContactsByGroup(this, id));
                 }
             }
-
+            Log.d(TAG, "recipientIds for groups: " + recipients);
         } else {
             Cursor c = PIMService.getContactsCursorById(this, recipientIds.toArray(new Integer[recipientIds.size()]));
             if (c.moveToFirst()) {
@@ -84,6 +85,7 @@ public class MessageComposer extends BaseActivity {
                 } while (c.moveToNext());
             }
             c.close();
+            Log.d(TAG, "recipientIds for contacts: " + recipients);
         }
         ((TextView) findViewById(R.id.txt_recipients)).setText(recipients);
         findViewById(R.id.btn_send_message).setOnClickListener(new View.OnClickListener() {
@@ -92,8 +94,9 @@ public class MessageComposer extends BaseActivity {
                 new AsyncTask() {
                     @Override
                     protected Object doInBackground(Object... objects) {
-                        SmsService.sendMessage(getApplicationContext(),
-                                mContacts, ((EditText) findViewById(R.id.edt_message)).getText().toString());
+                        SmsService.individualizeAndSendMessage(getApplicationContext(),
+                                mContacts, ((EditText) findViewById(R.id.edt_message)).getText().toString(),
+                                null, null);
                         return null;
                     }
 
@@ -105,6 +108,8 @@ public class MessageComposer extends BaseActivity {
                     @Override
                     protected void onPostExecute(Object o) {
                         super.onPostExecute(o);
+                        Toast.makeText(MessageComposer.this, "Message(s) sent.", Toast.LENGTH_SHORT);
+                        finish();
                     }
                 }.execute();
 

@@ -37,11 +37,11 @@ public class SmsService {
                                    String message, String keyword, WholeSmsMessage sms) {
 
         final PropertySubstituter propSub = new PropertySubstituter(context);
-        Log.d(TAG, "Send message to contacts: " + contacts.size());
+        Log.d(TAG, "individualizeAndSendMessage for : " + contacts.size() + " contacts");
 
         for (Contact contact:contacts) {
 
-            Log.d(TAG, "Send message to contact id: " + contact.getId().toString());
+            Log.d(TAG, "individualizeAndSendMessage to contact id: " + contact.getId().toString());
 
             String formattedMessage = propSub.substitute(keyword, sms, contact, message);
 

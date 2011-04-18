@@ -59,9 +59,12 @@ public class PropertySubstituter {
 		
 		return subText
                 .replace(KEY_KEYWORD, (keyword==null?"":keyword))
-				.replace(KEY_DESTINATION_PHONENUMBER, contact.getMobile())
-				.replace(KEY_SENDER_PHONENUMBER, (message==null?"":message.getOriginatingAddress()))
-				.replace(KEY_ORIGINAL_MESSAGE, message.getMessageBody()) // always substitute message body last to avoid injection
+				.replace(KEY_DESTINATION_PHONENUMBER, (contact.getMobile()==null?"":contact.getMobile()))
+				.replace(KEY_SENDER_PHONENUMBER,
+                        (message==null||message.getOriginatingAddress()==null?"":message.getOriginatingAddress()))
+				.replace(KEY_ORIGINAL_MESSAGE,
+                        (message==null||message.getMessageBody()==null?"":message.getMessageBody()))
+                        // always substitute message body last to avoid injection
 				;
 	}
 
