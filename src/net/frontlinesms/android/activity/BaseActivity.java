@@ -46,14 +46,20 @@ public abstract class BaseActivity extends Activity {
 
 		trackAnalytics();
 
+        if (getIntent()!=null) Log.d(TAG, "getIntent.getAction(): " + getIntent().getAction());
+
         if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
 			String query = getIntent().getStringExtra(SearchManager.QUERY);
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
 					this, SuggestionProvider.AUTHORITY,
 					SuggestionProvider.MODE);
 			suggestions.saveRecentQuery(query, null);
-			// Toast.makeText(this, "saving query: " + query, Toast.LENGTH_LONG).show();
-			//            query = intent.getDataString();
+
+            // if user selected suggestion from suggestion list, rather than pressing the
+            // search icon
+            if (query==null && getIntent().getDataString()!=null) {
+                query = getIntent().getDataString();
+            }
 
 			if (query!=null) {
 				final Intent i = new Intent(this, MessageList.class);

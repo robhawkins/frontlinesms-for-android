@@ -133,8 +133,9 @@ public final class MessageList extends BaseActivity {
     private Cursor getMessages(String query)
     {
         Cursor cursor = getContentResolver().query(SMS_URI, PROJECTION,
-                query==null?null:(BODY_COLUMN + " like '%%"+query+"%%'"),
-                null,
+                // query==null?null:("lowercase("+BODY_COLUMN + ") like '%%" + query.toLowerCase() + "%%'"),
+                query==null?null:(BODY_COLUMN + " like '%%" + query + "%%'"),
+                null, // new String[]{query.toLowerCase()}
                 null);
         Log.d("MessageList", "Cursor length " + cursor.getCount() +"");
         Log.d("MessageList", "Cursor " + cursor +"");
