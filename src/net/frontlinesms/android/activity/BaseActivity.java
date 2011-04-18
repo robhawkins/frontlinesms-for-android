@@ -19,61 +19,77 @@
  */
 package net.frontlinesms.android.activity;
 
+import net.frontlinesms.android.FrontlineSMS;
+import net.frontlinesms.android.model.AnalyticsService;
+import net.frontlinesms.android.search.SuggestionProvider;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import net.frontlinesms.android.FrontlineSMS;
-import net.frontlinesms.android.R;
-import net.frontlinesms.android.search.SuggestionProvider;
 
 /**
  * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
 public abstract class BaseActivity extends Activity {
 
-    private static Bundle appDataBundle;
+	private static Bundle appDataBundle;
 
-    protected String TAG = getClass().getSimpleName();
+	protected String TAG = getClass().getSimpleName();
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+		trackAnalytics();
+	}
 
-        if (getIntent()!=null) Log.d(TAG, "getIntent.getAction(): " + getIntent().getAction());
+	@Override
+	protected void onResume() {
+		super.onResume();
 
-        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            String query = getIntent().getStringExtra(SearchManager.QUERY);
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
-                    this, SuggestionProvider.AUTHORITY,
-                    SuggestionProvider.MODE);
-            suggestions.saveRecentQuery(query, null);
-            Toast.makeText(this, "saving query: " + query, Toast.LENGTH_LONG).show();
-//            query = intent.getDataString();
+		if (getIntent()!=null) Log.d(TAG, "getIntent.getAction(): " + getIntent().getAction());
 
-            if (query!=null) {
-                final Intent i = new Intent(this, MessageList.class);
-                i.putExtra(FrontlineSMS.EXTRA_SEARCH_QUERY, query);
-                startActivity(i);
-            }
-        }
+		if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+			String query = getIntent().getStringExtra(SearchManager.QUERY);
+			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+					this, SuggestionProvider.AUTHORITY,
+					SuggestionProvider.MODE);
+			suggestions.saveRecentQuery(query, null);
+			Toast.makeText(this, "saving query: " + query, Toast.LENGTH_LONG).show();
+			//            query = intent.getDataString();
 
-    }
+			if (query!=null) {
+				final Intent i = new Intent(this, MessageList.class);
+				i.putExtra(FrontlineSMS.EXTRA_SEARCH_QUERY, query);
+				startActivity(i);
+			}
+		}
 
-    /**
-     * Returns to dashboard, after user clicked the action bar anywhere.
-     * @param v Clicked view
-     */
-    public void goHome(View v) {
-        startActivity(new Intent(this, Dashboard.class));
-    }
+	}
+
+	/**
+	 * Returns to dashboard, after user clicked the action bar anywhere.
+	 * @param v Clicked view
+	 */
+	public void goHome(View v) {
+		startActivity(new Intent(this, Dashboard.class));
+	}
+
+	/**
+	 * Based on the user preferences, the application tracks the
+	 * visited activity.
+	 */
+	private void trackAnalytics() {
+		SharedPreferences mySharedPreferences = getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE);
+		if (mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_ANALYTICS, false)) {
+			AnalyticsService.startAnalyticsManager(this);
+			AnalyticsService.trackPageView(TAG, this);
+			AnalyticsService.dispatchAnalytics();
+		}
+	}
 
 }
