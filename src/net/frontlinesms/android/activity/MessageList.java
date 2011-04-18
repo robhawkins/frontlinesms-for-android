@@ -24,9 +24,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.R;
 
 /**
@@ -84,14 +85,14 @@ public final class MessageList extends BaseActivity {
         // Obtain handles to UI objects
         mMessageList = (ListView) findViewById(R.id.lst_messages);
 
-        // Populate the contact list
-        initGroupList();
+        // Populate the message list
+        initMessageList();
     }
 
     /**
      * Populates the message list.
      */
-    private void initGroupList() {
+    private void initMessageList() {
 
         // List header
         TextView txtHeader = new TextView(this);
@@ -105,15 +106,21 @@ public final class MessageList extends BaseActivity {
         txtHeader.setTextColor(Color.WHITE);
         mMessageList.addHeaderView(txtHeader);
 
-        // Build adapter with contact entries
-        Cursor cursor = getMessages();
+
+        // Build adapter with message entries
+        String query = null;
+        if (getIntent()!=null) {
+            query = getIntent().getStringExtra(FrontlineSMS.EXTRA_SEARCH_QUERY);
+            Log.d("MessageList", "intent query " +query);
+        } else {
+            Log.d("MessageList", "intent is null!!!!!");
+        }
+        Cursor cursor = getMessages(query);
         String[] fields = new String[] {
                 BODY_COLUMN,
                 NUMBER_COLUMN,
                 // TYPE_COLUMN,   // 1 = inbound, 2 = outbound
         };
-//        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.message_list_item, cursor,
-//                fields, new int[] {R.id.txt_title, R.id.txt_mobile});
         MessageListAdapter adapter = new MessageListAdapter(this, cursor);
         mMessageList.setAdapter(adapter);
     }
@@ -123,12 +130,24 @@ public final class MessageList extends BaseActivity {
      *
      * @return A cursor for for accessing the sms list.
      */
-    private Cursor getMessages()
+    private Cursor getMessages(String query)
     {
-        Cursor cursor = getContentResolver().query(SMS_URI, PROJECTION, null, null,
+        Cursor cursor = getContentResolver().query(SMS_URI, PROJECTION,
+                query==null?null:(BODY_COLUMN + " like '%%"+query+"%%'"),
+                null,
                 null);
+        Log.d("MessageList", "Cursor length " + cursor.getCount() +"");
+        Log.d("MessageList", "Cursor " + cursor +"");
         return cursor;
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (getIntent()!=null) {
+            this.finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

@@ -4,6 +4,8 @@
 	    android:label="@string/app_name"
         android:hint="@string/searchbar_hint_global"
 	    android:searchSuggestAuthority="net.frontlinesms.android.search.SuggestionProvider"
+        android:launchMode="singleTop"
+        android:searchSuggestIntentAction="android.intent.action.SEARCH"
 	    android:searchSuggestSelection=" ?"
         android:searchSuggestThreshold="0"
 	    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"

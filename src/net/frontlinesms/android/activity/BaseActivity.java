@@ -45,6 +45,22 @@ public abstract class BaseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		trackAnalytics();
+
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+			String query = getIntent().getStringExtra(SearchManager.QUERY);
+			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+					this, SuggestionProvider.AUTHORITY,
+					SuggestionProvider.MODE);
+			suggestions.saveRecentQuery(query, null);
+			// Toast.makeText(this, "saving query: " + query, Toast.LENGTH_LONG).show();
+			//            query = intent.getDataString();
+
+			if (query!=null) {
+				final Intent i = new Intent(this, MessageList.class);
+				i.putExtra(FrontlineSMS.EXTRA_SEARCH_QUERY, query);
+				startActivity(i);
+			}
+		}
 	}
 
 	@Override
@@ -53,7 +69,31 @@ public abstract class BaseActivity extends Activity {
 
 		if (getIntent()!=null) Log.d(TAG, "getIntent.getAction(): " + getIntent().getAction());
 
-		if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+        // if (!this.getClass().equals(Dashboard.class) || getIntent()==null)
+
+		/*if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+			String query = getIntent().getStringExtra(SearchManager.QUERY);
+			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+					this, SuggestionProvider.AUTHORITY,
+					SuggestionProvider.MODE);
+			suggestions.saveRecentQuery(query, null);
+			Toast.makeText(this, "saving query: " + query, Toast.LENGTH_LONG).show();
+			//            query = intent.getDataString();
+
+			if (query!=null) {
+				final Intent i = new Intent(this, MessageList.class);
+				i.putExtra(FrontlineSMS.EXTRA_SEARCH_QUERY, query);
+				startActivity(i);
+			}
+		}*/
+
+	}
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // super.onNewIntent(intent);
+        if (getIntent()!=null) Log.d(TAG, "onNewIntent.getIntent.getAction(): " + getIntent().getAction());
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
 			String query = getIntent().getStringExtra(SearchManager.QUERY);
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
 					this, SuggestionProvider.AUTHORITY,
@@ -69,9 +109,9 @@ public abstract class BaseActivity extends Activity {
 			}
 		}
 
-	}
+    }
 
-	/**
+    /**
 	 * Returns to dashboard, after user clicked the action bar anywhere.
 	 * @param v Clicked view
 	 */
