@@ -159,7 +159,7 @@ public class Keyword extends BaseActivity {
             mEdtRecipientEmail.setText(mKeywordAction.getRecipient());
         }
         if (mKeywordAction.getType()==KeywordAction.Type.HTTP_REQUEST) {
-            mEdtHttpUrl.setText(mKeywordAction.getText());
+            mEdtHttpUrl.setText(mKeywordAction.getRecipient());
         }
 
         // set title
@@ -230,7 +230,7 @@ public class Keyword extends BaseActivity {
         }
         else if (mChkHttpRequest.isChecked()) {
             mKeywordAction.setType(KeywordAction.Type.HTTP_REQUEST);
-            mKeywordAction.setText(mEdtHttpUrl.getText().toString());
+            mKeywordAction.setRecipient(mEdtHttpUrl.getText().toString());
         }
 
     }

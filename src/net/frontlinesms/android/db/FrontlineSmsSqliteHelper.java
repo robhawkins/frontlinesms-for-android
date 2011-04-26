@@ -8,7 +8,7 @@ public class FrontlineSmsSqliteHelper extends DbSqliteHelper {
 
 	public static final String CONTENT_URI = "content://" + FrontlineSmsContentProvider.class.getName().toLowerCase();
 	private static final String DATABASE_NAME = "frontlinesms";
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 7;
 
 	public FrontlineSmsSqliteHelper(Context context) {
 		super(context, DATABASE_NAME, DATABASE_VERSION);

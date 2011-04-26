@@ -56,14 +56,19 @@ public class PropertySubstituter {
 				subText = subText.replace(KEY_DESTINATION_NAME, contact.getDisplayName());
 			}
 		}
-		
+
+        // drop the keyword in a forwarded message or when using substitutes
+        String msg = message==null?null:message.getMessageBody();
+        if (message.getMessageBody()!=null && keyword!=null && !"".equals(keyword)) {
+            msg = message.getMessageBody().replaceFirst(keyword,"").trim();
+        }
+
 		return subText
                 .replace(KEY_KEYWORD, (keyword==null?"":keyword))
 				.replace(KEY_DESTINATION_PHONENUMBER, (contact.getMobile()==null?"":contact.getMobile()))
 				.replace(KEY_SENDER_PHONENUMBER,
                         (message==null||message.getOriginatingAddress()==null?"":message.getOriginatingAddress()))
-				.replace(KEY_ORIGINAL_MESSAGE,
-                        (message==null||message.getMessageBody()==null?"":message.getMessageBody()))
+				.replace(KEY_ORIGINAL_MESSAGE, (msg==null?"":msg))
                         // always substitute message body last to avoid injection
 				;
 	}
