@@ -86,7 +86,7 @@ public class KeywordActionProcessor {
     private void processHttpRequest(KeywordAction action, WholeSmsMessage message) {
         try {
             Contact contact = PIMService.getContactByPhoneNumber(mContext, message.getOriginatingAddress());
-            String url = this.propSub.substitute(action.getKeyword(), message, contact, action.getText());
+            String url = this.propSub.substitute(action.getKeyword(), message, contact, action.getRecipient());
             final URL aUrl = new URL(url);
             final URLConnection conn = aUrl.openConnection();
             conn.setReadTimeout(15 * 1000);  // timeout 15 secs
@@ -122,7 +122,6 @@ public class KeywordActionProcessor {
             PIMService.removeContactFromGroup(mContext, (long) contactId, (long) rawContactId, (long) groupId);
         }
 	}
-
 
 	private void processReply(KeywordAction action, WholeSmsMessage message) {
 		if(action.getType() != KeywordAction.Type.REPLY) throw new IllegalStateException();

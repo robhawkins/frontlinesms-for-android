@@ -25,6 +25,7 @@ import java.util.List;
 
 /**
  * @author Alex Anderson
+ * @author Mathias Lin
  *
  */
 public final class KeywordAction implements DbEntity {
@@ -50,7 +51,7 @@ public final class KeywordAction implements DbEntity {
     /** Subject (used for e-mail action). */
 	private String subject;
 
-    /** Subject (used for e-mail action). */
+    /** Recipient. */
 	private String recipient;
 
     /** Constructor/ */
@@ -139,22 +140,6 @@ public final class KeywordAction implements DbEntity {
         this.recipient = recipient;
     }
 
-    //> STATIC FACTORY METHODS
-	/*public static KeywordAction createReplyAction(String keyword, String subject, String description, String replyText) {
-		return new KeywordAction(Type.REPLY, keyword, subject, description, replyText, null, null);
-	}
-	public static KeywordAction createForwardAction(String keyword, String subject, String description, String forwardText, String group) {
-		return new KeywordAction(Type.FORWARD, keyword, subject, description, forwardText, group, null);
-	}
-	public static KeywordAction createJoinAction(String keyword, String subject, String description, String group) {
-		return new KeywordAction(Type.JOIN, keyword, subject, description, null, group, null);
-	}
-	public static KeywordAction createLeaveAction(String keyword, String subject, String description, String group) {
-		return new KeywordAction(Type.LEAVE, keyword, subject, description, null, group, null);
-	}
-    public static KeywordAction createEmailAction(String keyword, String subject, String description, String group, String recipient) {
-		return new KeywordAction(Type.LEAVE, keyword, subject, description, null, group, recipient);
-	}*/
 	
 //> ENUMS
 	public enum Type {
