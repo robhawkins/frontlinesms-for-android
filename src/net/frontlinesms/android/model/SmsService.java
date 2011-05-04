@@ -1,13 +1,16 @@
 package net.frontlinesms.android.model;
 
+import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
+import net.frontlinesms.android.util.sms.SmsReceiver;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 import java.util.List;
@@ -23,9 +26,9 @@ public class SmsService {
 
     private final static String TAG = PIMService.class.getSimpleName();
 
-    public static void sendMessage(final Context context, List<Contact> contacts, String message) {
+    /*public static void sendMessage(final Context context, List<Contact> contacts, String message) {
         individualizeAndSendMessage(context, contacts, message, null, null);
-    }
+    }*/
 
     /**
      * Sends out a SMS to a provided list of recipients (contacts).
@@ -38,6 +41,59 @@ public class SmsService {
 
         final PropertySubstituter propSub = new PropertySubstituter(context);
         Log.d(TAG, "individualizeAndSendMessage for : " + contacts.size() + " contacts");
+
+
+
+        //---when the SMS has been sent---
+        context.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+
+                WholeSmsMessage message = SmsReceiver.getMessagesFromIntent(intent);
+                Log.d("SmsService", "Sent body: " + message.getMessageBody());
+                Log.d("SmsService", "Sent number: " + message.getOriginatingAddress());
+
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(context, "SMS sent", Toast.LENGTH_SHORT).show();
+
+                        ContentValues values = new ContentValues();
+                        values.put("address", message.getOriginatingAddress());
+                        values.put("body", message.getMessageBody());
+                        context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(context, "Generic failure", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(context, "No service", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(context, "Null PDU", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(context, "Radio off", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter("SMS_SENT"));
+
+        //---when the SMS has been delivered---
+        context.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(context, "SMS delivered", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(context, "SMS not delivered", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter("SMS_DELIVERED"));
+
 
         for (Contact contact:contacts) {
 
@@ -58,6 +114,12 @@ public class SmsService {
                 PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0, new Intent("SMS_DELIVERED"), 0);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phone, null, formattedMessage, sentPI, deliveredPI);
+
+                // store the sent sms in the sent folder (that shouldn't be necessary?!)
+//                ContentValues values = new ContentValues();
+//                values.put("address", phone);
+//                values.put("body", formattedMessage);
+//                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
             }
 
         }

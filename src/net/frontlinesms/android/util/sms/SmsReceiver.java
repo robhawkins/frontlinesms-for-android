@@ -50,27 +50,30 @@ public abstract class SmsReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+
+        Log.d("SmsReceiver: ", "SmsReceiver // intent.Action: " + intent.getAction());
+
 		IntentType intentType = IntentType.get(intent);
 		if(intentType != null) {
 			this.context = context;
 			this.init();
 			
 			switch(intentType) {
-			case SMS_RECEIVED:
-				WholeSmsMessage message = getMessagesFromIntent(intent);
-				if(message != null) {
-					Log.i(TAG, "Handling received message...");
-					this.getReceivedSmsHandler().handleReceivedSms(message);
-				} else {
-					Log.w(TAG, "No SmsMessage objects extracted from " + intentType);
-				}
-				break;
-			default: throw new IllegalStateException("Unhandled intent: " + intentType.getAction());
+                case SMS_RECEIVED:
+                    WholeSmsMessage message = getMessagesFromIntent(intent);
+                    if(message != null) {
+                        Log.i(TAG, "Handling received message...");
+                        this.getReceivedSmsHandler().handleReceivedSms(message);
+                    } else {
+                        Log.w(TAG, "No SmsMessage objects extracted from " + intentType);
+                    }
+                    break;
+                default: throw new IllegalStateException("Unhandled intent: " + intentType.getAction());
 			}
 		}
 	}
 
-	private WholeSmsMessage getMessagesFromIntent(Intent intent) {
+    public static WholeSmsMessage getMessagesFromIntent(Intent intent) {
 		Bundle bundle = intent.getExtras();
 		if(bundle == null) return null;
 		else {
@@ -85,6 +88,8 @@ public abstract class SmsReceiver extends BroadcastReceiver {
 	}
 
 }
+
+
 
 enum IntentType {
 	SMS_RECEIVED("android.provider.Telephony.SMS_RECEIVED");
