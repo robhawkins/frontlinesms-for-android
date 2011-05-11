@@ -40,7 +40,7 @@ public final class Job implements DbEntity {
     /** Unique id. */
 	private Long _id;
 
-    private KeywordAction.Type type;
+    private Job.Type type;
 
     /** Recipient (can be email address, phone number, or http url. */
 	private String recipient;
@@ -63,14 +63,21 @@ public final class Job implements DbEntity {
     /** Constructor/ */
 	public Job() {}
 
-	private Job(KeywordAction.Type type, String recipient, String subject, String text) {
+	public Job(Job.Type type, String recipient, String subject, String text) {
 		this.type = type;
         this.subject = subject;
         this.recipient = recipient;
 		this.text = text;
         this.creationTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 	}
-	
+
+//> ENUMS
+	public enum Type {
+		SMS_JOB,
+		EMAIL_JOB,
+		HTTP_REQUEST_JOB;
+	}
+
 //> ACCESSORS
 	@Override
 	public Long getDbId() {
@@ -85,19 +92,19 @@ public final class Job implements DbEntity {
         this.subject = subject;
     }
 
-    public Long get_id() {
+    /*public Long getId() {
         return _id;
     }
 
     public void set_id(Long _id) {
         this._id = _id;
-    }
+    }*/
 
-    public KeywordAction.Type getType() {
+    public Job.Type getType() {
         return type;
     }
 
-    public void setType(KeywordAction.Type type) {
+    public void setType(Job.Type type) {
         this.type = type;
     }
 

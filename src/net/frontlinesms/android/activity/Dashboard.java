@@ -58,6 +58,10 @@ public class Dashboard extends BaseActivity {
             case R.id.img_search:
                 onSearchRequested();
                 break;
+            case R.id.ll_logs:
+            case R.id.img_log:
+                startActivity(new Intent(this, JobList.class));
+                break;
             case R.id.img_settings:
                 startActivity(new Intent(this, Settings.class));
                 break;

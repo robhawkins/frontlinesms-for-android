@@ -1,3 +1,22 @@
+/**
+ * FrontlineSMS <http://www.frontlinesms.com>
+ * Copyright 2010, Meta Healthcare Systems Ltd.
+ *
+ * This file is part of FrontlineSMS for Android.
+ *
+ * FrontlineSMS is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
+ *
+ * FrontlineSMS is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with FrontlineSMS. If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.frontlinesms.android.model;
 
 import android.app.Activity;
@@ -5,23 +24,18 @@ import android.app.PendingIntent;
 import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
 import net.frontlinesms.android.util.sms.SmsReceiver;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mathias.lin
- * Date: 3/19/11
- * Time: 1:39 AM
- * To change this template use File | Settings | File Templates.
- */
 public class SmsService {
 
     private final static String TAG = PIMService.class.getSimpleName();
@@ -42,38 +56,56 @@ public class SmsService {
         final PropertySubstituter propSub = new PropertySubstituter(context);
         Log.d(TAG, "individualizeAndSendMessage for : " + contacts.size() + " contacts");
 
-
+        final IJobDao jobDao = new JobDao(context.getContentResolver());
 
         //---when the SMS has been sent---
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent intent) {
 
-                WholeSmsMessage message = SmsReceiver.getMessagesFromIntent(intent);
-                Log.d("SmsService", "Sent body: " + message.getMessageBody());
-                Log.d("SmsService", "Sent number: " + message.getOriginatingAddress());
+
+                Log.d("SmsService", "Result data: " + getResultData());
+                Log.d("SmsService", "Result data string: " + (getResultExtras(false)==null?0:getResultExtras(false).size()));
+
+                Log.d("SmsService", "Intent data: " + intent.getData());
+                Log.d("SmsService", "Intent data string: " + intent.getDataString());
+                Log.d("SmsService", "Intent data string: " + (intent.getExtras()==null?0:intent.getExtras().size()));
+
+                /*WholeSmsMessage message = SmsReceiver.getMessagesFromIntent(intent);
+                if (message!=null) {
+                    Log.d("SmsService", "Sent body: " + message.getMessageBody());
+                    Log.d("SmsService", "Sent number: " + message.getOriginatingAddress());
+                }
+
+                Log.d("SmsService", "Intent data: " + intent.getData());
+                Log.d("SmsService", "Intent data string: " + intent.getDataString());
+                Log.d("SmsService", "Intent data string: " + (intent.getExtras()==null?0:intent.getExtras().size()));*/
 
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS sent", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(context, "SMS sent", Toast.LENGTH_SHORT).show();
+                       Log.d("SmsService", "Intent data number: " + intent.getStringExtra("number"));
+                       Log.d("SmsService", "Intent data number: " + intent.getBundleExtra("number"));
 
-                        ContentValues values = new ContentValues();
-                        values.put("address", message.getOriginatingAddress());
-                        values.put("body", message.getMessageBody());
-                        context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+                       /* if (message!=null) {
+                            ContentValues values = new ContentValues();
+                            values.put("address", message.getOriginatingAddress());
+                            values.put("body", message.getMessageBody());
+                            context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+                        }*/
 
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, "Generic failure", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Generic failure", Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, "No service", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "No service", Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, "Null PDU", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Null PDU", Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, "Radio off", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Radio off", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -85,10 +117,10 @@ public class SmsService {
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS delivered", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "SMS delivered", Toast.LENGTH_SHORT).show();
                         break;
                     case Activity.RESULT_CANCELED:
-                        Toast.makeText(context, "SMS not delivered", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "SMS not delivered", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -97,12 +129,16 @@ public class SmsService {
 
         for (Contact contact:contacts) {
 
-            Log.d(TAG, "individualizeAndSendMessage to contact id: " + contact.getId().toString());
+//            Log.d(TAG, "individualizeAndSendMessage to contact id: " + contact.getId().toString());
+//            Log.d(TAG, "individualizeAndSendMessage message: " + message);
+//            Log.d(TAG, "individualizeAndSendMessage contact: " + contact);
 
             String formattedMessage = propSub.substitute(keyword, sms, contact, message);
 
             Cursor pCur = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?" +
+                        " AND " + ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                     new String[]{contact.getId().toString()}, null);
 
             while (pCur.moveToNext()) {
@@ -110,16 +146,35 @@ public class SmsService {
                 Log.d(TAG, "Phone Number: " + phone);
 //                    phone = "+8618688200424";
 //                    phone = "+8613802849305";
-                PendingIntent sentPI = PendingIntent.getBroadcast(context, 0, new Intent("SMS_SENT"), 0);
-                PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0, new Intent("SMS_DELIVERED"), 0);
+
+                // TODO This delivery section needs to move into the service (tbd)...
+                Intent sendIntent = new Intent("SMS_SENT");
+                sendIntent.putExtra("message", formattedMessage);
+                sendIntent.putExtra("number", phone);
+                PendingIntent sentPI = PendingIntent.getBroadcast(context, 0, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                Intent deliveredIntent = new Intent("SMS_DELIVERED");
+                deliveredIntent.putExtra("message", formattedMessage);
+                deliveredIntent.putExtra("number", phone);
+                PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0, deliveredIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phone, null, formattedMessage, sentPI, deliveredPI);
 
                 // store the sent sms in the sent folder (that shouldn't be necessary?!)
-//                ContentValues values = new ContentValues();
-//                values.put("address", phone);
-//                values.put("body", formattedMessage);
-//                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+                ContentValues values = new ContentValues();
+                values.put("address", phone);
+                values.put("body", formattedMessage);
+                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+
+
+                // store the delivery as a job
+                Job job = new Job(Job.Type.SMS_JOB, phone, null, formattedMessage);
+                // KeywordAction.Type type, String recipient, String subject, String text
+                jobDao.saveOrUpdateJob(job);
+
+                // TODO this should be a setting in the settings activity
+                // try {Thread.sleep(12000);} catch (Exception e) {}
             }
 
         }

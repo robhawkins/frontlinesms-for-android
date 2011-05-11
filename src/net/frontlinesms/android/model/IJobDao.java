@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IJobDao {
 
-    Cursor getAllJobsCursor(boolean dueJobssOnly);
+    Cursor getAllJobsCursor(boolean dueJobsOnly);
 	List<Job> getAllJobs(boolean dueJobsOnly);
     Job getJobById(long id);
     void deleteJob(DbEntity entity);

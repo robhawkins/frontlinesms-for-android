@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <LinearLayout
+        android:id="@+id/ll_logs"
         android:orientation="vertical"
         android:layout_width="90.0dip"
         android:layout_height="70.0dip"
         android:layout_margin="5.0dip"
+        android:clickable="true"
         xmlns:android="http://schemas.android.com/apk/res/android">
             <!--android:focusable="true"-->
 
@@ -23,6 +25,8 @@
                 android:nextFocusLeft="@+id/img_rules"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="onClickHandler"
                 android:src="@drawable/ic_home_log_selector"
                 android:scaleType="center" />
 

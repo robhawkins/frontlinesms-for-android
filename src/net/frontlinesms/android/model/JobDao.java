@@ -27,44 +27,36 @@ import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
 import java.util.List;
 
 /**
- * @author aga
+ * @author Mathias Lin <mathias.lin@metahealthcare.com>
  */
-public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActionDao {
+public class JobDao extends BaseDbAccessObject implements IJobDao {
 
     ContentResolver mContentResolver;
 
-    public KeywordActionDao(ContentResolver contentResolver) {
+    public JobDao(ContentResolver contentResolver) {
 		super(contentResolver);
         this.mContentResolver = contentResolver;
 	}
 
 	@Override
-	public void saveOrUpdateAction(KeywordAction action) {
-		super.save(action);
-	}
-
-	@Override
-	public KeywordAction[] getActions(String messageContent, boolean allowAnywhere) {
-		KeywordAction example = new KeywordAction();
-		example.setKeyword(KeywordAction.getKeyword(mContentResolver, messageContent, allowAnywhere));
-        List<KeywordAction> list = super.getAll(example);
-		return list.toArray(new KeywordAction[list.size()]);
+	public void saveOrUpdateJob(Job job) {
+		super.save(job);
 	}
 
     @Override
-    public KeywordAction getKeywordById(long id) {
-        return super.get(KeywordAction.class, id);
+    public Job getJobById(long id) {
+        return super.get(Job.class, id);
     }
 
     @Override
-    public void deleteKeyword(DbEntity entity) {
+    public void deleteJob(DbEntity entity) {
         super.delete(entity);
     }
 
     @Override
-	public List<KeywordAction> getAllKeywords() {
-		List<KeywordAction> keywordList = super.getAll(KeywordAction.class);
-        return keywordList;
+	public List<Job> getAllJobs(boolean dueJobsOnly) {
+		List<Job> jobList = super.getAll(Job.class);
+        return jobList;
 
         /*
 		TreeSet<String> keywords = new TreeSet<String>();
@@ -76,8 +68,8 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 	}
 
     @Override
-    public Cursor getAllKeywordsCursor() {
-        return super.getAllCursor(KeywordAction.class);
+    public Cursor getAllJobsCursor(boolean dueJobsOnly) {
+        return super.getAllCursor(Job.class);
     }
 
     @Override

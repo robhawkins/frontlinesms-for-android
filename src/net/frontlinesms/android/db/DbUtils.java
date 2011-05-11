@@ -5,6 +5,7 @@ package net.frontlinesms.android.db;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -73,6 +74,10 @@ class DbUtils {
 				|| clazz.isEnum()) {
 			return "INTEGER";
 		}
+        if (clazz.equals((Timestamp.class))) {
+            return "DATETIME";
+        }
+        Log.d("DbUtils: ", "Check class: " + clazz.equals((Timestamp.class)));
 		throw new IllegalArgumentException("Unsupported column type: " + clazz);
 	}
 
@@ -147,6 +152,11 @@ class DbUtils {
 				if(insertNulls || value != null) {
 					values.put(key, (String) value);
 				}
+            } else if(type.equals(Timestamp.class)) {
+            Object value = field.get(entity);
+            if(insertNulls || value != null) {
+                values.put(key, ((Timestamp) value).getTime() );
+            }
 			} else if(type.isEnum()) {
 				Object value = field.get(entity);
 				if(value != null) {
@@ -210,12 +220,16 @@ class DbUtils {
 			value = cursor.getLong(cursor.getColumnIndex(getColumnName(field)));
 		} else if(type.equals(String.class)) {
 			value = cursor.getString(cursor.getColumnIndex(getColumnName(field)));
+        } else if(type.equals(Timestamp.class)) {
+            // value = cursor.getLong(cursor.getColumnIndex(getColumnName(field)));
+            value = new Timestamp(cursor.getLong(cursor.getColumnIndex(getColumnName(field))));
 		} else if(type.isEnum()) {
 			value = type.getEnumConstants()[cursor.getInt(cursor.getColumnIndex(getColumnName(field)))];
 		} else throw new IllegalArgumentException("Unsupported column type: " + type);
 		try {
-			field.set(instance, value);
+            field.set(instance, value);
 		} catch (Exception ex) {
+            Log.e("Error ", "Error: ", ex);
 			throw new IllegalArgumentException("Could not set field " + field.getName() + " of " + instance.getClass());
 		}
 	}

@@ -59,7 +59,7 @@ public class PropertySubstituter {
 
         // drop the keyword in a forwarded message or when using substitutes
         String msg = message==null?null:message.getMessageBody();
-        if (message.getMessageBody()!=null && keyword!=null && !"".equals(keyword)) {
+        if (msg!=null && keyword!=null && !"".equals(keyword)) {
             msg = message.getMessageBody().replaceFirst(keyword,"").trim();
         }
 
