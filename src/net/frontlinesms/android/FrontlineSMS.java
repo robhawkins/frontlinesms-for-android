@@ -20,6 +20,7 @@
 package net.frontlinesms.android;
 
 import android.app.Application;
+import android.content.Intent;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
@@ -53,6 +54,7 @@ public class FrontlineSMS extends Application {
     public void onCreate() {
         // The following line triggers the initialization of ACRA
         ACRA.init(this);
+        startService(new Intent(this, FrontlineSMSService.class));
         super.onCreate();
     }
 

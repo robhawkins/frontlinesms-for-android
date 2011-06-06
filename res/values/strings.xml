@@ -6,6 +6,11 @@
     <string name="action_help">Help</string>
 	<string name="action_new">New</string>
 
+    <!-- Service -->
+    <string name="local_service_started">Service started.</string>
+    <string name="local_service_stopped">Service stopped.</string>
+    <string name="local_service_label">FrontlineSMS</string>
+
     <!-- Home Options Menu -->
     <!--<string name="menu_option_clear">Clear</string>-->
     <!--<string name="menu_option_settings">Settings</string>-->

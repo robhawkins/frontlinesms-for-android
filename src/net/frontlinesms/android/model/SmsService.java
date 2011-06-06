@@ -20,25 +20,23 @@
 package net.frontlinesms.android.model;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
-import net.frontlinesms.android.util.sms.SmsReceiver;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
 import java.util.List;
 
 public class SmsService {
 
-    private final static String TAG = PIMService.class.getSimpleName();
+    private final static String TAG = SmsService.class.getSimpleName();
 
     /*public static void sendMessage(final Context context, List<Contact> contacts, String message) {
         individualizeAndSendMessage(context, contacts, message, null, null);
@@ -148,7 +146,7 @@ public class SmsService {
 //                    phone = "+8613802849305";
 
                 // TODO This delivery section needs to move into the service (tbd)...
-                Intent sendIntent = new Intent("SMS_SENT");
+                /*Intent sendIntent = new Intent("SMS_SENT");
                 sendIntent.putExtra("message", formattedMessage);
                 sendIntent.putExtra("number", phone);
                 PendingIntent sentPI = PendingIntent.getBroadcast(context, 0, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -165,7 +163,7 @@ public class SmsService {
                 ContentValues values = new ContentValues();
                 values.put("address", phone);
                 values.put("body", formattedMessage);
-                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);*/
 
 
                 // store the delivery as a job
