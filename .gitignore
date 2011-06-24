@@ -7,5 +7,4 @@ bin/
 .classpath
 .idea
 out
-src.bak
 *.apk
