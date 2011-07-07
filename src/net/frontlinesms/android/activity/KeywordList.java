@@ -76,8 +76,6 @@ public final class KeywordList extends BaseActivity {
         initKeywordList();
     }
 
-    // TODO
-
 
     @Override
     protected void onResume() {
@@ -123,16 +121,6 @@ public final class KeywordList extends BaseActivity {
         return keywordDao.getAllKeywordsCursor();
     }
 
-    /*private void createDemoKeywords() {
-		// Populate the map with some keyword actions
-		keywordDao.saveOrUpdateAction(KeywordAction.createReplyAction("hi", "Test", "Hello there, PropertySubstituter.KEY_SENDER_NAME"
-                + ", i do like your phone number (PropertySubstituter.KEY_SENDER_PHONENUMBER)"));
-		keywordDao.saveOrUpdateAction(KeywordAction.createJoinAction("join", "test", "Guangzhou"));
-		keywordDao.saveOrUpdateAction(KeywordAction.createLeaveAction("stop", "test", "Vodafone"));
-		keywordDao.saveOrUpdateAction(KeywordAction.createForwardAction("say", "test",
-                "PropertySubstituter.KEY_SENDER_NAME says PropertySubstituter.KEY_ORIGINAL_MESSAGE",
-                null));
-	}*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

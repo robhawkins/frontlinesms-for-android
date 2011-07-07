@@ -69,8 +69,6 @@ public final class JobList extends BaseActivity {
         initJobList();
     }
 
-    // TODO
-
 
     @Override
     protected void onResume() {

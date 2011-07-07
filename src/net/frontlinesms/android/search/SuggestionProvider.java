@@ -107,39 +107,6 @@ public final class SuggestionProvider extends SearchRecentSuggestionsProvider {
             } while (cursor.moveToNext());
 
             return matrixCursor;
-
-//            if (ShopPrototype.isOnlineSearchSuggestionsEnabled()) {
-//                final List<String> results = VodafoneApi.search(query);
-//                for (final String res : results) {
-//                    matrixCursor.addRow(new Object[]{
-//                            res, res, res, new Random().nextInt(MAX_RANDOM_ID)
-//                    });
-//                }
-//            } else {
-//                final ContentList contentList = ContentList.getSample(Settings
-//                        .readCategory(getContext()));
-//                contentList.sort();
-//
-//                // show regular suggestions
-//                for (int i = 0; i < contentList.getLength(); i++) {
-//                    final Content tmpContent = contentList.getContent(i);
-//                    final String title = tmpContent.getTitle();
-//                    if (title.toLowerCase().startsWith(query)) {
-//                        matrixCursor.addRow(new Object[]{
-//                                title, title, title, (long) tmpContent.getId()
-//                        });
-//                    }
-//
-//                }
-//            }
-
-            // merging history and suggestions cursor to show both in the search bar
-//            return new MergeCursor(
-//                    new Cursor[]{
-//                            super.query(uri, projection, selection, selectionArgs, sortOrder),
-//                            matrixCursor
-//                    }
-//            );
         }
     }
 }
