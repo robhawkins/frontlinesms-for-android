@@ -20,11 +20,10 @@
 package net.frontlinesms.android.model;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.app.PendingIntent;
+import android.content.*;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -57,73 +56,76 @@ public class SmsService {
         final IJobDao jobDao = new JobDao(context.getContentResolver());
 
         //---when the SMS has been sent---
-        context.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent intent) {
+        try {
+            context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context arg0, Intent intent) {
 
 
-                Log.d("SmsService", "Result data: " + getResultData());
-                Log.d("SmsService", "Result data string: " + (getResultExtras(false)==null?0:getResultExtras(false).size()));
+                    Log.d("SmsService", "Result data: " + getResultData());
+                    Log.d("SmsService", "Result data string: " + (getResultExtras(false)==null?0:getResultExtras(false).size()));
 
-                Log.d("SmsService", "Intent data: " + intent.getData());
-                Log.d("SmsService", "Intent data string: " + intent.getDataString());
-                Log.d("SmsService", "Intent data string: " + (intent.getExtras()==null?0:intent.getExtras().size()));
+                    Log.d("SmsService", "Intent data: " + intent.getData());
+                    Log.d("SmsService", "Intent data string: " + intent.getDataString());
+                    Log.d("SmsService", "Intent data string: " + (intent.getExtras()==null?0:intent.getExtras().size()));
 
-                /*WholeSmsMessage message = SmsReceiver.getMessagesFromIntent(intent);
-                if (message!=null) {
-                    Log.d("SmsService", "Sent body: " + message.getMessageBody());
-                    Log.d("SmsService", "Sent number: " + message.getOriginatingAddress());
+    //                WholeSmsMessage message = SmsReceiver.getMessagesFromIntent(intent);
+    //                if (message!=null) {
+    //                    Log.d("SmsService", "Sent body: " + message.getMessageBody());
+    //                    Log.d("SmsService", "Sent number: " + message.getOriginatingAddress());
+    //                }
+    //
+    //                Log.d("SmsService", "Intent data: " + intent.getData());
+    //                Log.d("SmsService", "Intent data string: " + intent.getDataString());
+    //                Log.d("SmsService", "Intent data string: " + (intent.getExtras()==null?0:intent.getExtras().size()));
+
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                           Toast.makeText(context, "SMS sent", Toast.LENGTH_SHORT).show();
+                           Log.d("SmsService", "Intent data number: " + intent.getStringExtra("number"));
+                           Log.d("SmsService", "Intent data number: " + intent.getBundleExtra("number"));
+
+    //                        if (message!=null) {
+    //                            ContentValues values = new ContentValues();
+    //                            values.put("address", message.getOriginatingAddress());
+    //                            values.put("body", message.getMessageBody());
+    //                            context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+    //                        }
+
+                            break;
+                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                            //Toast.makeText(context, "Generic failure", Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_NO_SERVICE:
+                            //Toast.makeText(context, "No service", Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_NULL_PDU:
+                            //Toast.makeText(context, "Null PDU", Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_RADIO_OFF:
+                            //Toast.makeText(context, "Radio off", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
+            }, new IntentFilter("SMS_SENT"));
 
-                Log.d("SmsService", "Intent data: " + intent.getData());
-                Log.d("SmsService", "Intent data string: " + intent.getDataString());
-                Log.d("SmsService", "Intent data string: " + (intent.getExtras()==null?0:intent.getExtras().size()));*/
-
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                       Toast.makeText(context, "SMS sent", Toast.LENGTH_SHORT).show();
-                       Log.d("SmsService", "Intent data number: " + intent.getStringExtra("number"));
-                       Log.d("SmsService", "Intent data number: " + intent.getBundleExtra("number"));
-
-                       /* if (message!=null) {
-                            ContentValues values = new ContentValues();
-                            values.put("address", message.getOriginatingAddress());
-                            values.put("body", message.getMessageBody());
-                            context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-                        }*/
-
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        //Toast.makeText(context, "Generic failure", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        //Toast.makeText(context, "No service", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        //Toast.makeText(context, "Null PDU", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        //Toast.makeText(context, "Radio off", Toast.LENGTH_SHORT).show();
-                        break;
+            //---when the SMS has been delivered---
+            context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context arg0, Intent arg1) {
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                            //Toast.makeText(context, "SMS delivered", Toast.LENGTH_SHORT).show();
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            //Toast.makeText(context, "SMS not delivered", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
-            }
-        }, new IntentFilter("SMS_SENT"));
-
-        //---when the SMS has been delivered---
-        context.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        //Toast.makeText(context, "SMS delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        //Toast.makeText(context, "SMS not delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter("SMS_DELIVERED"));
-
+            }, new IntentFilter("SMS_DELIVERED"));
+        } catch (ReceiverCallNotAllowedException e) {
+            Log.e(TAG, "IntentReceiver components are not allowed to register to receive intents.", e);
+        }
 
         for (Contact contact:contacts) {
 
@@ -139,14 +141,16 @@ public class SmsService {
                         ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                     new String[]{contact.getId().toString()}, null);
 
-            while (pCur.moveToNext()) {
+            while (pCur!=null && pCur.moveToNext()) {
                 String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 Log.d(TAG, "Phone Number: " + phone);
 //                    phone = "+8618688200424";
 //                    phone = "+8613802849305";
 
+
                 // TODO This delivery section needs to move into the service (tbd)...
-                /*Intent sendIntent = new Intent("SMS_SENT");
+                // === temporary section, we don't send sms right away but put it in the delivery queue ===
+                Intent sendIntent = new Intent("SMS_SENT");
                 sendIntent.putExtra("message", formattedMessage);
                 sendIntent.putExtra("number", phone);
                 PendingIntent sentPI = PendingIntent.getBroadcast(context, 0, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -163,16 +167,18 @@ public class SmsService {
                 ContentValues values = new ContentValues();
                 values.put("address", phone);
                 values.put("body", formattedMessage);
-                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);*/
+                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+                // === end of tmp section ===
+
 
 
                 // store the delivery as a job
-                Job job = new Job(Job.Type.SMS_JOB, phone, null, formattedMessage);
+                //Job job = new Job(Job.Type.SMS_JOB, phone, null, formattedMessage);
                 // KeywordAction.Type type, String recipient, String subject, String text
-                jobDao.saveOrUpdateJob(job);
+                //jobDao.saveOrUpdateJob(job);
 
                 // TODO this should be a setting in the settings activity
-                // try {Thread.sleep(12000);} catch (Exception e) {}
+                try {Thread.sleep(2000);} catch (Exception e) {}
             }
 
         }

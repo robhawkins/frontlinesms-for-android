@@ -52,7 +52,7 @@ public class PropertySubstituter {
 		
 		if(subText.contains(KEY_DESTINATION_NAME)) {
 			// String contactName = PIMService.getContactNameByPhoneNumber(mContext, destinationAddress);
-			if(contact.getDisplayName() != null) {
+			if(contact!=null && contact.getDisplayName() != null) {
 				subText = subText.replace(KEY_DESTINATION_NAME, contact.getDisplayName());
 			}
 		}
@@ -65,7 +65,7 @@ public class PropertySubstituter {
 
 		return subText
                 .replace(KEY_KEYWORD, (keyword==null?"":keyword))
-				.replace(KEY_DESTINATION_PHONENUMBER, (contact.getMobile()==null?"":contact.getMobile()))
+				.replace(KEY_DESTINATION_PHONENUMBER, (contact==null||contact.getMobile()==null?"":contact.getMobile()))
 				.replace(KEY_SENDER_PHONENUMBER,
                         (message==null||message.getOriginatingAddress()==null?"":message.getOriginatingAddress()))
 				.replace(KEY_ORIGINAL_MESSAGE, (msg==null?"":msg))

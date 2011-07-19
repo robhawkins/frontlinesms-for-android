@@ -60,14 +60,14 @@ public class FrontlineSMSService extends Service {
         mTT = new FrontlineSMSTimerTask();
         mT.scheduleAtFixedRate(mTT, 0, CHECK_FOR_JOBS_INTERVAL);
 
-
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         // Cancel the persistent notification.
-        mNM.cancel(NOTIFICATION);
+        //mNM.cancel(NOTIFICATION);
+        stopForeground(true);
 
         // Tell the user we stopped.
         Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
@@ -102,7 +102,12 @@ public class FrontlineSMSService extends Service {
                        text, contentIntent);
 
         // Send the notification.
-        mNM.notify(NOTIFICATION, notification);
+        // mNM.notify(NOTIFICATION, notification);
+
+        notification.flags|=Notification.FLAG_ONGOING_EVENT;
+        notification.flags|=Notification.FLAG_NO_CLEAR;
+
+        startForeground(NOTIFICATION, notification);
     }
 
 

@@ -75,7 +75,11 @@ public class KeywordActionProcessor {
     private void processEmail(KeywordAction action, WholeSmsMessage message) {
         SharedPreferences prefs = mContext.getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE);
         String from = prefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_SENDER, "");
-        MailService mailer = new MailService(mContext, from, action.getRecipient(), action.getSubject(), action.getText());
+
+        String formattedSubject = propSub.substitute(action.getKeyword(), message, null, action.getSubject());
+        String formattedMessage = propSub.substitute(action.getKeyword(), message, null, action.getText());
+
+        MailService mailer = new MailService(mContext, from, action.getRecipient(), formattedSubject, formattedMessage);
         try {
             mailer.send();
         } catch (Exception e) {
@@ -151,7 +155,7 @@ public class KeywordActionProcessor {
 		// remove the original sender from the forward group
         for (Contact r:recipients) {
             Log.d("forward", "forward to contact loop: " + r.getDisplayName());
-            if (r.getMobile().equals(message.getOriginatingAddress())) {
+            if (r.getMobile()!=null && r.getMobile().equals(message.getOriginatingAddress())) {
                 recipients.remove(r);
             }
         }

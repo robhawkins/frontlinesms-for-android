@@ -31,6 +31,7 @@ public class JobService {
         final IJobDao jobDao = new JobDao(context.getContentResolver());
         List<Job> jobs = jobDao.getAllJobs(true);
 
+        // TODO actually execute the jobs here....
     }
 
 

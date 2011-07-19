@@ -21,6 +21,7 @@ package net.frontlinesms.android.model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import net.frontlinesms.android.FrontlineSMS;
 
 import javax.mail.*;
@@ -138,7 +139,8 @@ public class MailService {
 
         // set body message
 		MimeBodyPart bodyMsg = new MimeBodyPart();
-		bodyMsg.setText(txtBody, "iso-8859-1");
+		//bodyMsg.setText(txtBody, "iso-8859-1");
+        bodyMsg.setText(txtBody, "utf-8");
         //bodyMsg.setContent(htmlBody, "text/html");
 		mp.addBodyPart(bodyMsg);
 
@@ -149,7 +151,7 @@ public class MailService {
 			javax.mail.Transport.send(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
-			// logger.error(e.getStackTrace());
+			Log.e("Mail", "Error sending mail. ", e);
 		}
 
 	}
