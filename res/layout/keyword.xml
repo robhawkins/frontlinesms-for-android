@@ -216,7 +216,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="140"
                 android:layout_margin="5dp"
-                android:lines="1"/>
+                android:lines="3"/>
 
             <TextView
                 android:id="@+id/txt_text_email"
