@@ -150,8 +150,12 @@ public class Keyword extends BaseActivity {
         }
         if (mKeywordAction.getType()==KeywordAction.Type.FORWARD) {
             mSpinnerForwardToGroup.setSelection(groupListIndex);
+            mEdtTextForward.setText(mKeywordAction.getText());
         } else {
             mSpinnerRemoveFromGroup.setSelection(0);
+        }
+        if (mKeywordAction.getType()==KeywordAction.Type.REPLY) {
+            mEdtTextReply.setText(mKeywordAction.getText());
         }
         if (mKeywordAction.getType()==KeywordAction.Type.EMAIL) {
             mEdtTextEmail.setText(mKeywordAction.getText());

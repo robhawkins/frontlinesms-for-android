@@ -41,7 +41,7 @@ public class MailService {
 	private String subject;
 	private String from;
 	private String txtBody;
-	private boolean authenticationRequired = false;
+	private boolean authenticationRequired = true;
 
    /* public MailService(Context context) {
         this.mContext = context;
@@ -125,7 +125,7 @@ public class MailService {
 		int i = 0;
 		while (st.hasMoreTokens()) {
 			addressTo[i++] = new javax.mail.internet.InternetAddress(st
-					.nextToken());
+					.nextToken(), true);
 		}
 		msg.setRecipients(javax.mail.Message.RecipientType.TO, addressTo);
 
@@ -139,15 +139,19 @@ public class MailService {
 
         // set body message
 		MimeBodyPart bodyMsg = new MimeBodyPart();
-		//bodyMsg.setText(txtBody, "iso-8859-1");
-        bodyMsg.setText(txtBody, "utf-8");
-        //bodyMsg.setContent(htmlBody, "text/html");
+        //bodyMsg.setText(txtBody, "utf-8");
+        bodyMsg.setContent(txtBody, "text/plain; charset=utf-8");
 		mp.addBodyPart(bodyMsg);
 
 		msg.setContent(mp);
 
 		// send it
 		try {
+//            Transport t = session.getTransport();
+//            t.connect(
+//                    mPrefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_USERNAME, ""),
+//                    mPrefs.getString(FrontlineSMS.PREF_SETTINGS_EMAIL_PASSWORD, ""));
+//            t.sendMessage(msg, msg.getAllRecipients());
 			javax.mail.Transport.send(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
