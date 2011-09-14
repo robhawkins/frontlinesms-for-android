@@ -39,6 +39,7 @@ public class Settings extends BaseActivity {
 
     private SharedPreferences mySharedPreferences;
     private Spinner mSpnLanguage;
+    private EditText mEdtDelay;
     private EditText mEdtEmailServer;
     private EditText mEdtEmailPort;
     private EditText mEdtEmailUsername;
@@ -58,6 +59,7 @@ public class Settings extends BaseActivity {
         setContentView(R.layout.settings);
         mySharedPreferences = getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE);
         mSpnLanguage = (Spinner) findViewById(R.id.spn_language);
+        mEdtDelay = (EditText) findViewById(R.id.edt_delay);
         mEdtEmailServer = (EditText) findViewById(R.id.edt_email_server);
         mEdtEmailPort = (EditText) findViewById(R.id.edt_email_port);
         mEdtEmailSender = (EditText) findViewById(R.id.edt_email_sender);
@@ -81,6 +83,7 @@ public class Settings extends BaseActivity {
         mChkEmailSSL.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, false));
         mChkAnalytics.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_ANALYTICS, false));
         mChkKeywordAnywhere.setChecked(mySharedPreferences.getBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_KEYWORD_ANYWHERE, false));
+        mEdtDelay.setText(new Integer(mySharedPreferences.getInt(FrontlineSMS.PREF_SETTINGS_DELAY,0)).toString());
     }
 
     private void savePreferences() {
@@ -96,6 +99,7 @@ public class Settings extends BaseActivity {
         editor.putBoolean(FrontlineSMS.PREF_SETTINGS_EMAIL_SSL, mChkEmailSSL.isChecked());
         editor.putBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_ANALYTICS, mChkAnalytics.isChecked());
         editor.putBoolean(FrontlineSMS.PREF_SETTINGS_ALLOW_KEYWORD_ANYWHERE, mChkKeywordAnywhere.isChecked());
+        editor.putInt(FrontlineSMS.PREF_SETTINGS_DELAY, Integer.valueOf(mEdtDelay.getText().toString()));
         editor.commit();
     }
 

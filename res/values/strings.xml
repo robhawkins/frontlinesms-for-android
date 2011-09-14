@@ -46,6 +46,9 @@
     <string name="settings_analytics_info">Google Analytics helps us to improve FrontlineSMS for Android by collection ANONYMOUS data on the usage of the various features that the app offers. No SMS or contact data is collected!</string>
     <string name="settings_keywords">Keywords</string>
     <string name="settings_keywords_anywhere">Allow keyword anywhere in message</string>
+    <string name="settings_delay">Delivery delay</string>
+    <string name="settings_delay_description">Defines the delay between each outgoing message when sending a mass message to multiple recipients.</string>
+
 
     <!-- Keyword List -->
     <string name="menu_option_new">New</string>

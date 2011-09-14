@@ -49,6 +49,7 @@ public class FrontlineSMS extends Application {
     public static final String PREF_SETTINGS_EMAIL_SENDER = "Settings.Email.Sender";
     public static final String PREF_SETTINGS_ALLOW_ANALYTICS = "Settings.Analytics.Permission";
     public static final String PREF_SETTINGS_ALLOW_KEYWORD_ANYWHERE = "Settings.Keywords.Anywhere";
+    public static final String PREF_SETTINGS_DELAY = "Settings.Delay";
 
     @Override
     public void onCreate() {

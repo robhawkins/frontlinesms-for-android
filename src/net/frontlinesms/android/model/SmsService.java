@@ -28,6 +28,7 @@ import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
+import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.util.sms.PropertySubstituter;
 import net.frontlinesms.android.util.sms.WholeSmsMessage;
 
@@ -35,6 +36,7 @@ import java.util.List;
 
 public class SmsService {
 
+    private static final boolean TEST_MODE_DONT_ACTUALLY_SEND_SMS = true;
     private final static String TAG = SmsService.class.getSimpleName();
 
     /*public static void sendMessage(final Context context, List<Contact> contacts, String message) {
@@ -49,6 +51,9 @@ public class SmsService {
      */
     public static void individualizeAndSendMessage(final Context context, List<Contact> contacts,
                                    String message, String keyword, WholeSmsMessage sms) {
+
+        final SharedPreferences prefs = context.getSharedPreferences(FrontlineSMS.SHARED_PREFS_ID, Activity.MODE_PRIVATE);
+        int deliveryDelay = prefs.getInt(FrontlineSMS.PREF_SETTINGS_DELAY, 0);
 
         final PropertySubstituter propSub = new PropertySubstituter(context);
         Log.d(TAG, "individualizeAndSendMessage for : " + contacts.size() + " contacts");
@@ -160,16 +165,17 @@ public class SmsService {
                 deliveredIntent.putExtra("number", phone);
                 PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0, deliveredIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phone, null, formattedMessage, sentPI, deliveredPI);
+                if (!TEST_MODE_DONT_ACTUALLY_SEND_SMS) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phone, null, formattedMessage, sentPI, deliveredPI);
 
-                // store the sent sms in the sent folder (that shouldn't be necessary?!)
-                ContentValues values = new ContentValues();
-                values.put("address", phone);
-                values.put("body", formattedMessage);
-                context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-                // === end of tmp section ===
-
+                    // store the sent sms in the sent folder (that shouldn't be necessary?!)
+                    ContentValues values = new ContentValues();
+                    values.put("address", phone);
+                    values.put("body", formattedMessage);
+                    context.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+                    // === end of tmp section ===
+                }
 
 
                 // store the delivery as a job
@@ -177,8 +183,7 @@ public class SmsService {
                 // KeywordAction.Type type, String recipient, String subject, String text
                 //jobDao.saveOrUpdateJob(job);
 
-                // TODO this should be a setting in the settings activity
-                try {Thread.sleep(2000);} catch (Exception e) {}
+                if (deliveryDelay>0) try {Thread.sleep(deliveryDelay);} catch (Exception e) {}
             }
 
         }
