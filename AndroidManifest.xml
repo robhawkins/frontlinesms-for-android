@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.frontlinesms.android"
           android:installLocation="auto"
-          android:versionCode="4"
-          android:versionName="0.4a">
+          android:versionCode="5"
+          android:versionName="0.5a">
 
     <uses-sdk android:minSdkVersion="7"/>
     <uses-sdk android:targetSdkVersion="7"/>
