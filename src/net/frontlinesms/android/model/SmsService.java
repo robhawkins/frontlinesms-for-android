@@ -36,7 +36,7 @@ import java.util.List;
 
 public class SmsService {
 
-    private static final boolean TEST_MODE_DONT_ACTUALLY_SEND_SMS = true;
+    private static final boolean TEST_MODE_DONT_ACTUALLY_SEND_SMS = false;
     private final static String TAG = SmsService.class.getSimpleName();
 
     /*public static void sendMessage(final Context context, List<Contact> contacts, String message) {
