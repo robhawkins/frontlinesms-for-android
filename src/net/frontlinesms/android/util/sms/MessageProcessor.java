@@ -21,6 +21,7 @@ package net.frontlinesms.android.util.sms;
 
 import android.app.Activity;
 import android.content.Context;
+
 import net.frontlinesms.android.FrontlineSMS;
 import net.frontlinesms.android.KeywordActionProcessor;
 import net.frontlinesms.android.model.KeywordAction;
@@ -30,6 +31,7 @@ public class MessageProcessor {
 	//private final Logger log = Logger.getLogger(this);
 	private final KeywordActionProcessor mKeywordActionProcessor;
 	private final KeywordActionDao mKeywordActionDao;
+    //private final PollDao mPollDao;
     private final Context mContext;
 //    private final ContentResolver mResolver;
 	
@@ -48,5 +50,11 @@ public class MessageProcessor {
 		for(KeywordAction action : actions) {
 			this.mKeywordActionProcessor.process(action, message);
 		}
+
+        //if actions is empty,
+        //if there's an active poll,
+        //if poll is restricted to original recipients && if responder was an original recipient  (dont do this for now),
+        //if message matches a poll keyword
+        //process the message for that poll
 	}
 }

@@ -38,6 +38,9 @@ public class FrontlineSMS extends Application {
     public static final String EXTRA_KEYWORD_ID = "EXTRA_KEYWORD_ID";
     public static final String EXTRA_KEYWORD_KEYWORD = "EXTRA_KEYWORD_KEYWORD";
 
+    public static final String EXTRA_POLL_ID = "EXTRA_POLL_ID";
+
+
     // shared prefs
     public static final String SHARED_PREFS_ID = "FRONTLINESMS_SETTINGS";
     public static final String PREF_SETTINGS_LANGUAGE = "Settings.Language";

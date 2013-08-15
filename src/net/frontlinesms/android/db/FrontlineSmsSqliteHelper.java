@@ -1,9 +1,10 @@
 package net.frontlinesms.android.db;
 
+import android.content.Context;
+
 import net.frontlinesms.android.model.Job;
 import net.frontlinesms.android.model.KeywordAction;
-
-import android.content.Context;
+import net.frontlinesms.android.model.Poll;
 
 public class FrontlineSmsSqliteHelper extends DbSqliteHelper {
 
@@ -19,6 +20,6 @@ public class FrontlineSmsSqliteHelper extends DbSqliteHelper {
 	@Override
 	protected Class<? extends DbEntity>[] getEntityClasses() {
 		return new Class[]{
-				KeywordAction.class, Job.class};
+				KeywordAction.class, Job.class, Poll.class};
 	}
 }

@@ -66,12 +66,18 @@
     <string name="keyword_autoreply">Auto Reply</string>
     <string name="keyword_description">Description:</string>
     <string name="keyword_forward">Auto Forward</string>
+    <string name="keyword_poll">Poll</string>
     <string name="keyword_text">Text:</string>
     <string name="keyword_forward_to_group">to Group:</string>
+    <string name="keyword_poll_to_group">to Group:</string>
     <string name="keyword_email">Send E-Mail</string>
     <string name="keyword_subject">Subject:</string>
     <string name="keyword_http_url">URL:</string>
     <string name="keyword_http_request">HTTP Request</string>
     <string name="keyword_recipient">Recipient:</string>
+
+    <!-- Poll strings -->
+    <string name="poll_response">Responses:</string>
+
 
 </resources>

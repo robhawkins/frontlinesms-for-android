@@ -148,7 +148,8 @@ public final class KeywordAction implements DbEntity {
 		JOIN(false, true),
 		LEAVE(false, true),
         EMAIL(true,false),
-        HTTP_REQUEST(true,false);
+        HTTP_REQUEST(true,false),
+        POLL(true,true);
 
 		private final boolean hasText;
 		private final boolean hasGroup;

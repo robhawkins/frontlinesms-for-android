@@ -115,53 +115,136 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="3dp">
                 <CheckBox
-                    android:id="@+id/chk_forward"
-                    android:onClick="checkCheckBoxLogic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        android:id="@+id/chk_forward"
+                        android:onClick="checkCheckBoxLogic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Content.Label"
-                    android:text="@string/keyword_forward"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Content.Label"
+                        android:text="@string/keyword_forward"/>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txt_text_forward"
-                android:visibility="gone"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/Content.Label"
-                android:text="@string/keyword_text"/>
+                    android:id="@+id/txt_text_forward"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_text"/>
 
             <EditText
-                android:id="@+id/edt_text_forward"
-                android:visibility="gone"
-                android:gravity="top"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="140"
-                android:layout_margin="5dp"
-                android:lines="3"/>
+                    android:id="@+id/edt_text_forward"
+                    android:visibility="gone"
+                    android:gravity="top"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="140"
+                    android:layout_margin="5dp"
+                    android:lines="3"/>
 
             <TextView
-                android:id="@+id/txt_forward_to_group"
-                android:visibility="gone"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/Content.Label"
-                android:text="@string/keyword_forward_to_group"/>
+                    android:id="@+id/txt_forward_to_group"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_forward_to_group"/>
 
             <Spinner
-                android:id="@+id/spn_forward_to_group"
-                android:visibility="gone"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="0dp"
-                android:paddingRight="0dp"
-                android:paddingBottom="0dp"
-                android:layout_margin="5dp"
-                android:prompt="@string/choose_group"/>
+                    android:id="@+id/spn_forward_to_group"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    android:layout_margin="5dp"
+                    android:prompt="@string/choose_group"/>
+
+            <!-- ========== Poll ========== -->
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp">
+                <CheckBox
+                        android:id="@+id/chk_poll"
+                        android:onClick="checkCheckBoxLogic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Content.Label"
+                        android:text="@string/keyword_poll"/>
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/txt_text_poll"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_text"/>
+
+            <EditText
+                    android:id="@+id/edt_text_poll"
+                    android:visibility="gone"
+                    android:gravity="top"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="140"
+                    android:layout_margin="5dp"
+                    android:lines="3"/>
+
+            <TextView
+                    android:id="@+id/txt_text_poll_response"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/poll_response"/>
+
+            <EditText
+                    android:id="@+id/edt_text_poll_response1"
+                    android:visibility="gone"
+                    android:gravity="top"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="10"
+                    android:layout_margin="5dp"
+                    android:lines="1"/>
+            <EditText
+                    android:id="@+id/edt_text_poll_response2"
+                    android:visibility="gone"
+                    android:gravity="top"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="10"
+                    android:layout_margin="5dp"
+                    android:lines="1"/>
+
+
+            <TextView
+                    android:id="@+id/txt_poll_to_group"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Content.Label"
+                    android:text="@string/keyword_poll_to_group"/>
+
+            <Spinner
+                    android:id="@+id/spn_poll_to_group"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    android:layout_margin="5dp"
+                    android:prompt="@string/choose_group"/>
 
 
             <!-- ========== E-Mail ========== -->
