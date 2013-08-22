@@ -1,0 +1,9 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin:'base'
+//dependencies {
+//   compile project(":FrontlineSMS")
+//}
+
+//dependencies {
+//      compile "com.android.support:support-v4:13.0.0"
+//}

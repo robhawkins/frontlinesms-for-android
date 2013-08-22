@@ -5,9 +5,15 @@ gen/
 bin/
 .project
 .classpath
-.idea
 out
 *.apk
 
 # OS X files
 .DS_Store
+
+#Android Studio / Gradle generated files
+*.iml
+local.properties
+.idea
+**/build/
+**/.gradle/
