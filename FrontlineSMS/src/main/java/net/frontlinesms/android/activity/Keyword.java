@@ -559,7 +559,9 @@ public class Keyword extends BaseActivity {
                     mKeywordDao.saveOrUpdateAction(mKeywordAction);
                     Toast.makeText(this, "Keyword saved.", Toast.LENGTH_SHORT).show();
                     if (mKeywordAction.getType() == KeywordAction.Type.POLL) {
-                        mPollDao.saveOrUpdateAction(mPoll);
+                        Log.d("onClick", "mPoll.id before: " + mPoll.getDbId());
+                        mPollDao.saveOrUpdatePoll(mPoll);
+                        Log.d("onClick", "mPoll.id after: " + mPoll.getDbId());
                     }
                     finish();
                 } catch (Exception e) {

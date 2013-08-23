@@ -19,6 +19,6 @@ public interface IPollDao {
     void deletePoll(DbEntity entity);
     //KeywordAction[] getActions(String messageContent, boolean allowAnywhere);
     Poll[] getActivePolls();
-    void saveOrUpdateAction(Poll poll);
+    void saveOrUpdatePoll(Poll poll);
 
 }

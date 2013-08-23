@@ -77,11 +77,11 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 	}
 
 	@Override
-	public void save(DbEntity entity) {
+	public Uri save(DbEntity entity) {
         Log.d(getClass().getSimpleName(), "contentResolver: " + contentResolver);
         Log.d(getClass().getSimpleName(), "getUri(entity.getClass()): " + getUri(entity.getClass()));
         Log.d(getClass().getSimpleName(), "DbUtils.getNonNullValues(entity): " + DbUtils.getNonNullValues(entity));
-		contentResolver.insert(
+		return contentResolver.insert(
 				Uri.parse(getUri(entity.getClass())),
 				DbUtils.getNonNullValues(entity));
 	}
@@ -89,7 +89,7 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 	public void saveOrUpdate(DbEntity entity) {
 		if(entity.getDbId() == null) {
             Log.d(getClass().getSimpleName(), "save..");
-			save(entity);
+			return save(entity);
 		} else {
             Log.d(getClass().getSimpleName(), "update..");
 			update(entity);

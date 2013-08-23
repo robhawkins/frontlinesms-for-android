@@ -19,7 +19,10 @@
 package net.frontlinesms.android.model;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
+
 import net.frontlinesms.android.db.BaseDbAccessObject;
 import net.frontlinesms.android.db.DbEntity;
 import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
@@ -40,8 +43,10 @@ public class KeywordActionDao extends BaseDbAccessObject implements IKeywordActi
 
 	@Override
 	public void saveOrUpdateAction(KeywordAction action) {
-		super.save(action);
-	}
+        Uri row = super.save(action);
+        long id = ContentUris.parseId(row);
+        action.setDbId(id);
+    }
 
 	@Override
 	public KeywordAction[] getActions(String messageContent, boolean allowAnywhere) {

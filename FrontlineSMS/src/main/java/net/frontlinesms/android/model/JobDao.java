@@ -19,7 +19,10 @@
 package net.frontlinesms.android.model;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
+
 import net.frontlinesms.android.db.BaseDbAccessObject;
 import net.frontlinesms.android.db.DbEntity;
 import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
@@ -40,7 +43,9 @@ public class JobDao extends BaseDbAccessObject implements IJobDao {
 
 	@Override
 	public void saveOrUpdateJob(Job job) {
-		super.save(job);
+        Uri row = super.save(job);
+        long id = ContentUris.parseId(row);
+        job.setDbId(id);
 	}
 
     @Override

@@ -51,6 +51,10 @@ public final class Poll implements DbEntity {
         return _id;
     }
 
+    public void setDbId(long id) {
+        this._id = id;
+    }
+
     public Timestamp creationTime() {
         return creationTime;
     }

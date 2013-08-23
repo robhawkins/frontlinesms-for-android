@@ -84,6 +84,10 @@ public final class Job implements DbEntity {
 		return _id;
 	}
 
+    public void setDbId(long id) {
+        this._id = id;
+    }
+
     public String getSubject() {
         return subject;
     }

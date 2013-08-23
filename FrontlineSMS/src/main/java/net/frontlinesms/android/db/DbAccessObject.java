@@ -1,6 +1,7 @@
 package net.frontlinesms.android.db;
 
 import android.database.Cursor;
+import android.net.Uri;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface DbAccessObject {
 
     public void update(DbEntity entity);
 
-    public void save(DbEntity entity);
+    public Uri save(DbEntity entity);
 
     public void saveOrUpdate(DbEntity entity);
 

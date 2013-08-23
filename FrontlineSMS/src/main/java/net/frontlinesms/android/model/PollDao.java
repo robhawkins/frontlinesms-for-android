@@ -19,7 +19,10 @@
 package net.frontlinesms.android.model;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
+
 import net.frontlinesms.android.db.BaseDbAccessObject;
 import net.frontlinesms.android.db.DbEntity;
 import net.frontlinesms.android.db.FrontlineSmsSqliteHelper;
@@ -39,8 +42,10 @@ public class PollDao extends BaseDbAccessObject implements IPollDao {
     }
 
     @Override
-    public void saveOrUpdateAction(Poll poll) {
-        super.save(poll);
+    public void saveOrUpdatePoll(Poll poll) {
+        Uri row = super.save(poll);
+        long id = ContentUris.parseId(row);
+        poll.setDbId(id);
     }
 
     @Override
