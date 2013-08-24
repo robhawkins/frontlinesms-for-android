@@ -91,5 +91,11 @@ public final class Poll implements DbEntity {
         this.keyword = keyword;
     }
 
+    public Long getKeywordActionId() {
+        return keywordActionId;
+    }
 
+    public void setKeywordActionId(Long keywordActionId) {
+        this.keywordActionId = keywordActionId;
+    }
 }

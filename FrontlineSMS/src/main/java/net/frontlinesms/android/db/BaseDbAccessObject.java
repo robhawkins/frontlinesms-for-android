@@ -47,7 +47,15 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 		return DbUtils.asList(entityClass, cursor).get(0);
 	}
 
-	@Override
+    public <T extends DbEntity> T getByForeignId(Class<T> entityClass, String field, long databaseId) {
+        Uri entityUri = getUri(entityClass, databaseId);
+        Cursor cursor = this.contentResolver.query(entityUri, null, field+"=?",
+                new String[]{new Long(databaseId).toString()}, null);
+        return DbUtils.asList(entityClass, cursor).get(0);
+    }
+
+
+    @Override
 	public void deleteByExample(DbEntity example) {
 		WhereClause whereClause = getWhereClause(example);
 		this.contentResolver.delete(whereClause.getUri(), whereClause.getWhere(), whereClause.getSelectionArgs());
@@ -89,7 +97,7 @@ public abstract class BaseDbAccessObject implements DbAccessObject {
 	public void saveOrUpdate(DbEntity entity) {
 		if(entity.getDbId() == null) {
             Log.d(getClass().getSimpleName(), "save..");
-			return save(entity);
+			save(entity);
 		} else {
             Log.d(getClass().getSimpleName(), "update..");
 			update(entity);

@@ -109,13 +109,15 @@ public class Keyword extends BaseActivity {
         }
         if (mKeywordAction.getType() != null &&
             mKeywordAction.getType()==KeywordAction.Type.POLL) {
-            int idPoll = getIntent().getIntExtra(FrontlineSMS.EXTRA_POLL_ID, -1);
-            Log.d("onClick", "onCreate.idPoll: " + idPoll);
-            if (idPoll!=-1) {
-                mPoll = mPollDao.getPollById(idPoll);
-            } else {
-                mPoll = new Poll();
-            }
+            //int idPoll = getIntent().getIntExtra(FrontlineSMS.EXTRA_POLL_ID, -1);
+            //Log.d("onClick", "onCreate.idPoll: " + idPoll);
+
+            mPoll = mPollDao.getPollByKeywordActionId(mKeywordAction.getDbId());
+//            if (idPoll!=-1) {
+//                mPoll = mPollDao.getPollById(idPoll);
+//            } else {
+//                mPoll = new Poll();
+//            }
         } else {
             mPoll = new Poll();
         }
@@ -560,6 +562,9 @@ public class Keyword extends BaseActivity {
                     Toast.makeText(this, "Keyword saved.", Toast.LENGTH_SHORT).show();
                     if (mKeywordAction.getType() == KeywordAction.Type.POLL) {
                         Log.d("onClick", "mPoll.id before: " + mPoll.getDbId());
+                        if (mPoll.getKeywordActionId() == null) {
+                            mPoll.setKeywordActionId(mKeywordAction.getDbId());
+                        }
                         mPollDao.saveOrUpdatePoll(mPoll);
                         Log.d("onClick", "mPoll.id after: " + mPoll.getDbId());
                     }

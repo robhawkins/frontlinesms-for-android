@@ -64,6 +64,12 @@ public class PollDao extends BaseDbAccessObject implements IPollDao {
         return super.get(Poll.class, id);
     }
 
+    public Poll getPollByKeywordActionId(long keywordActionId) {
+        return super.getByForeignId(Poll.class, "keywordActionId", keywordActionId);
+    }
+
+
+
     @Override
     public void deletePoll(DbEntity entity) {
         super.delete(entity);
