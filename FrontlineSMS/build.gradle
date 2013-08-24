@@ -4,11 +4,22 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.+'
     }
 }
 apply plugin: 'android'
+apply plugin: 'android-test'
 
 dependencies {
+  repositories {
+    mavenCentral()
+  }
+
+  testCompile 'junit:junit:4.10'
+  testCompile 'org.robolectric:robolectric:2.1.+'
+  testCompile 'com.squareup:fest-android:1.0.+'
+
+
   compile project(':FrontlineSMS')
   compile fileTree(dir: '../lib', include: '*.jar')
 //   compile files('../lib/acra-3.1.1.jar')
