@@ -38,5 +38,11 @@ android {
         minSdkVersion 7
         targetSdkVersion 17
     }
+/*    sourceSets {
+      main {
+        manifest.srcFile 'AndroidManifest.xml'
+      }
+    }*/
+
 }
 
