@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
 public class BasicTest {
     private KeywordList keywordList;
     private Button pressMeButton;
